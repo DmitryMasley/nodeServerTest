@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title><%= title %></title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+</head>
+<body>
+<h1><%= title %></h1>
+<table style="width:50%">
+    <tbody>
+    <% for(var name in body) { %>
+   <tr>
+       <td style="width: 50%"><%= name %></td>
+       <td><% if(body[name].join){ %><%= body[name].join("; ")%><% } %><%= body[name] %></td>
+   </tr>
+    <% } %>
+    </tbody>
+</table>
+</body>
+</html>

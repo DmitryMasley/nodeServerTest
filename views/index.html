@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>Start</title>
+</head>
+<body>
+    <h1>Hello</h1>
+<form action="/submit" method="post">
+    <input type="text" name="username"/>
+    <input type="password" name="password"/>
+    <select name="role">
+        <option></option>
+        <option value="admin">Admin</option>
+        <option value="user">User</option>
+    </select>
+    <label><input type="radio" name="projectType" value="trial">Trial</label>
+    <label><input type="radio" name="projectType" value="Enterprise">Enterprise</label>
+    <select multiple="multiple" name="languages">
+        <option value="en">English</option>
+        <option value="ua">Ukrainian</option>
+    </select>
+    <input type="email" name="email"/>
+    <label><input type="checkbox" name="termsAndConditions"/>I accept terms and conditions</label>
+    <button type="submit">Submit</button>
+</form>
+</body>
+</html>

@@ -6,5 +6,6 @@
 	"At least one language should be chosen": "Выбирете хотябы один язык",
 	"Email is required": "Укажите свой email",
 	"Email does not appear to be valid": "Email не корректный",
-	"Should accept terms and conditions": "Вы должны принять условия испльзования прежде чем продолжить"
+	"Should accept terms and conditions": "Вы должны принять условия испльзования прежде чем продолжить",
+	"Form": "Form"
 }

@@ -9,6 +9,7 @@ var i18n = require("i18n-2");
 
 var routes = require('./routes/index');
 var submit = require('./routes/submit');
+var mvc = require('./routes/mvc');
 
 var app = express();
 
@@ -50,6 +51,7 @@ app.use(validator({customValidators:
 }}));
 app.use('/', routes);
 app.use('/submit', submit);
+app.use('/mvc', mvc);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

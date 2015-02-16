@@ -6,5 +6,6 @@
 	"At least one language should be chosen": "At least one language should be chosen",
 	"Email is required": "Email is required",
 	"Email does not appear to be valid": "Email does not appear to be valid",
-	"Should accept terms and conditions": "Should accept terms and conditions"
+	"Should accept terms and conditions": "Should accept terms and conditions",
+	"MVC": "MVC"
 }

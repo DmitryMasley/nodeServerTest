@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title><%= title %></title>
+    <link rel='stylesheet' href='/stylesheets/main.css' />
+    <script type="application/javascript" src="/javascripts/vendor/requirejs/require.js"></script>
+    <script type="application/javascript" src="/javascripts/app/require-config.js"></script>
+</head>
+<body>
+<h1><%= title %></h1>
+<script type="application/javascript">
+    require(["app"], function(App){
+
+    });
+</script>
+</body>
+</html>

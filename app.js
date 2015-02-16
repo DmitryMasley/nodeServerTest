@@ -5,6 +5,7 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var validator = require('express-validator');
+var i18n = require("i18n-2");
 
 var routes = require('./routes/index');
 var submit = require('./routes/submit');
@@ -21,6 +22,26 @@ app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
+i18n.expressBind(app, {
+    // setup some locales - other locales default to vi silently
+    locales: ['en', 'ru'],
+    // set the default locale
+    defaultLocale: 'en',
+    // set the cookie name
+    cookieName: 'locale'
+});
+
+// set up the middleware
+app.use(function(req, res, next) {
+    // read from cookies
+    req.i18n.setLocaleFromCookie();
+    // if there is param in the query - use it and overwrite the cookies
+    if(req.param("lang")) {
+        req.i18n.setLocaleFromQuery();
+    }
+    res.cookie('locale', req.i18n.locale);
+    next();
+});
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(validator({customValidators:
 {

@@ -6,7 +6,7 @@
 </head>
 <body>
     <h1>Hello</h1>
-<form action="/submit" method="post">
+<form action="/submit" method="post" enctype='application/x-www-form-urlencoded'>
     <input type="text" name="username"/>
     <input type="password" name="password"/>
     <select name="role">
@@ -21,7 +21,7 @@
         <option value="ua">Ukrainian</option>
     </select>
     <input type="email" name="email"/>
-    <label><input type="checkbox" name="termsAndConditions"/>I accept terms and conditions</label>
+    <label><input type="checkbox" value="true" name="termsAndConditions"/>I accept terms and conditions</label>
     <button type="submit">Submit</button>
 </form>
 </body>

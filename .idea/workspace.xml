@@ -2,8 +2,18 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="47ed2cc5-1d44-46f7-81ba-0be71b2ceaab" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/locales/ru.js" afterPath="$PROJECT_DIR$/locales/ru.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="DELETED" beforePath="D:\Projects\myProjects\nodeServerTest\.idea\.name" afterPath="" />
+      <change type="DELETED" beforePath="D:\Projects\myProjects\nodeServerTest\.idea\encodings.xml" afterPath="" />
+      <change type="DELETED" beforePath="D:\Projects\myProjects\nodeServerTest\.idea\jsLibraryMappings.xml" afterPath="" />
+      <change type="DELETED" beforePath="D:\Projects\myProjects\nodeServerTest\.idea\libraries\nodeServerTest_node_modules.xml" afterPath="" />
+      <change type="DELETED" beforePath="D:\Projects\myProjects\nodeServerTest\.idea\misc.xml" afterPath="" />
+      <change type="DELETED" beforePath="D:\Projects\myProjects\nodeServerTest\.idea\modules.xml" afterPath="" />
+      <change type="DELETED" beforePath="D:\Projects\myProjects\nodeServerTest\.idea\nodeServer.iml" afterPath="" />
+      <change type="DELETED" beforePath="D:\Projects\myProjects\nodeServerTest\.idea\runConfigurations\bin_www.xml" afterPath="" />
+      <change type="DELETED" beforePath="D:\Projects\myProjects\nodeServerTest\.idea\scopes\scope_settings.xml" afterPath="" />
+      <change type="DELETED" beforePath="D:\Projects\myProjects\nodeServerTest\.idea\vcs.xml" afterPath="" />
+      <change type="DELETED" beforePath="D:\Projects\myProjects\nodeServerTest\.idea\watcherTasks.xml" afterPath="" />
+      <change type="DELETED" beforePath="D:\Projects\myProjects\nodeServerTest\.idea\workspace.xml" afterPath="" />
     </list>
     <ignored path="nodeServer.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -106,8 +116,8 @@
       <file leaf-file-name="ru.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/locales/ru.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.79320115" vertical-offset="0" max-vertical-offset="525">
-              <caret line="8" column="103" selection-start-line="8" selection-start-column="103" selection-end-line="8" selection-end-column="103" />
+            <state vertical-scroll-proportion="0.40697673" vertical-offset="0" max-vertical-offset="525">
+              <caret line="2" column="4" selection-start-line="2" selection-start-column="4" selection-end-line="2" selection-end-column="4" />
               <folding />
             </state>
           </provider>
@@ -486,7 +496,13 @@
       <option name="project" value="LOCAL" />
       <updated>1424120912377</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="ru localization">
+      <created>1424121133485</created>
+      <option name="number" value="00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1424121133485</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -494,17 +510,17 @@
     <editor active="false" />
     <layout>
       <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3295711" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32890856" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32844242" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.26031956" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.39823008" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.39823008" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32743362" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
-      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32890856" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Version Control" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.66519177" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
@@ -536,7 +552,8 @@
     <MESSAGE value="MVC+require.js+templates" />
     <MESSAGE value="libs" />
     <MESSAGE value="templates" />
-    <option name="LAST_COMMIT_MESSAGE" value="templates" />
+    <MESSAGE value="ru localization" />
+    <option name="LAST_COMMIT_MESSAGE" value="ru localization" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -924,8 +941,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/locales/ru.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.79320115" vertical-offset="0" max-vertical-offset="525">
-          <caret line="8" column="103" selection-start-line="8" selection-start-column="103" selection-end-line="8" selection-end-column="103" />
+        <state vertical-scroll-proportion="0.40697673" vertical-offset="0" max-vertical-offset="525">
+          <caret line="2" column="4" selection-start-line="2" selection-start-column="4" selection-end-line="2" selection-end-column="4" />
           <folding />
         </state>
       </provider>

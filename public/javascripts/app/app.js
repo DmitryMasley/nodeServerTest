@@ -1,3 +1,8 @@
 define(["jquery", "underscore", "backbone", "marionette", "tpl!users/templates/user"], function($, _, Backbone, Marionette, userTpl){
-    debugger;
+    var MainApp = Marionette.Controller.extend({
+        initialize: function(){
+
+        }
+    });
+    return MainApp;
 });

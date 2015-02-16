@@ -1,11 +1,57 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <title><%= title %></title>
-    <link rel='stylesheet' href='/stylesheets/style.css' />
-  </head>
-  <body>
-    <h1><%= title %></h1>
-    <p>Welcome to <%= __("Title") %></p>
-  </body>
+<head>
+  <meta charset="windows-1251">
+  <link rel='stylesheet' href='/stylesheets/style.css' />
+  <title><%= title %></title>
+</head>
+<body>
+<fieldset form="form">
+  <legend><%= __("Welcome to Form") %></legend>
+  <form id="form" method="post" action="/submit">
+    <table>
+      <tr>
+        <td align="right"><%= __("username") %>:
+        <td><input type="text"  name="username" title="<%= __("username") %>"></td>
+      <tr>
+        <td align="right"><%= __("password") %>:
+        <td><input type="password"  name="password" title="<%= __("password") %>"></td>
+      <tr>
+        <td align="right"><%= __("role") %>:
+        <td><select name="role" title="<%= __("role") %>" size="1">
+            <option><%= __("leading") %></option>
+            <option><%= __("minor") %></option>
+          </select>
+      <tr>
+        <td align="right"><%= __("projectType") %>:
+        <td align="left">
+          <label><input type=radio name="<%= __("projectType") %>" value="Music"><%= __("Music") %></label><br />
+          <label><input type=radio name="<%= __("projectType") %>" value="Animations"><%= __("Animations") %></label><br />
+          <label><input type=radio checked name="<%= __("projectType") %>" value="Games"><%= __("Games") %></label><br />
+          <label><input type=radio name="<%= __("projectType") %>" value="Simulations"><%= __("Simulations") %></label><br />
+          <label><input type=radio name="<%= __("projectType") %>" value="Art"><%= __("Art") %></label><br />
+          <label><input type=radio name="<%= __("projectType") %>" value="Stories"><%= __("Stories") %></label>
+        </td>
+      <tr>
+        <td align="right"><%= __("languages") %>:
+        <td>
+          <select name="languages" title="<%= __("languages") %>" size="5" multiple="multiple">
+            <option><%= __("English") %></option>
+            <option><%= __("Deutsch") %></option>
+            <option><%= __("French") %></option>
+            <option><%= __("Ukrainian") %></option>
+            <option><%= __("Russian") %></option>
+          </select>
+        </td>
+      <tr>
+        <td align="right"><%= __("email") %>:
+        <td><input type="email" name="email" title="<%= __("email") %>"></td>
+      <tr>
+        <td align="right"><%= __("termsAndConditions") %>:
+        <td align="left"><label><input type="checkbox" name="termsAndConditions" title="<%= __("termsAndConditions") %>"><%= __("Agree") %></label></td>
+    </table>
+    <input class="button" type=submit value="<%= __("Register") %>">
+  </form>
+</fieldset>
+</body>
 </html>

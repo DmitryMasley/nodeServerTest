@@ -1,0 +1,11 @@
+libraries
+runConfigurations
+scopes
+.name
+encodings.xml
+jsLibraryMappings.xml
+misc.xml
+modules.xml
+nodeServer.iml
+vcs.xml
+workspace.xml

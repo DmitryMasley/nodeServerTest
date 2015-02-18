@@ -32,5 +32,6 @@
 	"Welcome to Form": "Welcome to Form",
 	"projectType": "projectType",
 	"Agree": "Agree",
-	"Register": "Register"
+	"Register": "Register",
+	"Data submitted": "Data submitted"
 }

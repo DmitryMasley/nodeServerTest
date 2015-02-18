@@ -31,5 +31,6 @@
 	"email": "email",
 	"termsAndConditions": "постановления и условия",
 	"Agree": "соглашаюсь",
-	"Register": "Зарегистрироваться"
+	"Register": "Зарегистрироваться",
+	"Data submitted": "Data submitted"
 }

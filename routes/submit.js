@@ -4,7 +4,6 @@ var _ = require("underscore");
 
 /* GET users listing. */
 router.post('/', function(req, res, next) {
-  _.keys(req.body);
   req.checkBody('username', req.i18n.__('Username is required')).notEmpty().isAlpha();
   req.checkBody('password', req.i18n.__('Password is required')).notEmpty();
   req.checkBody('role', req.i18n.__('Role is required')).notEmpty();
@@ -19,6 +18,7 @@ router.post('/', function(req, res, next) {
   console.log(errors);
 
   if (errors) {
+    res.status(400);
     res.render("submit_error", {messages:errors})
   }
   else {

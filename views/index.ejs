@@ -7,48 +7,64 @@
 </head>
 <body>
 <fieldset form="form">
+  <% if(typeof body ==="undefined"){ %>
+    <% var body={}%>
+  <% } %>
+  <% if(typeof errors ==="undefined"){ %>
+    <% var errors=null%>
+  <% } %>
   <legend><%= __("Welcome to Form") %></legend>
-  <form id="form" method="post" action="/submit">
+  <form id="form" method="post" action="/">
+
     <table>
+      <% if(errors){ %>
+        <% for(var i=0;i<errors.length;i++){ %>
+        <tr>
+          <td colspan="2" style="color:red">
+            <%= errors[i].msg %>
+          </td>
+        </tr>
+        <% } %>
+      <% } %>
       <tr>
         <td align="right"><%= __("username") %>:
-        <td><input type="text"  name="username" title="<%= __("username") %>"></td>
+        <td><input type="text"  name="username" title="<%= __("username") %>" value="<%= body.username%>"></td>
       <tr>
         <td align="right"><%= __("password") %>:
         <td><input type="password"  name="password" title="<%= __("password") %>"></td>
       <tr>
         <td align="right"><%= __("role") %>:
-        <td><select name="role" title="<%= __("role") %>" size="1">
-            <option><%= __("leading") %></option>
-            <option><%= __("minor") %></option>
+        <td><select name="role" title="<%= __("role") %>" size="1" value="<%= body.role%>">
+            <option  <% if(body.role==="leading"){%>selected="selected" <% } %> value="leading"><%= __("leading") %></option>
+            <option <% if(body.role==="minor"){%>selected="selected" <% } %>  value="minor"><%= __("minor") %></option>
           </select>
       <tr>
         <td align="right"><%= __("projectType") %>:
         <td align="left">
-          <label><input type=radio name="<%= __("projectType") %>" value="Music"><%= __("Music") %></label><br />
-          <label><input type=radio name="<%= __("projectType") %>" value="Animations"><%= __("Animations") %></label><br />
-          <label><input type=radio checked name="<%= __("projectType") %>" value="Games"><%= __("Games") %></label><br />
-          <label><input type=radio name="<%= __("projectType") %>" value="Simulations"><%= __("Simulations") %></label><br />
-          <label><input type=radio name="<%= __("projectType") %>" value="Art"><%= __("Art") %></label><br />
-          <label><input type=radio name="<%= __("projectType") %>" value="Stories"><%= __("Stories") %></label>
+          <label><input type=radio name="<%= __("projectType") %>" value="Music" <% if(body.projectType==="Music"){%>checked="checked" <% } %>><%= __("Music") %></label><br />
+          <label><input type=radio name="<%= __("projectType") %>" value="Animations" <% if(body.projectType==="Animations"){%>checked="checked" <% } %>><%= __("Animations") %></label><br />
+          <label><input type=radio checked name="<%= __("projectType") %>" value="Games"<% if(body.projectType==="Games"){%>checked="checked" <% } %>><%= __("Games") %></label><br />
+          <label><input type=radio name="<%= __("projectType") %>" value="Simulations" <% if(body.projectType==="Simulations"){%> checked="checked" <% } %>><%= __("Simulations") %></label><br />
+          <label><input type=radio name="<%= __("projectType") %>" value="Art" <% if(body.projectType==="Art"){%> checked="checked" <% } %>><%= __("Art") %></label><br />
+          <label><input type=radio name="<%= __("projectType") %>" value="Stories" <% if(body.projectType==="Stories"){%> checked="checked" <% } %>><%= __("Stories") %></label>
         </td>
       <tr>
         <td align="right"><%= __("languages") %>:
         <td>
           <select name="languages" title="<%= __("languages") %>" size="5" multiple="multiple">
-            <option><%= __("English") %></option>
-            <option><%= __("Deutsch") %></option>
-            <option><%= __("French") %></option>
-            <option><%= __("Ukrainian") %></option>
-            <option><%= __("Russian") %></option>
+            <option value="en" <% if(body.languages && body.languages.indexOf("en")!==-1){%>selected="selected" <% } %>><%= __("English") %></option>
+            <option value="de" <% if(body.languages && body.languages.indexOf("de")!==-1){%>selected="selected" <% } %>><%= __("Deutsch") %></option>
+            <option value="fr" <% if(body.languages && body.languages.indexOf("fr")!==-1){%>selected="selected" <% } %>><%= __("French") %></option>
+            <option value="uk" <% if(body.languages && body.languages.indexOf("uk")!==-1){%>selected="selected" <% } %>><%= __("Ukrainian") %></option>
+            <option value="ru" <% if(body.languages && body.languages.indexOf("ru")!==-1){%>selected="selected" <% } %>><%= __("Russian") %></option>
           </select>
         </td>
       <tr>
         <td align="right"><%= __("email") %>:
-        <td><input type="email" name="email" title="<%= __("email") %>"></td>
+        <td><input type="email" name="email" title="<%= __("email") %>" value="<%= body.email%>"></td>
       <tr>
         <td align="right"><%= __("termsAndConditions") %>:
-        <td align="left"><label><input type="checkbox" name="termsAndConditions" title="<%= __("termsAndConditions") %>"><%= __("Agree") %></label></td>
+        <td align="left"><label><input type="checkbox" name="termsAndConditions"  <% if(body.termsAndConditions){%>checked="checked" <% } %> title="<%= __("termsAndConditions") %>"><%= __("Agree") %></label></td>
     </table>
     <input class="button" type=submit value="<%= __("Register") %>">
   </form>

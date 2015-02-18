@@ -1,10 +1,13 @@
 var express = require('express');
 var router = express.Router();
-var fs = require("fs");
+var _ = require("underscore");
+
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
-  res.render("index", {title:req.i18n.__("Form")});
+  var body = {};
+  body.languages = [req.i18n.locale];
+  res.render("index", {title:req.i18n.__("Form"), body:body});
 });
 router.post('/', function(req, res, next) {
   req.checkBody('username', req.i18n.__('Username is required')).notEmpty();
@@ -21,8 +24,12 @@ router.post('/', function(req, res, next) {
   console.log(errors);
 
   if (errors) {
+    var errorMap={};
+    _.each(errors, function(error){
+        errorMap[error.param] = error.msg;
+    });
     res.status(400);
-    res.render("index", {title:req.i18n.__("Form"), errors:errors, body:req.body})
+    res.render("index", {title:req.i18n.__("Form"), errors:errorMap, body:req.body})
   }
   else {
     res.render("submit", {title: req.i18n.__("Data submitted"), body:req.body});

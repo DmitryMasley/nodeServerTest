@@ -7,14 +7,14 @@ router.get('/', function(req, res, next) {
   res.render("index", {title:req.i18n.__("Form")});
 });
 router.post('/', function(req, res, next) {
-  req.checkBody('username', req.i18n.__('Username is required')).notEmpty().isAlpha();
+  req.checkBody('username', req.i18n.__('Username is required')).notEmpty();
   req.checkBody('password', req.i18n.__('Password is required')).notEmpty();
   req.checkBody('role', req.i18n.__('Role is required')).notEmpty();
   req.checkBody('projectType', req.i18n.__('Project Type is required')).notEmpty();
   req.checkBody('languages', req.i18n.__('At least one language should be chosen')).notEmpty();
   req.checkBody('email', req.i18n.__('Email is required')).notEmpty();
   req.checkBody('email', req.i18n.__('Email does not appear to be valid')).isEmail();
-  req.checkBody("termsAndConditions", req.i18n.__("Should accept terms and conditions")).notEmpty().isOn();
+  req.checkBody("termsAndConditions", req.i18n.__("Should accept terms and conditions")).isOn();
 // check the validation object for errors
   var errors = req.validationErrors();
 

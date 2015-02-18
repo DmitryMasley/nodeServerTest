@@ -18,7 +18,8 @@ fieldset {
     border-color: #3075d9;}
 legend {
   font-size: 18px;}
-select{width: 100%}
+select {width: 173;}
+td {width: 180px}
 label:hover{
     text-shadow: 2px 2px 2px #3075d9;
     color: #fff;}

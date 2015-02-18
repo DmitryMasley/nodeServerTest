@@ -25,7 +25,7 @@ router.post('/', function(req, res, next) {
     res.render("index", {title:req.i18n.__("Form"), errors:errors, body:req.body})
   }
   else {
-    res.render("submit", {title: "Data submitted", body:req.body});
+    res.render("submit", {title: req.i18n._("Data submitted"), body:req.body});
   }
 });
 module.exports = router;

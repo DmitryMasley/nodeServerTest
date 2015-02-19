@@ -26,7 +26,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 i18n.expressBind(app, {
     // setup some locales - other locales default to vi silently
-    locales: ['en', 'ru'],
+    locales: ['en', 'ru', 'de', 'fr', 'uk'],
     // set the default locale
     defaultLocale: 'en',
     // set the cookie name

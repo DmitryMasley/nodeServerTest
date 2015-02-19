@@ -18,12 +18,15 @@ fieldset {
     border-color: #3075d9;}
 legend {
   font-size: 18px;}
-select {width: 173;}
+select {width: 173px}
 td {width: 180px}
+a{text-decoration: none;
+color: white}
 label:hover{
     text-shadow: 2px 2px 2px #3075d9;
     color: #fff;}
-.button{
+.button ,.buttonlng{
+    margin: 5px;
     font-family: "arial";
     border:1px solid #3c7edb;
     border-radius:4px;
@@ -34,8 +37,8 @@ label:hover{
     background-color:#528cdf;
     -webkit-user-select:none;
     text-shadow: none;  }
-.button:hover {color:#fff;background-color:#3075d9;border-color:#2260b8}
-.button:active {
+.button:hover ,.buttonlng:hover {color:#fff;background-color:#3075d9;border-color:#2260b8}
+.button:active ,.buttonlng:active {
     -webkit-transition-duration: 0.1s;
     -moz-transition-duration: 0.1s;
     transition-duration: 0.1s;
@@ -43,3 +46,6 @@ label:hover{
     -webkit-box-shadow: inset 0 2px 7px 1px #2260b8;
     -moz-box-shadow: inset 0 2px 7px 1px #2260b8;
     box-shadow: inset 0 2px 7px 1px #2260b8;  }
+.buttonlng {font-size: 12px;
+    width: 40px;
+    display: inline-block}

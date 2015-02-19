@@ -32,5 +32,5 @@
 	"termsAndConditions": "постановления и условия",
 	"Agree": "соглашаюсь",
 	"Register": "Зарегистрироваться",
-	"Data submitted": "Data submitted"
+	"Data submitted": "Данные предоставлены"
 }

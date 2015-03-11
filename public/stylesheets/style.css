@@ -56,12 +56,12 @@ footer {display: block;
     margin: 0;
     padding: 0;
     font-size: 20px;}
-.sidebar     li ul {
+.sidebar  li ul {
     position: absolute; /* Подменю позиционируются абсолютно */
     display: none; /* Скрываем подменю */
     margin-left: 165px; /* Сдвигаем подменю вправо */
     margin-top: -2em; /* Сдвигаем подменю вверх */  }
-.sidebar ul li:hover ul {display: block;}/* При выделении пункта курсором мыши отображается подменю */
+.sidebar>ul li:hover>ul {display: block;}/* При выделении пункта курсором мыши отображается подменю */
 .sidebar li a {
     display: block; /* Ссылка как блочный элемент */
     padding: 5px; /* Поля вокруг надписи */

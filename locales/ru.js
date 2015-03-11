@@ -8,7 +8,7 @@
 	"Email does not appear to be valid": "Email не корректный",
 	"Should accept terms and conditions": "Вы должны принять условия испльзования прежде чем продолжить",
 	"Form": "Форма",
-	"Title": "Титул",
+	"Title": "Клуб английского языка «Continent» г.Днепропетровск",
 	"Welcome to Form": "Заполните форму",
 	"username": "имя пользователя",
 	"password": "пароль",
@@ -32,5 +32,5 @@
 	"termsAndConditions": "постановления и условия",
 	"Agree": "соглашаюсь",
 	"Register": "Зарегистрироваться",
-	"Data submitted": "Данные предоставлены"
+	"Data submitted": "Данные предоставлены",
 }

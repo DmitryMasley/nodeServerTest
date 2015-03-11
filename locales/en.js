@@ -34,5 +34,4 @@
 	"Agree": "Agree",
 	"Register": "Register",
 	"Data submitted": "Data submitted",
-	"Hello": "Hello"
 }

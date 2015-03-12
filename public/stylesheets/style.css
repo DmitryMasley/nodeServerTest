@@ -55,10 +55,11 @@ footer {
     position: fixed;
     top: 151px;
     width: 192px;
-    height: 100%;
+    bottom: 66px;
     text-align: left;
     background-color: #ddd;
     border-right: 1px solid #222;
+    z-index: 99999;
 }
 .sidebar ul{
     width: 192px;/* Ширина меню */
@@ -74,7 +75,7 @@ footer {
     margin-left: 165px; /* Сдвигаем подменю вправо */
     margin-top: -2em; /* Сдвигаем подменю вверх */
 }
-.sidebar>ul li:hover>ul {display: block;}/* При выделении пункта курсором мыши отображается подменю */
+.sidebar ul li:hover>ul {display: block;}/* При выделении пункта курсором мыши отображается подменю */
 .sidebar li a {
     display: block; /* Ссылка как блочный элемент */
     border-bottom: none; /* Границу снизу не проводим */

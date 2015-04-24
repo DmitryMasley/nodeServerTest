@@ -4,6 +4,30 @@
     <meta charset="utf-8" />  <meta name="description" content="Приглашаем детей и взрослых для увлекательного изучения английского языка" />
     <link rel='stylesheet' href='/stylesheets/style.css' />
     <title><%= __("Title") %></title>
+    <script>
+        window.onload = function() {
+            /*Слайдшоу*/
+            var btn = {1:document.getElementById("button-1"),2:document.getElementById("button-2"),3:document.getElementById("button-3"),4:document.getElementById("button-4"),5:document.getElementById("button-5"),};
+            var state=1;
+            function chk() {
+                    var i;
+                    for (i=1; i<=5; i++){
+                       if (btn[i].checked) break}
+                if (i==1) state=1;
+                if (i==5) state=-1;
+                btn[i+state].checked="checked";};
+            var slideshow=setInterval(chk, 4000);
+            btn[1].onclick=btn[2].onclick=btn[3].onclick=btn[3].onclick=btn[4].onclick=function() {clearInterval(slideshow);
+                slideshow=setInterval(chk, 4000);};
+        /*Изменение цвета div по нажатию кнопки*/
+        var colorcngbtn = document.getElementById("colorcngbtn");
+        var colorcngdiv = document.getElementById("colorcngdiv");
+            colorcngbtn.onclick = function() {
+                if (colorcngdiv.className == "red") colorcngdiv.className = "green";
+                else if (colorcngdiv.className == "green") colorcngdiv.className = "red";
+                }
+            };
+    </script>
 </head>
 <body>
 <header>
@@ -13,6 +37,8 @@
 <div class="main">
     <iframe width="560" height="315" src="https://www.youtube.com/embed/videoseries?list=PLHDcjEcp5o7-XTJgPp8308FU3zycjFAaf" frameborder="0" allowfullscreen></iframe>
     <br/>
+    <div id="colorcngdiv" class="red">fsdfsdfsdfsdfsdfsdsdfsdfsfsdfswefwe
+    <button id="colorcngbtn">colorcng</button><br/></div>
     <div id="slideshow-wrap">
         <input type="radio" id="button-1" name="controls" checked="checked"/>
         <label for="button-1"></label>
@@ -32,14 +58,14 @@
         <div id="slideshow-inner">
             <ul>
                 <li id="slide1">
-                    <img src="http://carspictureshd.com/wp-content/uploads/2014/05/2014_black_bmw_c_600_sport_desktop_wallpaper.jpg" />
+                    <img src="http://img.thesun.co.uk/aidemitlum/archive/01440/Suzuki-motorbike_1440345a.jpg" />
                     <div class="description">
                             <h2>Flower power</h2>
                             <p>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut</p>
                     </div>
                 </li>
                 <li id="slide2">
-                    <img src="http://carspictureshd.com/wp-content/uploads/2014/05/2010_bmw_f_800_r_philippine_motor_show.jpg" />
+                    <img src="http://scottsutton.net/wp-content/uploads/mr-bean-motorbike.jpg" />
                     <div class="description">
                             <h2>Golden sunset</h2>
                             <p>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut</p>

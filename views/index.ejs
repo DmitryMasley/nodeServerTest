@@ -10,17 +10,15 @@
             var btn = document.getElementsByName("controls");
             var state=1;
             function chk() {
-                    var i;
-                    for (i=0; i<btn.length; i++){
-                       if (btn[i].checked) break}
-                btn[i+state].checked="checked";
-                if (i+state==0) state=1;
-                if (i+state==btn.length-1) state=-1;};
-                for(var i = 0; i < btn.length; i++) {
+                for (i=0; i<btn.length; i++){if (btn[i].checked) break}
+                if (i==btn.length-1) state=-1;
+                if (i==0) state=1;
+                btn[i+state].checked="checked";};
+            for(var i = 0; i < btn.length; i++) {
                     (function() {
                         btn[i].onclick = function() {clearInterval(slideshow);
                             slideshow=setInterval(chk, 4000);};}());};
-                var slideshow=setInterval(chk, 4000);
+            var slideshow=setInterval(chk, 4000);
 
         /*Изменение цвета div по нажатию кнопки*/
             var createStuff = function(el){

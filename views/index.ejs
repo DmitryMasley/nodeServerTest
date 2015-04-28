@@ -16,9 +16,9 @@
                            break;
                        }
                     }
+                if (i+state<0) state=1;
+                if (i+state>btn.length-1) state=-1;
                 btn[i+state].checked="checked";
-                if (i+state==0) state=1;
-                if (i+state==btn.length-1) state=-1;
             };
             for(var i = 0; i < btn.length; i++) {
                 (function() {

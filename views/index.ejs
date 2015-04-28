@@ -6,27 +6,80 @@
     <title><%= __("Title") %></title>
     <script>
         window.onload = function() {
-            /*Слайдшоу*/
-            var btn = {1:document.getElementById("button-1"),2:document.getElementById("button-2"),3:document.getElementById("button-3"),4:document.getElementById("button-4"),5:document.getElementById("button-5"),};
+        /*Слайдшоу*/
+            var btn = document.getElementsByName("controls");
             var state=1;
             function chk() {
                     var i;
-                    for (i=1; i<=5; i++){
+                    for (i=0; i<btn.length; i++){
                        if (btn[i].checked) break}
-                if (i==1) state=1;
-                if (i==5) state=-1;
-                btn[i+state].checked="checked";};
-            var slideshow=setInterval(chk, 4000);
-            btn[1].onclick=btn[2].onclick=btn[3].onclick=btn[3].onclick=btn[4].onclick=function() {clearInterval(slideshow);
-                slideshow=setInterval(chk, 4000);};
+                btn[i+state].checked="checked";
+                if (i+state==0) state=1;
+                if (i+state==btn.length-1) state=-1;};
+                for(var i = 0; i < btn.length; i++) {
+                    (function() {
+                        btn[i].onclick = function() {clearInterval(slideshow);
+                            slideshow=setInterval(chk, 4000);};}());};
+                var slideshow=setInterval(chk, 4000);
+
         /*Изменение цвета div по нажатию кнопки*/
-        var colorcngbtn = document.getElementById("colorcngbtn");
-        var colorcngdiv = document.getElementById("colorcngdiv");
-            colorcngbtn.onclick = function() {
-                if (colorcngdiv.className == "red") colorcngdiv.className = "green";
-                else if (colorcngdiv.className == "green") colorcngdiv.className = "red";
+            var createStuff = function(el){
+                if(el instanceof  Element){
+                    var parent = document.createElement("div");
+                    parent.className = "content";
+                    parent.innerHTML = "<button class='btn'>Button</button><div class='red'>DIV</div>";
+                    el.appendChild(parent);
+                    var button = parent.getElementsByTagName("button")[0];
+                    var div = parent.getElementsByTagName("div")[0];
+                    button.onclick = function(){
+                        arguments.callee.count++;
+                        if(div.className.indexOf("red") !== -1){
+                            div.className = div.className.replace("red", "green");
+                        } else if(div.className.indexOf("green") !== -1) {
+                            div.className = div.className.replace("green", "red");
+                        } else {
+                            div.className+=" red";
+                        }
+                    }
+                    button.onclick.count=0;
+                } else {
+                    console.log("No element");
                 }
-            };
+            }
+        /*Изменение цвета div по нажатию кнопки*/
+            var stuff = function(el){
+                this.count = 0;
+                this.el = document.createElement("div");
+                this.el.className = "content";
+                this.el.innerHTML = "<button class='btn'>Button</button><div class='red'>DIV</div>"
+                if(el instanceof  Element) {
+                    el.appendChild(this.el);
+                } else {
+                    document.body.appendChild(this.el);
+                }
+                this.button = this.el.getElementsByTagName("button")[0];
+                this.div = this.el.getElementsByTagName("div")[0];
+                this.bindClick();
+            }
+            stuff.prototype.change = function(){
+                this.count++;
+                console.log("Count: "+this.count);
+                if(this.div.className.indexOf("red") !== -1){
+                    this.div.className = this.div.className.replace("red", "green");
+                } else if(this.div.className.indexOf("green") !== -1) {
+                    this.div.className = this.div.className.replace("green", "red");
+                } /*else {
+                    this.div.className+=" red";
+                }*/
+            }
+            stuff.prototype.bindClick = function(){
+                var self = this;
+                this.button.onclick = function(){
+                   self.change();
+                }
+            }
+            var obj = new stuff(document.getElementById("colorcngdiv"));
+        }
     </script>
 </head>
 <body>
@@ -37,8 +90,6 @@
 <div class="main">
     <iframe width="560" height="315" src="https://www.youtube.com/embed/videoseries?list=PLHDcjEcp5o7-XTJgPp8308FU3zycjFAaf" frameborder="0" allowfullscreen></iframe>
     <br/>
-    <div id="colorcngdiv" class="red">fsdfsdfsdfsdfsdfsdsdfsdfsfsdfswefwe
-    <button id="colorcngbtn">colorcng</button><br/></div>
     <div id="slideshow-wrap">
         <input type="radio" id="button-1" name="controls" checked="checked"/>
         <label for="button-1"></label>

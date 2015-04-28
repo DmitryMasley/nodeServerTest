@@ -8,6 +8,7 @@
         window.onload = function() {
         /*Слайдшоу*/
             var btn = document.getElementsByName("controls");
+            var slides = document.getElementById("slideshow-wrap").getElementsByClassName("description");
             var state=1;
             var i;
             function chk() {
@@ -24,8 +25,11 @@
                             clearInterval(slideshow);
                             slideshow=setInterval(chk, 4000);
                         };
+                        slides[i].onmouseover = function() {
+                            clearInterval(slideshow);
+                        };
                     }());
-            };
+            }
             var slideshow=setInterval(chk, 4000);
 
         /*Изменение цвета div по нажатию кнопки*/

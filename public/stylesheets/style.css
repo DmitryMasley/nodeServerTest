@@ -241,10 +241,6 @@ input[type=radio]#button-2:checked~.arrows#arrow-1 { left: -19px ;}
 input[type=radio]#button-3:checked~.arrows#arrow-2 { left: -37px ;}
 input[type=radio]#button-5:checked~.arrows#arrow-4 { left: -73px ;}
 #slideshow-inner>ul>li:hover .description{ opacity: 1 ;}
-#slideshow-inner>ul:hover {
-    animation-play-state: paused;
-    -webkit-animation-play-state: paused;
-}
 .description {
     position: absolute;
     top: 0;

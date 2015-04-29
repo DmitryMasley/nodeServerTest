@@ -7,8 +7,8 @@
     <script>
         window.onload = function() {
         /*Слайдшоу*/
-            var btn = document.getElementsByName("controls");
-            var slides = document.getElementById("slideshow-inner").getElementsByTagName("img");
+            var btn = document.querySelectorAll('#slideshow-wrap input[type="radio"][name="controls"]');
+            var slides = document.querySelectorAll('#slideshow-inner img');
             var state=1;
             var i, slideshow;
             function chk() {
@@ -45,8 +45,8 @@
                     parent.className = "content";
                     parent.innerHTML = "<button class='btn'>Button</button><div class='red'>DIV</div>";
                     el.appendChild(parent);
-                    var button = parent.getElementsByTagName("button")[0];
-                    var div = parent.getElementsByTagName("div")[0];
+                    var button = parent.querySelectorAll("button")[0];
+                    var div = parent.querySelectorAll("div")[0];
                     button.onclick = function(){
                         arguments.callee.count++;
                         if(div.className.indexOf("red") !== -1){
@@ -73,8 +73,8 @@
                 } else {
                     document.body.appendChild(this.el);
                 }
-                this.button = this.el.getElementsByTagName("button")[0];
-                this.div = this.el.getElementsByTagName("div")[0];
+                this.button = this.el.querySelectorAll("button")[0];
+                this.div = this.el.querySelectorAll("div")[0];
                 this.bindClick();
             }
             stuff.prototype.change = function(){
@@ -94,7 +94,7 @@
                    self.change();
                 }
             }
-            var obj = new stuff(document.getElementById("colorcngdiv"));
+            var obj = new stuff(document.querySelectorAll('[class="sidebar"]')[0]);
         }
     </script>
 </head>

@@ -6,44 +6,58 @@
     <title><%= __("Title") %></title>
     <script>
         window.onload = function() {
-        /*Слайдшоу*/
-            var btn = document.querySelectorAll('#slideshow-wrap input[type="radio"][name="controls"]');
-            var slides = document.querySelectorAll('#slideshow-inner img, #slideshow-inner div');
-            var state=1;
-            var i, slideshow;
-            function chk() {
-                for (i=0; i<btn.length; i++){
-                    if (btn[i].checked)
-                        break;
-                }
-                if (i+state>btn.length-1) state=-1;
-                if (i+state<0) state=1;
-                btn[i+state].checked="checked";
+            /*Слайдшоу*/
+            var SlideShow =function(){
+                this.state = 1;
+                this.slides = document.querySelectorAll('#slideshow-inner img, #slideshow-inner div');
+                this.btn = document.querySelectorAll('#slideshow-wrap input[type="radio"][name="controls"]');
+                this.bindClick();
+                this.bindPause();
+                this.start();
             }
-            function stopSlideShow(){
-                clearInterval(slideshow);
+            SlideShow.prototype.animate = function() {
+                var i=parseInt(document.querySelectorAll('#slideshow-wrap input:checked')[0].id.charAt(7))-1;
+                if (i+this.state<0) this.state=1;
+                if (i+this.state>this.btn.length-1) this.state=-1;
+                this.btn[i+this.state].checked="checked";
             }
-            function startSlideShow(){
-                slideshow=setInterval(chk, 4000);
-            };
-            for(i = 0; i < btn.length; i++) {
+            SlideShow.prototype.start =  function() {
+                var self=this;
+                this.timer=setInterval(function() { self.animate.call(self) }, 4000);
+            }
+            SlideShow.prototype.stop = function() {
+                clearInterval(this.timer);
+            }
+            SlideShow.prototype.bindClick = function(){
+                var self=this;
+                for(var i = 0; i < self.btn.length; i++) {
                     (function() {
-                        btn[i].onclick = function() {
-                            (stopSlideShow());
-                            (startSlideShow());
+                        self.btn[i].onclick = function() {
+                            self.stop();
+                            if (parseInt(document.querySelectorAll('#slideshow-wrap input:checked')[0].id.charAt(7))==1) self.state=1;
+                            if (parseInt(document.querySelectorAll('#slideshow-wrap input:checked')[0].id.charAt(7))==self.btn.length) self.state=-1;
+                            self.start();
                         };
                     }());
+                }
             }
-            for(i = 0; i < slides.length; i++) {
-                (function() {
-                    slides[i].onmouseover = stopSlideShow;
-                    slides[i].onmouseout = startSlideShow;
-                }());
+            SlideShow.prototype.bindPause = function() {
+                var self=this;
+                for(var i = 0; i < self.slides.length; i++) {
+                    (function() {
+                        self.slides[i].onmouseover = function() {
+                            self.stop();
+                        }
+                        self.slides[i].onmouseout = function() {
+                            self.start();
+                        }
+                    }());
+                }
             }
-            (startSlideShow());
+            var qwe = new SlideShow();
 
         /*Изменение цвета div по нажатию кнопки*/
-            var createStuff = function(el){
+          /*  var createStuff = function(el){
                 if(el instanceof  Element){
                     var parent = document.createElement("div");
                     parent.className = "content";
@@ -65,7 +79,8 @@
                 } else {
                     console.log("No element");
                 }
-            }
+            }*/
+
         /*Изменение цвета div по нажатию кнопки*/
             var stuff = function(el){
                 this.count = 0;

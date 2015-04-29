@@ -8,7 +8,7 @@
         window.onload = function() {
         /*Слайдшоу*/
             var btn = document.querySelectorAll('#slideshow-wrap input[type="radio"][name="controls"]');
-            var slides = document.querySelectorAll('#slideshow-inner img');
+            var slides = document.querySelectorAll('#slideshow-inner img, #slideshow-inner div');
             var state=1;
             var i, slideshow;
             function chk() {
@@ -32,9 +32,13 @@
                             (stopSlideShow());
                             (startSlideShow());
                         };
-                        slides[i].onmouseover = stopSlideShow;
-                        slides[i].onmouseout = startSlideShow;
                     }());
+            }
+            for(i = 0; i < slides.length; i++) {
+                (function() {
+                    slides[i].onmouseover = stopSlideShow;
+                    slides[i].onmouseout = startSlideShow;
+                }());
             }
             (startSlideShow());
 

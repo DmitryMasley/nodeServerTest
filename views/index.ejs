@@ -8,9 +8,9 @@
         window.onload = function() {
         /*Слайдшоу*/
             var btn = document.getElementsByName("controls");
-            var slides = document.getElementById("slideshow-wrap").getElementsByClassName("description");
+            var slides = document.getElementById("slideshow-inner").getElementsByTagName("img");
             var state=1;
-            var i;
+            var i, slideshow;
             function chk() {
                 for (i=0; i<btn.length; i++){
                     if (btn[i].checked)
@@ -18,19 +18,25 @@
                 }
                 if (i+state>btn.length-1) state=-1;
                 if (i+state<0) state=1;
-                btn[i+state].checked="checked";};
+                btn[i+state].checked="checked";
+            }
+            function stopSlideShow(){
+                clearInterval(slideshow);
+            }
+            function startSlideShow(){
+                slideshow=setInterval(chk, 4000);
+            };
             for(i = 0; i < btn.length; i++) {
                     (function() {
                         btn[i].onclick = function() {
-                            clearInterval(slideshow);
-                            slideshow=setInterval(chk, 4000);
+                            (stopSlideShow());
+                            (startSlideShow());
                         };
-                        slides[i].onmouseover = function() {
-                            clearInterval(slideshow);
-                        };
+                        slides[i].onmouseover = stopSlideShow;
+                        slides[i].onmouseout = startSlideShow;
                     }());
             }
-            var slideshow=setInterval(chk, 4000);
+            (startSlideShow());
 
         /*Изменение цвета div по нажатию кнопки*/
             var createStuff = function(el){

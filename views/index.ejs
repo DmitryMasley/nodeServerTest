@@ -6,57 +6,118 @@
     <title><%= __("Title") %></title>
     <script>
         window.onload = function() {
-            /*Слайдшоу*/
-            var SlideShow =function(){
-                this.state = 1;
-                this.slides = document.querySelectorAll('#slideshow-inner img, #slideshow-inner div');
-                this.btn = document.querySelectorAll('#slideshow-wrap input[type="radio"][name="controls"]');
+
+            var SlideShow =function(el,img,desc){
+                if (!img) {
+                    this.img=["http://7themes.su/_ph/40/806761392.jpg","http://7themes.su/_ph/40/109111701.jpg","http://7themes.su/_ph/38/351815896.jpg","http://7themes.su/_ph/23/855840339.jpg","http://7themes.su/_ph/38/686375918.jpg"];
+                    this.desc=["The Hobbit","Мстители: Эра Альтрона","Инь и ян","Lamborghini aventador","Отражение в очках"];
+                }/*If no input array with images - take pre-defined array with images and pre-defined array with their descriptions*/
+                else {
+                    this.img=img;
+                    if (desc) this.desc=desc;
+                }/*If is input array with images - take that array. If is input array with images descriptions - take it too*/
+                if(el instanceof  Element) {
+                    this.el=el;
+                } else {
+                    this.el=document.body;
+                }
+                this.render();
+                this.slides = this.el.querySelectorAll('[class="slideshow-inner"] img, [class="slideshow-inner"] div');
+                this.btn = this.el.querySelectorAll('[class="slideshow-wrap"] [class="buttons"]');
+                this.direction = 1;
+                this.btn[0].dataset.active="1";
                 this.bindClick();
                 this.bindPause();
                 this.start();
-            }
+            }/*Slideshow Class Constructor Function*/
+            SlideShow.prototype.render = function() {
+                this.wrap = document.createElement("div");
+                this.wrap.className = "slideshow-wrap";
+                this.inner = document.createElement("div");
+                this.inner.className = "slideshow-inner";
+                this.inner.ul = document.createElement("ul");
+                for(var i = 0, len=this.img.length; i < len; i++) {
+                    this.wrap.innerHTML +=('<span class="buttons" data-button="'+(i+1)+'" data-active="'+0+'"></span> \n');
+                    if (this.desc) {
+                        this.inner.ul.innerHTML +=('<li name="slide'+(i+1)+'"> \n <img src="'+this.img[i]+'" /> \n<div class="description"> \n<h2>'+this.desc[i]+'</h2></div></li>');
+                    }
+                    else{
+                        this.inner.ul.innerHTML +=('<li name="slide'+(i+1)+'"> \n <img src="'+this.img[i]+'" /> \n');
+                    }
+               }
+                this.wrap.innerHTML +=('<span class="arrows" data-arrow="left"><</span> \n');
+                this.wrap.innerHTML +=('<span class="arrows" data-arrow="right">></span> \n');
+                this.inner.appendChild(this.inner.ul);
+                this.wrap.appendChild(this.inner);
+                this.el.appendChild(this.wrap);
+            }/*Slideshow Render Function*/
             SlideShow.prototype.animate = function() {
-                var i=parseInt(document.querySelectorAll('#slideshow-wrap input:checked')[0].id.charAt(7))-1;
-                if (i+this.state<0) this.state=1;
-                if (i+this.state>this.btn.length-1) this.state=-1;
-                this.btn[i+this.state].checked="checked";
-            }
+                var i = this.el.querySelectorAll('[class="slideshow-wrap"] [class="buttons"][data-active="1"]')[0].dataset.button-1;
+                if (i+this.direction<0) this.direction=1;
+                if (i+this.direction>this.btn.length-1) this.direction=-1;
+                this.btn[i].dataset.active="0";
+                this.btn[i+this.direction].dataset.active="1";
+            }/*Slideshow one-step animation Function*/
             SlideShow.prototype.start =  function() {
                 var self=this;
-                this.timer=setInterval(function() { self.animate.call(self) }, 4000);
-            }
+                this.interval=setInterval(function() { self.animate.call(self) }, 4000);
+            }/*Slideshow start continual animation Function*/
             SlideShow.prototype.stop = function() {
-                clearInterval(this.timer);
-            }
+                clearInterval(this.interval);
+            }/*Slideshow stop continual animation Function*/
             SlideShow.prototype.bindClick = function(){
                 var self=this;
-                for(var i = 0; i < self.btn.length; i++) {
-                    (function() {
-                        self.btn[i].onclick = function() {
-                            self.stop();
-                            if (parseInt(document.querySelectorAll('#slideshow-wrap input:checked')[0].id.charAt(7))==1) self.state=1;
-                            if (parseInt(document.querySelectorAll('#slideshow-wrap input:checked')[0].id.charAt(7))==self.btn.length) self.state=-1;
-                            self.start();
-                        };
-                    }());
-                }
-            }
+                self.arrowLeft=this.el.querySelectorAll('[class="slideshow-wrap"] [class="arrows"][data-arrow="left"]')[0];
+                self.arrowRight=this.el.querySelectorAll('[class="slideshow-wrap"] [class="arrows"][data-arrow="right"]')[0];
+                (function() {
+                    self.arrowLeft.addEventListener("click", function() {
+                        self.stop();
+                        var i = self.el.querySelectorAll('[class="slideshow-wrap"] [class="buttons"][data-active="1"]')[0].dataset.button-1;
+                        self.btn[i].dataset.active="0";
+                        self.btn[--i].dataset.active="1";
+                        self.direction=-1;
+                        self.start();
+                    });
+                    self.arrowRight.addEventListener("click", function() {
+                        self.stop();
+                        var i = self.el.querySelectorAll('[class="slideshow-wrap"] [class="buttons"][data-active="1"]')[0].dataset.button-1;
+                        self.btn[i].dataset.active="0";
+                        self.btn[++i].dataset.active="1";
+                        self.direction=1;
+                        self.start();
+                    });
+                    for(var i = 0; i < self.btn.length; i++) {
+                        (function () {
+                            var j = i;
+                            self.btn[j].addEventListener("click", function () {
+                                self.stop();
+                                self.btn[self.el.querySelectorAll('[class="slideshow-wrap"] [class="buttons"][data-active="1"]')[0].dataset.button-1].dataset.active="0";
+                                self.btn[j].dataset.active="1";
+                                if (j==1) self.direction=1;
+                                if (j==self.btn.length-1) self.direction=-1;
+                                self.start();
+                            });
+                        })();
+                    }
+                })();
+            }/*Slideshow click EventListener Function*/
             SlideShow.prototype.bindPause = function() {
                 var self=this;
                 for(var i = 0; i < self.slides.length; i++) {
                     (function() {
-                        self.slides[i].onmouseover = function() {
+                        self.slides[i].addEventListener("mouseover", function() {
                             self.stop();
-                        }
-                        self.slides[i].onmouseout = function() {
+                        });
+                        self.slides[i].addEventListener("mouseout", function() {
                             self.start();
-                        }
-                    }());
+                        });
+                    })();
                 }
-            }
-            var qwe = new SlideShow();
+            }/*Slideshow Pause on hover EventListener Function*/
+            var qwe = new SlideShow(document.querySelectorAll('[class="first"]')[0]);
+            var qwedsd = new SlideShow(document.querySelectorAll('[class="second"]')[0]);
 
-        /*Изменение цвета div по нажатию кнопки*/
+               /*Изменение цвета div по нажатию кнопки*/
           /*  var createStuff = function(el){
                 if(el instanceof  Element){
                     var parent = document.createElement("div");
@@ -123,64 +184,8 @@
     <a class="name" href="http://localhost:3000/">Клуб английского языка "Continent"</a>+38 (096) 320-48-96
 </header>
 <div class="main">
-    <iframe width="560" height="315" src="https://www.youtube.com/embed/videoseries?list=PLHDcjEcp5o7-XTJgPp8308FU3zycjFAaf" frameborder="0" allowfullscreen></iframe>
-    <br/>
-    <div id="slideshow-wrap">
-        <input type="radio" id="button-1" name="controls" checked="checked"/>
-        <label for="button-1"></label>
-        <input type="radio" id="button-2" name="controls"/>
-        <label for="button-2"></label>
-        <input type="radio" id="button-3" name="controls"/>
-        <label for="button-3"></label>
-        <input type="radio" id="button-4" name="controls"/>
-        <label for="button-4"></label>
-        <input type="radio" id="button-5" name="controls"/>
-        <label for="button-5"></label>
-        <label for="button-1" class="arrows" id="arrow-1">></label>
-        <label for="button-2" class="arrows" id="arrow-2">></label>
-        <label for="button-3" class="arrows" id="arrow-3">></label>
-        <label for="button-4" class="arrows" id="arrow-4">></label>
-        <label for="button-5" class="arrows" id="arrow-5">></label>
-        <div id="slideshow-inner">
-            <ul>
-                <li id="slide1">
-                    <img src="http://img.thesun.co.uk/aidemitlum/archive/01440/Suzuki-motorbike_1440345a.jpg" />
-                    <div class="description">
-                            <h2>Flower power</h2>
-                            <p>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut</p>
-                    </div>
-                </li>
-                <li id="slide2">
-                    <img src="http://scottsutton.net/wp-content/uploads/mr-bean-motorbike.jpg" />
-                    <div class="description">
-                            <h2>Golden sunset</h2>
-                            <p>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut</p>
-                    </div>
-                </li>
-                <li id="slide3">
-                    <img src="http://images.motofan.fr/C/9/7/8/husqvarna-wr-125-enduro_bf_664102.jpg" />
-                    <div class="description">
-                            <h2>Flower power again</h2>
-                            <p>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut</p>
-                    </div>
-                </li>
-                <li id="slide4">
-                    <img src="http://m0.cdnfan.com/C/9/6/4/bmw-s-1000-rr-nueva-con-1000-km_bf_9118077.jpg" />
-                    <div class="description">
-                            <h2>Stormy coast</h2>
-                            <p>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut</p>
-                    </div>
-                </li>
-                <li id="slide5">
-                    <img src="http://images.motofan.it/C/2/3/4/ducati-multistrada-620_bf_914668.jpg" />
-                    <div class="description">
-                            <h2>Splash!</h2>
-                            <p>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut</p>
-                    </div>
-                </li>
-            </ul>
-        </div>
-    </div>
+    <div class="first"></div>
+    <div class="second"></div>
 </div>
 <div class="sidebar">
     <ul>
@@ -2515,7 +2520,7 @@
     </ul>
 </div>
 <footer>
-    &#x000A9;&nbsp;2015 &#x000B7; Клуб английского языка «Continent»
+    &#x000A9; 2015 - Клуб английского языка «Continent»
     <span style="display: inline-block; padding: 10px">
     <a class="buttonlng"  href="?lang=en">en</a>
     <a class="buttonlng"  href="?lang=de">de</a>

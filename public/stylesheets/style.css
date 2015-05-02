@@ -136,11 +136,10 @@ label:hover{
 }
 .slideshow-inner>ul {
     list-style: none;
-    height: 100%;
-    width: 500%;
+    height: 100%;/*
+    width: 500%;*/
     overflow: hidden;
     position: relative;
-    left: -100%;
     -webkit-margin-before: 0em;
     -webkit-margin-after: 0em;
     -webkit-margin-start: 0px;
@@ -183,17 +182,17 @@ label:hover{
     transition: background-color .2s;
 }
 .slideshow-wrap .buttons:hover { opacity: 1;}
-.slideshow-wrap .buttons:active { bottom: -27px;}
+.slideshow-wrap .buttons:active { bottom: -27px;}/*
 .slideshow-wrap .buttons[data-button='1'] { margin-left: -36px;}
 .slideshow-wrap .buttons[data-button='2'] { margin-left: -18px;}
 .slideshow-wrap .buttons[data-button='4'] { margin-left: 18px;}
-.slideshow-wrap .buttons[data-button='5'] { margin-left: 36px;}
-.slideshow-wrap .buttons[data-active='1'] { background-color: #2260b8; opacity: 1;}
+.slideshow-wrap .buttons[data-button='5'] { margin-left: 36px;}*/
+.slideshow-wrap .buttons[data-active='1'] { background-color: #2260b8; opacity: 1;}/*
 .slideshow-wrap .buttons[data-button='1'][data-active='1']~.slideshow-inner>ul { left: 0;}
 .slideshow-wrap .buttons[data-button='2'][data-active='1']~.slideshow-inner>ul { left: -100%;}
 .slideshow-wrap .buttons[data-button='3'][data-active='1']~.slideshow-inner>ul { left: -200%;}
 .slideshow-wrap .buttons[data-button='4'][data-active='1']~.slideshow-inner>ul { left: -300%;}
-.slideshow-wrap .buttons[data-button='5'][data-active='1']~.slideshow-inner>ul { left: -400%;}
+.slideshow-wrap .buttons[data-button='5'][data-active='1']~.slideshow-inner>ul { left: -400%;}*/
 .arrows {
     font-size: 25px;
     color: #528cdf;
@@ -215,8 +214,8 @@ label:hover{
 .arrows:active { margin-top: -23px;}
 .arrows[data-arrow='right']{right: -25px;}
 .arrows[data-arrow='left']{left: -25px;}
-.slideshow-wrap .buttons[data-button='1'][data-active='1']~.arrows[data-arrow='left']{display: none;}
-.slideshow-wrap .buttons[data-button='5'][data-active='1']~.arrows[data-arrow='right']{display: none;}
+.slideshow-wrap .buttons[data-button='1'][data-active='1']~.arrows[data-arrow='left']{display: none;}/*
+.slideshow-wrap .buttons[data-button='5'][data-active='1']~.arrows[data-arrow='right']{display: none;}*/
 
 .slideshow-inner>ul>li:hover .description{ opacity: 0.7 ;}
 .description {

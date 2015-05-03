@@ -6,17 +6,33 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var validator = require('express-validator');
 var i18n = require("i18n-2");
+var mongo = require('mongodb');
+var monk = require('monk');
+var db = monk('localhost:27017/test');
 
 var routes = require('./routes/index');
 var submit = require('./routes/submit');
 var mvc = require('./routes/mvc');
+var images = require('./routes/images');
 
 var app = express();
+var collection = db.get("usercollection");
+collection.count({}, function(e, count){
+    if(count === 0) {
+        var images = require("./images.json");
+        collection.insert(images);
+    }
+
+});
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
-
+// Make our db accessible to our router
+app.use(function(req,res,next){
+    req.db = db;
+    next();
+});
 // uncomment after placing your favicon in /public
 app.use(favicon(__dirname + '/public/favicon.ico'));
 app.use(logger('dev'));
@@ -52,6 +68,7 @@ app.use(validator({customValidators:
 app.use('/', routes);
 app.use('/submit', submit);
 app.use('/mvc', mvc);
+app.use('/images.ajax', images);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

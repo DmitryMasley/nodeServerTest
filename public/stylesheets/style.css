@@ -24,7 +24,7 @@ body {
 }
 header {
     display: block;
-    position:fixed;
+    position:static;
     top: 0;
     height: 150px;
     width: 100%;
@@ -35,7 +35,7 @@ header {
 }
 footer {
     display: block;
-    position:fixed;
+    position:static;
     bottom: 0;
     width: 100%;
     min-width: 480px;
@@ -43,22 +43,24 @@ footer {
     background-color: #eee;
     height: 65px;
     z-index: 99998;
-}
-.main {
-    display: block;
-    text-align: center;
-    margin: 161px 0 66px 193px ;
-}
+    }
 .sidebar {
     display: block;
-    position: fixed;
+    position: absolute;
     top: 151px;
     width: 192px;
-    bottom: 66px;
+    height: 119%;
     text-align: left;
     background-color: #ddd;
     border-right: 1px solid #222;
     z-index: 99999;
+}
+.main {
+    position: static;
+    margin-left: 192px;
+    display: block;
+    text-align: center;
+    width: auto;
 }
 .sidebar ul{
     width: 192px;/* Ширина меню */
@@ -121,12 +123,10 @@ label:hover{
     display: block;
     text-align: center;
     border: 1px rgba(255,255,240,1) solid;
-    height: 450px;
-    width: 800px;
     -webkit-box-shadow: 0px 0px 5px rgba(0,0,0,.8);
     -moz-box-shadow: 0px 0px 5px rgba(0,0,0,.8);
     box-shadow: 0px 0px 5px rgba(0,0,0,.8);
-    margin: 20px auto 100px auto;
+    margin: 20px auto 50px auto;
     position: relative;
 }
 .slideshow-inner {
@@ -151,14 +151,13 @@ label:hover{
     transition: left .8s cubic-bezier(0.77, 0, 0.175, 1);
 }
 .slideshow-inner>ul>li {
-    width: 800px;
-    height: 450px;
     float: left;
     position: relative;
 }
 .slideshow-inner>ul>li>img {
     margin: auto;
     height: 100%;
+    width: 100%;
 }
 .slideshow-wrap .buttons{
     position: absolute;
@@ -185,7 +184,7 @@ label:hover{
 .slideshow-wrap .buttons:active { bottom: -27px;}
 .slideshow-wrap .buttons[data-active='1'] { background-color: #2260b8; opacity: 1;}
 .arrows {
-    font-size: 25px;
+    font-size: 36px;
     color: #528cdf;
     position: absolute;
     top: 50%;
@@ -209,7 +208,7 @@ label:hover{
 .description {
     position: absolute;
     width: 100%;
-    font-size: 20px;
+    font-size: 12px;
     top: 0;
     z-index: 1000;
     background-color: #528cdf;

@@ -7,22 +7,24 @@
     <script type="text/javascript">
         window.onload = function() {
 
-            var SlideShow =function(img,delay,type,el){
+            var SlideShow =function(img,delay,size,el){
                 this.img = img || [{src:"http://7themes.su/_ph/40/806761392.jpg", description:"The Hobbit"},{src:"http://7themes.su/_ph/40/109111701.jpg", description:"Мстители: Эра Альтрона"},{src:"http://7themes.su/_ph/38/351815896.jpg", description:"Инь и ян"},{src:"http://7themes.su/_ph/23/855840339.jpg", description:"Lamborghini aventador"},{src:"http://7themes.su/_ph/38/686375918.jpg", description:"Отражение в очках"}];
                 if (delay <= 10000 && delay >= 1000) {
                     this.delay = delay;
                 } else {
                     this.delay = 4000;
                 }/*Delay may be >=1sec and <=10sec. Otherwise used default delay.*/
-                if (type="rtl") this.type=type;
-                    else if (type="ltr") this.type=type;
-                    else if (type="bidi") this.type=type;
-                    else if (type="rand") this.type=type;
-                    else this.type="bidi";
-                if (el instanceof  Element) {
-                    this.el=el;
+                if ((size)&& size.width <= 1920 && size.width >= 100 && size.height <= 1920 && size.height >= 100) {
+                    this.width = size.width;
+                    this.height = size.height;
                 } else {
-                    this.el=document.body;
+                    this.width = "800";
+                    this.height = "450";
+                }
+                if (el instanceof  Element) {
+                    this.el = el;
+                } else {
+                    this.el = document.body;
                 }
                 this.render();
                 this.slides = this.wrap.querySelectorAll('.slideshow-inner img, .slideshow-inner div');
@@ -43,10 +45,10 @@
                 for(var i = 0, len=this.img.length; i < len; i++) {
                     this.wrap.innerHTML +=('<span class="buttons" data-button="'+(i+1)+'" data-active="'+0+'" style="margin-left:'+(-18*len/2+18*i)+'px;"></span> \n');
                     if (this.img[i].description) {
-                        this.inner.ul.innerHTML +=('<li name="slide'+(i+1)+'"> \n <img src="'+this.img[i].src+'" /> \n<div class="description"> \n<h2>'+this.img[i].description+'</h2></div></li>');
+                        this.inner.ul.innerHTML +=('<li name="slide'+(i+1)+'" style="width:'+this.width+'px; height:'+this.height+'px;"> \n <img src="'+this.img[i].src+'" /> \n<div class="description"> \n<h2>'+this.img[i].description+'</h2></div></li>');
                     }
                     else{
-                        this.inner.ul.innerHTML +=('<li name="slide'+(i+1)+'"> \n <img src="'+this.img[i].src+'" /> \n');
+                        this.inner.ul.innerHTML +=('<li name="slide'+(i+1)+'" style="width:'+this.width+'px; height:'+this.height+'px;"> \n <img src="'+this.img[i].src+'" /> \n');
                     }
                 }
                 this.wrap.innerHTML +=('<span class="arrows" data-arrow="left"><</span> \n');
@@ -57,6 +59,8 @@
                 this.inner.appendChild(this.inner.ul);
                 this.wrap.appendChild(this.inner);
                 this.el.appendChild(this.wrap);
+                this.wrap.style.width=""+this.width+"px";
+                this.wrap.style.height=""+this.height+"px";
                 this.inner.ul.style.width=''+100*this.img.length+'%';
                 this.inner.ul.style.left="0%";
             }/*Slideshow Render Function*/
@@ -153,8 +157,10 @@
                 }
             }/*Slideshow Pause on hover EventListener Function*/
 
-            var qwe = new SlideShow([{src:"http://7themes.su/_ph/40/806761392.jpg", description:"The Hobbit"},{src:"http://7themes.su/_ph/40/109111701.jpg", description:"Мстители: Эра Альтрона"},{src:"http://7themes.su/_ph/38/351815896.jpg", description:"Инь и ян"},{src:"http://7themes.su/_ph/23/855840339.jpg", description:"Lamborghini aventador"},{src:"http://7themes.su/_ph/38/686375918.jpg", description:"Отражение в очках"},{src:"http://7themes.su/_ph/40/806761392.jpg", description:"The Hobbit"},{src:"http://7themes.su/_ph/40/109111701.jpg", description:"Мстители: Эра Альтрона"},{src:"http://7themes.su/_ph/38/351815896.jpg", description:"Инь и ян"},{src:"http://7themes.su/_ph/23/855840339.jpg", description:"Lamborghini aventador"},{src:"http://7themes.su/_ph/38/686375918.jpg", description:"Отражение в очках"},{src:"http://7themes.su/_ph/40/806761392.jpg", description:"The Hobbit"}],5222);
-            var qwe = new SlideShow([{src:"http://7themes.su/_ph/38/351815896.jpg", description:"Инь и ян"},{src:"http://7themes.su/_ph/23/855840339.jpg", description:"Lamborghini aventador"},{src:"http://7themes.su/_ph/38/686375918.jpg", description:"Отражение в очках"},{src:"http://7themes.su/_ph/40/806761392.jpg", description:"The Hobbit"},{src:"http://7themes.su/_ph/40/109111701.jpg", description:"Мстители: Эра Альтрона"}],2666);
+
+            var qwe = new SlideShow([{src:"http://7themes.su/_ph/40/806761392.jpg", description:"The Hobbit"},{src:"http://7themes.su/_ph/40/109111701.jpg", description:"Мстители: Эра Альтрона"},{src:"http://7themes.su/_ph/38/351815896.jpg", description:"Инь и ян"},{src:"http://7themes.su/_ph/23/855840339.jpg", description:"Lamborghini aventador"},{src:"http://7themes.su/_ph/38/686375918.jpg", description:"Отражение в очках"},{src:"http://7themes.su/_ph/40/806761392.jpg", description:"The Hobbit"}],5222,{width:300,height:150},document.querySelector('.main'));
+            var qwe = new SlideShow([{src:"http://7themes.su/_ph/40/806761392.jpg", description:"The Hobbit"},{src:"http://7themes.su/_ph/40/109111701.jpg", description:"Мстители: Эра Альтрона"},{src:"http://7themes.su/_ph/38/351815896.jpg", description:"Инь и ян"},{src:"http://7themes.su/_ph/23/855840339.jpg", description:"Lamborghini aventador"},{src:"http://7themes.su/_ph/38/686375918.jpg", description:"Отражение в очках"},{src:"http://7themes.su/_ph/40/806761392.jpg", description:"The Hobbit"},{src:"http://7themes.su/_ph/40/109111701.jpg", description:"Мстители: Эра Альтрона"},{src:"http://7themes.su/_ph/38/351815896.jpg", description:"Инь и ян"},{src:"http://7themes.su/_ph/23/855840339.jpg", description:"Lamborghini aventador"},{src:"http://7themes.su/_ph/38/686375918.jpg", description:"Отражение в очках"}],3622,{width:1600,height:900},document.querySelector('.second'));
+            var qwe = new SlideShow([{src:"http://7themes.su/_ph/38/351815896.jpg", description:"Инь и ян"},{src:"http://7themes.su/_ph/23/855840339.jpg", description:"Lamborghini aventador"},{src:"http://7themes.su/_ph/38/686375918.jpg", description:"Отражение в очках"},{src:"http://7themes.su/_ph/40/806761392.jpg", description:"The Hobbit"},{src:"http://7themes.su/_ph/40/109111701.jpg", description:"Мстители: Эра Альтрона"}],2222,{width:130,height:100},document.querySelector('.sidebar'));
 
                /*Изменение цвета div по нажатию кнопки*/
           /*  var createStuff = function(el){
@@ -222,10 +228,6 @@
     <a class="logo" href="http://localhost:3000/"><img src="/images/continent.png"></a>
     <a class="name" href="http://localhost:3000/">Клуб английского языка "Continent"</a>+38 (096) 320-48-96
 </header>
-<div class="main">
-    <div class="first"></div>
-    <div class="second"></div>
-</div>
 <div class="sidebar">
     <ul>
         <li><a href="/about/">О нас</a>
@@ -2557,6 +2559,10 @@
             </ul>
         </li>
     </ul>
+</div>
+<div class="main">
+    <div class="first"></div>
+    <div class="second"></div>
 </div>
 <footer>
     &#x000A9; 2015 - Клуб английского языка «Continent»

@@ -1,5 +1,8 @@
-body {
-    background-color: #fff;
+html,body {
+    position: relative;
+    background-color: rgb(207,211,230);
+    width: 100%;
+    height: 100%;
     font-size: 16px;
     font-family: cursive;
     font-weight: 700;
@@ -12,6 +15,7 @@ body {
     -ms-user-select:none;
     user-select:none;
     margin: 0;
+    padding: 0;
 }
 .green {color: #008000;}
 .red {color: #ff0000;}
@@ -22,46 +26,38 @@ body {
     text-decoration: none;
     font-size: 30px;
 }
-header {
-    display: block;
-    position:static;
-    top: 0;
-    height: 150px;
-    width: 100%;
-    min-width: 480px;
-    background-color: #eee;
-    border-bottom: 1px solid #222;
-    z-index: 99997;
+.container{
+    height: 100%;
+    background-color: rgb(207,211,230);
+    margin: 0;
+    padding: 0;
 }
-footer {
-    display: block;
-    position:static;
-    bottom: 0;
-    width: 100%;
-    min-width: 480px;
-    border-top: 1px solid #222;
-    background-color: #eee;
-    height: 65px;
-    z-index: 99998;
-    }
+.header {
+    background-color: rgb(207,211,230);
+    text-align: center;
+    height: 150px;
+    min-width: 470px;
+}
+.footer {
+    clear: both;
+    height: 64px;
+    background-color: rgb(207,211,230);
+}
 .sidebar {
-    display: block;
-    position: absolute;
-    top: 151px;
+    position: relative;
     width: 192px;
-    height: 119%;
+    float:left;
     text-align: left;
-    background-color: #ddd;
-    border-right: 1px solid #222;
-    z-index: 99999;
+    padding: 0;
+    margin: 0;
 }
 .main {
-    position: static;
+    position: relative;
+    min-height: 450px;
     margin-left: 192px;
-    display: block;
-    text-align: center;
-    width: auto;
-}
+    padding: 0;
+    background-color: white;
+    }
 .sidebar ul{
     width: 192px;/* Ширина меню */
     list-style-type: none;/* Для списка убираем маркеры */
@@ -69,6 +65,7 @@ footer {
     padding: 0;
     font-size: 20px;
     line-height: 24px;
+    z-index: 1000;
 }
 .sidebar  li ul {
     position: absolute; /* Подменю позиционируются абсолютно */
@@ -122,24 +119,24 @@ label:hover{
 .slideshow-wrap {
     display: block;
     text-align: center;
-    border: 1px rgba(255,255,240,1) solid;
     -webkit-box-shadow: 0px 0px 5px rgba(0,0,0,.8);
     -moz-box-shadow: 0px 0px 5px rgba(0,0,0,.8);
     box-shadow: 0px 0px 5px rgba(0,0,0,.8);
-    margin: 20px auto 50px auto;
     position: relative;
+    margin: 0 auto 0 auto;
 }
 .slideshow-inner {
-    background-color: rgb(0,0,0);
-    overflow: hidden;
     position: relative;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
 }
 .slideshow-inner>ul {
+    z-index: 0;
+    position: relative;
     list-style: none;
     height: 100%;
     left: -100%;
-    overflow: hidden;
-    position: relative;
     -webkit-margin-before: 0em;
     -webkit-margin-after: 0em;
     -webkit-margin-start: 0px;
@@ -151,19 +148,26 @@ label:hover{
     transition: left .8s cubic-bezier(0.77, 0, 0.175, 1);
 }
 .slideshow-inner>ul>li {
-    float: left;
     position: relative;
+    float: left;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    z-index: 0;
 }
 .slideshow-inner>ul>li>img {
-    margin: auto;
+    position: relative;
     height: 100%;
     width: 100%;
+    margin: 0;
+    padding: 0;
+    z-index: 0;
 }
 .slideshow-wrap .buttons{
     position: absolute;
     left: 50%;
-    bottom: -25px;
-    z-index: 100;
+    bottom: 7px;
+    z-index: 3;
     width: 12px;
     height: 12px;
     background-color: #528cdf;
@@ -181,7 +185,7 @@ label:hover{
     transition: background-color .2s;
 }
 .slideshow-wrap .buttons:hover { opacity: 1;}
-.slideshow-wrap .buttons:active { bottom: -27px;}
+.slideshow-wrap .buttons:active { bottom: 5px;}
 .slideshow-wrap .buttons[data-active='1'] { background-color: #2260b8; opacity: 1;}
 .arrows {
     font-size: 36px;
@@ -192,7 +196,7 @@ label:hover{
     display: block;
     opacity: 0.7;
     cursor: pointer;
-    z-index: 1000;
+    z-index: 2;
     background-color: transparent;
     -webkit-transition: opacity .2s;
     -moz-transition: opacity .2s;
@@ -202,15 +206,15 @@ label:hover{
 }
 .arrows:hover {color: #2260b8; opacity: 1;}
 .arrows:active { margin-top: -23px;}
-.arrows[data-arrow='right']{right: -25px;}
-.arrows[data-arrow='left']{left: -25px;}
+.arrows[data-arrow='right']{right: 5px;}
+.arrows[data-arrow='left']{left: 5px;}
 .slideshow-inner>ul>li:hover .description{ opacity: 0.7 ;}
 .description {
     position: absolute;
     width: 100%;
     font-size: 12px;
     top: 0;
-    z-index: 1000;
+    z-index: 1;
     background-color: #528cdf;
     opacity: 0;
     -webkit-transition: opacity .2s;

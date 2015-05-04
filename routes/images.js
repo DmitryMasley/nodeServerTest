@@ -13,4 +13,14 @@ router.get('/', function(req, res, next) {
        })
     });
 });
+/* GET home page. */
+router.post('/', function(req, res, next) {
+    var collection = req.db.get('usercollection');
+    collection.find({},{},function(e,images){
+        res.json({
+            code: "success",
+            data: images
+        })
+    });
+});
 module.exports = router;

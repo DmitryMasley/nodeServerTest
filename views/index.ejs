@@ -7,7 +7,7 @@
     <script type="text/javascript">
         window.onload = function() {
 
-            var SlideShow =function(img,delay,size,el){
+            function SlideShow (img,delay,size,el){
                 this.img = img || [{src:"http://7themes.su/_ph/40/806761392.jpg", description:"The Hobbit"},{src:"http://7themes.su/_ph/40/109111701.jpg", description:"Мстители: Эра Альтрона"},{src:"http://7themes.su/_ph/38/351815896.jpg", description:"Инь и ян"},{src:"http://7themes.su/_ph/23/855840339.jpg", description:"Lamborghini aventador"},{src:"http://7themes.su/_ph/38/686375918.jpg", description:"Отражение в очках"}];
                 if (delay <= 10000 && delay >= 1000) {
                     this.delay = delay;
@@ -157,10 +157,15 @@
                 }
             }/*Slideshow Pause on hover EventListener Function*/
 
+            function DetSlideShow(img,delay,size,el){
+                SlideShow.call(this,img,delay,size,el);
+            }
+            DetSlideShow.prototype = Object.create(SlideShow.prototype);
+            DetSlideShow.prototype.constructor = DetSlideShow;
 
-            var qwe = new SlideShow([{src:"http://7themes.su/_ph/40/806761392.jpg", description:"The Hobbit"},{src:"http://7themes.su/_ph/40/109111701.jpg", description:"Мстители: Эра Альтрона"},{src:"http://7themes.su/_ph/38/351815896.jpg", description:"Инь и ян"},{src:"http://7themes.su/_ph/23/855840339.jpg", description:"Lamborghini aventador"},{src:"http://7themes.su/_ph/38/686375918.jpg", description:"Отражение в очках"},{src:"http://7themes.su/_ph/40/806761392.jpg", description:"The Hobbit"}],5222,{width:300,height:150},document.querySelector('.main'));
-            var qwe = new SlideShow([{src:"http://7themes.su/_ph/40/806761392.jpg", description:"The Hobbit"},{src:"http://7themes.su/_ph/40/109111701.jpg", description:"Мстители: Эра Альтрона"},{src:"http://7themes.su/_ph/38/351815896.jpg", description:"Инь и ян"},{src:"http://7themes.su/_ph/23/855840339.jpg", description:"Lamborghini aventador"},{src:"http://7themes.su/_ph/38/686375918.jpg", description:"Отражение в очках"},{src:"http://7themes.su/_ph/40/806761392.jpg", description:"The Hobbit"},{src:"http://7themes.su/_ph/40/109111701.jpg", description:"Мстители: Эра Альтрона"},{src:"http://7themes.su/_ph/38/351815896.jpg", description:"Инь и ян"},{src:"http://7themes.su/_ph/23/855840339.jpg", description:"Lamborghini aventador"},{src:"http://7themes.su/_ph/38/686375918.jpg", description:"Отражение в очках"}],3622,{width:1600,height:900},document.querySelector('.second'));
-            var qwe = new SlideShow([{src:"http://7themes.su/_ph/38/351815896.jpg", description:"Инь и ян"},{src:"http://7themes.su/_ph/23/855840339.jpg", description:"Lamborghini aventador"},{src:"http://7themes.su/_ph/38/686375918.jpg", description:"Отражение в очках"},{src:"http://7themes.su/_ph/40/806761392.jpg", description:"The Hobbit"},{src:"http://7themes.su/_ph/40/109111701.jpg", description:"Мстители: Эра Альтрона"}],2222,{width:130,height:100},document.querySelector('.sidebar'));
+            var qwe = new DetSlideShow([{src:"http://7themes.su/_ph/40/806761392.jpg", description:"The Hobbit"},{src:"http://7themes.su/_ph/40/109111701.jpg", description:"Мстители: Эра Альтрона"},{src:"http://7themes.su/_ph/38/351815896.jpg", description:"Инь и ян"},{src:"http://7themes.su/_ph/23/855840339.jpg", description:"Lamborghini aventador"},{src:"http://7themes.su/_ph/38/686375918.jpg", description:"Отражение в очках"},{src:"http://7themes.su/_ph/40/806761392.jpg", description:"The Hobbit"}],5222,{width:300,height:150},document.querySelector('.main'));
+            var qwsde = new DetSlideShow([{src:"http://7themes.su/_ph/40/806761392.jpg", description:"The Hobbit"},{src:"http://7themes.su/_ph/40/109111701.jpg", description:"Мстители: Эра Альтрона"},{src:"http://7themes.su/_ph/38/351815896.jpg", description:"Инь и ян"},{src:"http://7themes.su/_ph/23/855840339.jpg", description:"Lamborghini aventador"},{src:"http://7themes.su/_ph/38/686375918.jpg", description:"Отражение в очках"},{src:"http://7themes.su/_ph/40/806761392.jpg", description:"The Hobbit"},{src:"http://7themes.su/_ph/40/109111701.jpg", description:"Мстители: Эра Альтрона"},{src:"http://7themes.su/_ph/38/351815896.jpg", description:"Инь и ян"},{src:"http://7themes.su/_ph/23/855840339.jpg", description:"Lamborghini aventador"},{src:"http://7themes.su/_ph/38/686375918.jpg", description:"Отражение в очках"}],3622,{width:1600,height:900},document.querySelector('.second'));
+            var qsdwe = new DetSlideShow([{src:"http://7themes.su/_ph/38/351815896.jpg", description:"Инь и ян"},{src:"http://7themes.su/_ph/23/855840339.jpg", description:"Lamborghini aventador"},{src:"http://7themes.su/_ph/38/686375918.jpg", description:"Отражение в очках"},{src:"http://7themes.su/_ph/40/806761392.jpg", description:"The Hobbit"},{src:"http://7themes.su/_ph/40/109111701.jpg", description:"Мстители: Эра Альтрона"}],2222,{width:130,height:100},document.querySelector('.sidebar'));
 
                /*Изменение цвета div по нажатию кнопки*/
           /*  var createStuff = function(el){
@@ -228,6 +233,10 @@
     <a class="logo" href="http://localhost:3000/"><img src="/images/continent.png"></a>
     <a class="name" href="http://localhost:3000/">Клуб английского языка "Continent"</a>+38 (096) 320-48-96
 </header>
+<div class="main">
+    <div class="first"></div>
+    <div class="second"></div>
+</div>
 <div class="sidebar">
     <ul>
         <li><a href="/about/">О нас</a>
@@ -2560,10 +2569,7 @@
         </li>
     </ul>
 </div>
-<div class="main">
-    <div class="first"></div>
-    <div class="second"></div>
-</div>
+
 <footer>
     &#x000A9; 2015 - Клуб английского языка «Continent»
     <span style="display: inline-block; padding: 10px">

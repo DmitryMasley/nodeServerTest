@@ -8,6 +8,15 @@
         window.onload = function() {
 
             function SlideShow (img,delay,el,size){
+                /* img=[{src:"...", description:"..."},...], delay=1000-10000(ms), el=document.querySelector('...'), size={width:"1%-100%", height:"100-1920"}*/
+                this.setArguments(img,delay,el,size);
+                this.render();
+                this.bindClick();
+                this.bindPause();
+                this.start();
+            }/*Slideshow Class Constructor Function*/
+
+            SlideShow.prototype.setArguments = function(img,delay,el,size) {
                 this.img = img || [{src:"http://7themes.su/_ph/40/806761392.jpg", description:"The Hobbit"},{src:"http://7themes.su/_ph/40/109111701.jpg", description:"Мстители: Эра Альтрона"},{src:"http://7themes.su/_ph/38/351815896.jpg", description:"Инь и ян"},{src:"http://7themes.su/_ph/23/855840339.jpg", description:"Lamborghini aventador"},{src:"http://7themes.su/_ph/38/686375918.jpg", description:"Отражение в очках"}];
                 if (delay <= 10000 && delay >= 1000) {
                     this.delay = delay;
@@ -19,41 +28,36 @@
                 } else {
                     this.el = document.body;
                 }
+                var minSize=100;    /*in px*/
+                var maxSize=1920;   /*in px*/
                 var height=window.getComputedStyle(this.el,null).getPropertyValue("height").slice(0,-2);
                 var width=window.getComputedStyle(this.el,null).getPropertyValue("width").slice(0,-2);
                 if ((size) && (size.width) && size.width.slice(-1)=="%" && size.width.slice(0,-1)<=100 && size.width.slice(0,-1)>0){
                     this.width = ""+width*size.width.slice(0,-1)/100+"px";
                 }
-                    else if ((size) && (size.width) && size.width <= 1920 && size.width >= 100 && size.width <= width) {
-                        this.width = ""+size.width+"px";
-                    }
-                        else if (((!size) || ((size) && (!size.width))) && width <= 1920 && width >= 100) {
-                            this.width = ""+width+"px";
-                        }
-                            else {
-                                this.width = "180px";
-                            }
-                if ((size) && (size.height) && size.height.slice(-1)=="%" && size.height.slice(0,-1)<=100 && size.height.slice(0,-1)>0) {
+                else if ((size) && (size.width) && size.width <= maxSize && size.width >= minSize && size.width <= width) {
+                    this.width = ""+size.width+"px";
+                }
+                else if (((!size) || ((size) && (!size.width))) && width <= maxSize && width >= minSize) {
+                    this.width = ""+width+"px";
+                }
+                else {
+                    this.width = "180px";
+                }
+                if ((size) && (size.height) && size.height.slice(-1)=="%" && size.height.slice(0,-1)<=minSize && size.height.slice(0,-1)>0) {
                     this.height = "" + height * size.height.slice(0, -1) / 100 + "px";
                 }
-                    else if ((size) && (size.height) && size.height <= 1920 && size.height >= 100 && size.height <= height) {
-                        this.height = ""+size.height+"px";
-                    }
-                        else if (((!size) || ((size) && (!size.height))) && height <= 1920 && height >= 100) {
-                            this.height = ""+height+"px";
-                        }
-                            else {
-                                this.height = "110px";
-                            }
-                this.render();
-                this.slides = this.wrap.querySelectorAll('.slideshow-inner img, .slideshow-inner div');
-                this.btn = this.wrap.querySelectorAll('.buttons');
+                else if ((size) && (size.height) && size.height <= maxSize && size.height >= minSize && size.height <= height) {
+                    this.height = ""+size.height+"px";
+                }
+                else if (((!size) || ((size) && (!size.height))) && height <= maxSize && height >= minSize) {
+                    this.height = ""+height+"px";
+                }
+                else {
+                    this.height = "110px";
+                }
                 this.direction = 1;
-                this.btn[0].dataset.active="1";
-                this.bindClick();
-                this.bindPause();
-                this.start();
-            }/*Slideshow Class Constructor Function*/
+            }/*Function of arguments initializing*/
 
             SlideShow.prototype.render = function() {
                 this.wrap = document.createElement("div");
@@ -83,6 +87,9 @@
                 this.inner.ul.style.width=''+100*this.img.length+'%';
                 this.inner.ul.style.height=this.height;
                 this.inner.ul.style.left="0%";
+                this.slides = this.wrap.querySelectorAll('.slideshow-inner img, .slideshow-inner div');
+                this.btn = this.wrap.querySelectorAll('.buttons');
+                this.btn[0].dataset.active="1";
             }/*Slideshow Render Function*/
 
             SlideShow.prototype.animate = function() {

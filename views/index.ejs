@@ -8,15 +8,46 @@
         window.onload = function() {
 
             function SlideShow (img,delay,el,size){
-                /* img=[{src:"...", description:"..."},...], delay=1000-10000(ms), el=document.querySelector('...'), size={width:"1%-100%", height:"100-1920"}*/
-                this.setArguments(img,delay,el,size);
-                this.render();
-                this.bindClick();
-                this.bindPause();
-                this.start();
+                if (arguments.length>0) this.render(img,delay,el,size);
             }/*Slideshow Class Constructor Function*/
+            SlideShow.prototype.render = function(img,delay,el,size) {
+                this.init(img,delay,el,size);
+                this.wrap = document.createElement("div");
+                this.wrap.className = "slideshow-wrap";
+                this.inner = document.createElement("div");
+                this.inner.className = "slideshow-inner";
+                this.inner.ul = document.createElement("ul");
+                for(var i = 0, len=this.img.length; i < len; i++) {
+                    this.wrap.innerHTML +=('<span class="buttons" data-button="'+(i+1)+'" data-active="'+0+'" style="margin-left:'+(-18*len/2+18*i)+'px;"></span> \n');
+                    if (this.img[i].description) {
+                        this.inner.ul.innerHTML +=('<li name="slide'+(i+1)+'" style="width:'+100/this.img.length+'%; "> \n <img src="'+this.img[i].src+'" /> \n<div class="description"> \n<h2>'+this.img[i].description+'</h2></div></li>');
+                    }
+                    else{
+                        this.inner.ul.innerHTML +=('<li name="slide'+(i+1)+'" style="width:'+100/this.img.length+'%; "> \n <img src="'+this.img[i].src+'" /> \n');
+                    }
+                }
+                this.wrap.innerHTML +=('<span class="arrows" data-arrow="left"><</span> \n');
+                this.wrap.innerHTML +=('<span class="arrows" data-arrow="right">></span> \n');
+                this.inner.appendChild(this.inner.ul);
+                this.wrap.appendChild(this.inner);
+                this.el.appendChild(this.wrap);
+                this.wrap.style.width=this.width;
+                this.wrap.style.height=this.height;
+                this.inner.ul.style.width=''+100*this.img.length+'%';
+                this.inner.ul.style.height=this.height;
+                this.inner.ul.style.left="0%";
+                this.slides = this.wrap.querySelectorAll('.slideshow-inner img, .slideshow-inner div');
+                this.btn = this.wrap.querySelectorAll('.buttons');
+                this.arrowLeft=this.wrap.querySelector('.arrows[data-arrow="left"]');
+                this.arrowRight=this.wrap.querySelector('.arrows[data-arrow="right"]');
+                this.arrowLeft.style.display="none";
+                this.btn[0].dataset.active="1";
+                this.direction = 1;
+                this.bindClick();
 
-            SlideShow.prototype.setArguments = function(img,delay,el,size) {
+            }/*Slideshow Render Function*/
+            SlideShow.prototype.init = function(img,delay,el,size) {
+                /* img=[{src:"...", description:"..."},...], delay=1000-10000(ms), el=document.querySelector('...'), size={width:"1%-100%", height:"100-1920"}*/
                 this.img = img || [{src:"http://7themes.su/_ph/40/806761392.jpg", description:"The Hobbit"},{src:"http://7themes.su/_ph/40/109111701.jpg", description:"Мстители: Эра Альтрона"},{src:"http://7themes.su/_ph/38/351815896.jpg", description:"Инь и ян"},{src:"http://7themes.su/_ph/23/855840339.jpg", description:"Lamborghini aventador"},{src:"http://7themes.su/_ph/38/686375918.jpg", description:"Отражение в очках"}];
                 if (delay <= 10000 && delay >= 1000) {
                     this.delay = delay;
@@ -56,66 +87,8 @@
                 else {
                     this.height = "110px";
                 }
-                this.direction = 1;
-            }/*Function of arguments initializing*/
 
-            SlideShow.prototype.render = function() {
-                this.wrap = document.createElement("div");
-                this.wrap.className = "slideshow-wrap";
-                this.inner = document.createElement("div");
-                this.inner.className = "slideshow-inner";
-                this.inner.ul = document.createElement("ul");
-                for(var i = 0, len=this.img.length; i < len; i++) {
-                    this.wrap.innerHTML +=('<span class="buttons" data-button="'+(i+1)+'" data-active="'+0+'" style="margin-left:'+(-18*len/2+18*i)+'px;"></span> \n');
-                    if (this.img[i].description) {
-                        this.inner.ul.innerHTML +=('<li name="slide'+(i+1)+'" style="width:'+100/this.img.length+'%; "> \n <img src="'+this.img[i].src+'" /> \n<div class="description"> \n<h2>'+this.img[i].description+'</h2></div></li>');
-                    }
-                    else{
-                        this.inner.ul.innerHTML +=('<li name="slide'+(i+1)+'" style="width:'+100/this.img.length+'%; "> \n <img src="'+this.img[i].src+'" /> \n');
-                    }
-                }
-                this.wrap.innerHTML +=('<span class="arrows" data-arrow="left"><</span> \n');
-                this.wrap.innerHTML +=('<span class="arrows" data-arrow="right">></span> \n');
-                this.arrowLeft=this.wrap.querySelector('.arrows[data-arrow="left"]');
-                this.arrowLeft.style.display="none";
-                this.arrowRight=this.wrap.querySelector('.arrows[data-arrow="right"]');
-                this.inner.appendChild(this.inner.ul);
-                this.wrap.appendChild(this.inner);
-                this.el.appendChild(this.wrap);
-                this.wrap.style.width=this.width;
-                this.wrap.style.height=this.height;
-                this.inner.ul.style.width=''+100*this.img.length+'%';
-                this.inner.ul.style.height=this.height;
-                this.inner.ul.style.left="0%";
-                this.slides = this.wrap.querySelectorAll('.slideshow-inner img, .slideshow-inner div');
-                this.btn = this.wrap.querySelectorAll('.buttons');
-                this.btn[0].dataset.active="1";
-            }/*Slideshow Render Function*/
-
-            SlideShow.prototype.animate = function() {
-                if (this.img.length<=1) return;
-                var i = this.wrap.querySelector('.buttons[data-active="1"]').dataset.button-1;
-                if (i+this.direction<0) this.direction=1;
-                if (i+this.direction>this.img.length-1) this.direction=-1;
-                this.arrowLeft.style.display="block";
-                this.arrowRight.style.display="block";
-                if (i+this.direction===0) this.arrowLeft.style.display="none";
-                if (i+this.direction===this.img.length-1) this.arrowRight.style.display="none";
-                this.btn[i].dataset.active="0";
-                this.btn[i+this.direction].dataset.active="1";
-                this.inner.ul.style.left="-"+100*(i+this.direction)+"%";
-
-            }/*Slideshow one-step animation Function*/
-
-            SlideShow.prototype.start =  function() {
-                var self=this;
-                this.interval=setInterval(function() { self.animate.call(self) }, self.delay);
-            }/*Slideshow start continual animation Function*/
-
-            SlideShow.prototype.stop = function() {
-                clearInterval(this.interval);
-            }/*Slideshow stop continual animation Function*/
-
+            }/*initializing*/
             SlideShow.prototype.bindClick = function(){
                 var self=this;
                 (function() {
@@ -144,6 +117,18 @@
                     for(var i = 0, len = self.btn.length; i < len; i++) {
                         (function () {
                             var j = i;
+                            var mutationObserver = new MutationObserver(mutationObjectCallback);
+                            function mutationObjectCallback(mutationRecordsList) {
+                                console.log("mutationObjectCallback invoked.");
+                                mutationRecordsList.forEach(function(mutationRecord) {
+                                    console.log("Type of mutation: " + mutationRecord.type);
+                                    if ("attributes" === mutationRecord.type) {
+                                        console.log("Old attribute value: " + mutationRecord.oldValue);
+                                    }
+                                });
+                            }
+                            mutationObserver.observe(self.btn[j], {attributes: true,  attributeFilter: ["data-active"], attributeOldValue: true,  childList: false});
+
                             self.btn[j].addEventListener("click", function () {
                                 self.stop();
                                 self.btn[self.wrap.querySelector('.buttons[data-active="1"]').dataset.button-1].dataset.active="0";
@@ -170,6 +155,24 @@
                 })();
             }/*Slideshow click EventListener Function*/
 
+            SlideShow.prototype.start =  function() {
+                var self=this;
+                this.interval=setInterval(function() { self.animate.call(self) }, self.delay);
+            }/*Slideshow start continual animation Function*/
+            SlideShow.prototype.animate = function() {
+                if (this.img.length<=1) return;
+                var i = this.wrap.querySelector('.buttons[data-active="1"]').dataset.button-1;
+                if (i+this.direction<0) this.direction=1;
+                if (i+this.direction>this.img.length-1) this.direction=-1;
+                this.arrowLeft.style.display="block";
+                this.arrowRight.style.display="block";
+                if (i+this.direction===0) this.arrowLeft.style.display="none";
+                if (i+this.direction===this.img.length-1) this.arrowRight.style.display="none";
+                this.btn[i].dataset.active="0";
+                this.btn[i+this.direction].dataset.active="1";
+                this.inner.ul.style.left="-"+100*(i+this.direction)+"%";
+
+            }/*Slideshow one-step animation Function*/
             SlideShow.prototype.bindPause = function() {
                 var self=this;
                 for(var i = 0, len = self.slides.length; i < len; i++) {
@@ -183,18 +186,29 @@
                     })();
                 }
             }/*Slideshow Pause on hover EventListener Function*/
+            SlideShow.prototype.stop = function() {
+                clearInterval(this.interval);
+            }/*Slideshow stop continual animation Function*/
 
-            function DetSlideShow(img,delay,el,size){
-                SlideShow.call(this,img,delay,el,size);
-            }
-            DetSlideShow.prototype = Object.create(SlideShow.prototype);
+                /*DetSlideShow.prototype = new SlideShow();
             DetSlideShow.prototype.constructor = DetSlideShow;
+            DetSlideShow.superclass=SlideShow.prototype;
+            function DetSlideShow(img,detdesc,delay,el,size) {
+                if ( arguments.length > 0 )
+                    this.init(img,detdesc,delay,el,size);
+            }
+            DetSlideShow.prototype.init = function(img,detdesc,delay,el,size) {
+                DetSlideShow.superclass.init.call(this, img,delay,el,size);
+                this.detdesc = detdesc;
+            }*/
 
-            var qwe = new DetSlideShow([{src:"http://7themes.su/_ph/40/806761392.jpg", description:"The Hobbit"},{src:"http://7themes.su/_ph/40/109111701.jpg", description:"Мстители: Эра Альтрона"},{src:"http://7themes.su/_ph/38/351815896.jpg", description:"Инь и ян"},{src:"http://7themes.su/_ph/23/855840339.jpg", description:"Lamborghini aventador"},{src:"http://7themes.su/_ph/38/686375918.jpg", description:"Отражение в очках"},{src:"http://7themes.su/_ph/40/806761392.jpg", description:"The Hobbit"}],5222,document.querySelector('.main'));
-            var qwe = new DetSlideShow([{src:"http://7themes.su/_ph/40/806761392.jpg", description:"The Hobbit"},{src:"http://7themes.su/_ph/40/109111701.jpg", description:"Мстители: Эра Альтрона"},{src:"http://7themes.su/_ph/38/351815896.jpg", description:"Инь и ян"},{src:"http://7themes.su/_ph/23/855840339.jpg", description:"Lamborghini aventador"},{src:"http://7themes.su/_ph/38/686375918.jpg", description:"Отражение в очках"},{src:"http://7themes.su/_ph/40/806761392.jpg", description:"The Hobbit"},{src:"http://7themes.su/_ph/40/109111701.jpg", description:"Мстители: Эра Альтрона"},{src:"http://7themes.su/_ph/38/351815896.jpg", description:"Инь и ян"},{src:"http://7themes.su/_ph/23/855840339.jpg", description:"Lamborghini aventador"},{src:"http://7themes.su/_ph/38/686375918.jpg", description:"Отражение в очках"}],3622,document.querySelector('.footer'));
-            var qwe = new DetSlideShow([{src:"http://7themes.su/_ph/38/351815896.jpg", description:"Инь и ян"},{src:"http://7themes.su/_ph/23/855840339.jpg", description:"Lamborghini aventador"},{src:"http://7themes.su/_ph/38/686375918.jpg", description:"Отражение в очках"},{src:"http://7themes.su/_ph/40/806761392.jpg", description:"The Hobbit"},{src:"http://7themes.su/_ph/40/109111701.jpg", description:"Мстители: Эра Альтрона"}],2222,document.querySelector('.sidebar'));
-            var qwe = new DetSlideShow([{src:"http://7themes.su/_ph/38/351815896.jpg", description:"Инь и ян"},{src:"http://7themes.su/_ph/23/855840339.jpg", description:"Lamborghini aventador"},{src:"http://7themes.su/_ph/38/686375918.jpg", description:"Отражение в очках"},{src:"http://7themes.su/_ph/40/806761392.jpg", description:"The Hobbit"},{src:"http://7themes.su/_ph/40/109111701.jpg", description:"Мстители: Эра Альтрона"}],2222,document.querySelector('body'),{width:"50%", height:"600"});
-            var qwe = new DetSlideShow();
+
+
+             var qwe=new SlideShow();
+             qwe.render();
+             qwe.bindPause();
+             qwe.start();
+
 
                /*Изменение цвета div по нажатию кнопки*/
           /*  var createStuff = function(el){

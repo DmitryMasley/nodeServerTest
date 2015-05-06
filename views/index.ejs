@@ -8,11 +8,11 @@
         window.onload = function() {
 
             function SlideShow (img,delay,el,size){
-                if (arguments.length>0) this.render(img,delay,el,size);
+                if (arguments.length>0) this.render(img,delay,type,el,size);
             }/*Slideshow Class Constructor Function*/
 
-            SlideShow.prototype.render = function(img,delay,el,size) {
-                this.init(img,delay,el,size);
+            SlideShow.prototype.render = function(img,delay,type,el,size) {
+                this.init(img,delay,type,el,size);
                 this.wrap = document.createElement("div");
                 this.wrap.className = "slideshow-wrap";
                 this.inner = document.createElement("div");
@@ -37,17 +37,18 @@
                 this.inner.ul.style.width=''+100*this.img.length+'%';
                 this.inner.ul.style.height=this.height;
                 this.inner.ul.style.left="0%";
-                this.slides = this.wrap.querySelectorAll('.slideshow-inner img, .slideshow-inner div');
+                this.slides = this.wrap.querySelectorAll('.slideshow-inner img, .slideshow-inner div.description');
                 this.btn = this.wrap.querySelectorAll('.buttons');
                 this.arrowLeft=this.wrap.querySelector('.arrows[data-arrow="left"]');
                 this.arrowRight=this.wrap.querySelector('.arrows[data-arrow="right"]');
-                this.arrowLeft.style.display="none";
-                this.btn[0].dataset.status="1";
+                if (this.type=="bidi") this.arrowLeft.style.display="none";
+                this.btn[0].dataset.active="1";
                 this.inner.dataset.status=0;
                 this.bindEvents();
+                this.stop();
             }/*render*/
 
-            SlideShow.prototype.init = function(img,delay,el,size) {
+            SlideShow.prototype.init = function(img,delay,type,el,size) {
                 /* img=[{src:"...", description:"..."},...], delay=1000-10000(ms), el=document.querySelector('...'), size={width:"1%-100%", height:"100-1920"}*/
                 this.img = img || [{src:"http://7themes.su/_ph/40/806761392.jpg", description:"The Hobbit"},{src:"http://7themes.su/_ph/40/109111701.jpg", description:"Мстители: Эра Альтрона"},{src:"http://7themes.su/_ph/38/351815896.jpg", description:"Инь и ян"},{src:"http://7themes.su/_ph/23/855840339.jpg", description:"Lamborghini aventador"},{src:"http://7themes.su/_ph/38/686375918.jpg", description:"Отражение в очках"}];
                 if (delay <= 10000 && delay >= 1000) {
@@ -55,6 +56,11 @@
                 } else {
                     this.delay = 4000;
                 }/*Delay may be >=1sec and <=10sec. Otherwise used default delay.*/
+                if (type == "bidi") this.type=type;
+                    else if (type == "rtl") this.type=type;
+                    else if (type == "ltr") this.type=type;
+                    else if (type == "rdm") this.type=type;
+                        else this.type="bidi";
                 if (el instanceof  Element) {
                     this.el = el;
                 } else {
@@ -93,83 +99,88 @@
             SlideShow.prototype.bindEvents = function(){
                 var self=this;
                 (function() {
+                    for(var i = 0, len = self.slides.length; i < len; i++) {
+                        (function() {
+                                self.slides[i].addEventListener("mouseover", function () {clearInterval(self.interval)}, true);
+                                self.slides[i].addEventListener("mouseout", function () {
+                                    if (self.state=="started"){
+                                        self.interval=setInterval(function() { self.animate.call(self) }, self.delay);
+                                    }}, true);
+                            })();
+                    }
                     self.arrowLeft.addEventListener("click", function() {
-                        self.inner.dataset.status--;
+                        if (self.inner.dataset.status==0) self.inner.dataset.status=self.img.length-1;
+                        else self.inner.dataset.status--;
                     });
                     self.arrowRight.addEventListener("click", function() {
-                        self.inner.dataset.status++;
+                        if (self.inner.dataset.status==self.img.length-1) self.inner.dataset.status=0;
+                        else self.inner.dataset.status++;
                     });
                     for(var i = 0, len = self.btn.length; i < len; i++) {
                         (function () {
                             var j = i;
-                            /*var mutationObserver = new MutationObserver(mutationObjectCallback);
-                             function mutationObjectCallback(mutationRecordsList) {
-                             mutationRecordsList.forEach(function(mutationRecord) {
-                             if ("attributes" === mutationRecord.type && mutationRecord.oldValue==0 && self.btn[j].dataset.active==1) {
-                             console.log("image ="+j+" is in view");
-                             }
-                             });
-                             }
-                             mutationObserver.observe(self.btn[j], {attributes: true,  attributeFilter: ["data-active"], attributeOldValue: true,  childList: false});*/
                             self.btn[j].addEventListener("click", function () {
                                 self.inner.dataset.status=j;
                             });
                         })();
                     }
-                    var mutationObserver = new MutationObserver(mutationObjectCallback);
-                    function mutationObjectCallback(mutationRecordsList) {
-                        mutationRecordsList.forEach(function(mutationRecord) {
+                })();
+                var mutationObserver = new MutationObserver(mutationObjectCallback);
+                function mutationObjectCallback(mutationRecordsList) {
+                    mutationRecordsList.forEach(function(mutationRecord) {
                         if ("attributes" === mutationRecord.type) {
                             self.inner.ul.style.left="-"+100*self.inner.dataset.status+"%";
-                            console.log("image #"+self.inner.dataset.status+" is in the view");
                             for (var i = 0, len = self.btn.length; i < len; i++){
-                                self.btn[i].dataset.active="0";
+                               self.btn[i].dataset.active="0";
                             }
                             self.btn[self.inner.dataset.status].dataset.active="1";
-                            if (self.inner.dataset.status=0) {
+                            if (self.inner.dataset.status==0 && (self.type=="bidi" || self.type=="ltr")) {
                                 self.arrowLeft.style.display="none";
                                 self.arrowRight.style.display="block";
                             }
-                                else if (self.inner.dataset.status=self.btn.length-1) {
-                                    self.arrowRight.style.display="none";
-                                    self.arrowLeft.style.display="block";
-                                }
-                                    else {
-                                        self.arrowRight.style.display="block";
-                                        self.arrowLeft.style.display="block";
-                                    }
+                            else if (self.inner.dataset.status==self.btn.length-1 && (self.type=="bidi" || self.type=="rtl")) {
+                                self.arrowRight.style.display="none";
+                                self.arrowLeft.style.display="block";
+                            }
+                            else {
+                                self.arrowRight.style.display="block";
+                                self.arrowLeft.style.display="block";
+                            }
                         }
-                        });
-                    }
-                    mutationObserver.observe(self.inner, {attributes: true,  attributeFilter: ["data-status"], attributeOldValue: true,  childList: false});
-                })();
+                    });
+                }
+                mutationObserver.observe(self.inner, {attributes: true,  attributeFilter: ["data-status"], attributeOldValue: true,  childList: false});
             }/*binding events*/
 
             SlideShow.prototype.stop = function() {
                 clearInterval(this.interval);
-                /*delete hover events*/
+                this.state="stopped";
             }/*stop continual animation*/
 
-            SlideShow.prototype.start =  function() {
-                clearInterval(this.interval);
+            SlideShow.prototype.start = function() {
                 var self=this;
-                for(var i = 0, len = self.slides.length; i < len; i++) {
-                    (function() {
-                        self.slides[i].addEventListener("mouseover", function() {
-                            clearInterval(self.interval);
-                        });
-                        self.slides[i].addEventListener("mouseout", function() {
-                            self.start();
-                        });
-                    })();
-                }
                 this.interval=setInterval(function() { self.animate.call(self) }, self.delay);
+                this.state="started";
             }/*start continual animation*/
 
             SlideShow.prototype.animate = function() {
                 if (this.img.length<=1) return;
-                if (this.inner.dataset.status<this.img.length-1) this.inner.dataset.status++;
-                else this.inner.dataset.status=0;
+                if (this.inner.dataset.status==this.img.length-1 && this.type=="bidi" || this.type=="rtl") this.direction=-1;
+                if (this.inner.dataset.status==0 && this.type=="bidi" || this.type=="ltr") this.direction=1;
+                if (this.inner.dataset.status==0 && this.type=="rtl") {
+                    this.inner.dataset.status=this.img.length-1;
+                    return;
+                }
+                if (this.inner.dataset.status==this.img.length-1 && this.type=="ltr") {
+                    this.inner.dataset.status=0;
+                    return;
+                }
+                if (this.type=="rdm") this.direction=0;
+                if (this.direction==1) this.inner.dataset.status++;
+                if (this.direction==-1) this.inner.dataset.status--;
+                if (this.direction==0) {
+                    this.inner.dataset.status=Math.floor(Math.random()*5);
+                }
             }/*next image*/
 
                 /*DetSlideShow.prototype = new SlideShow();
@@ -185,7 +196,10 @@
             }*/
             var qwe=new SlideShow();
             qwe.render();
-            /*qwe.start();*/
+            qwe.start();
+            qwe.stop();
+
+
 
 
                /*Изменение цвета div по нажатию кнопки*/

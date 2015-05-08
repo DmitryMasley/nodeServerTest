@@ -7,9 +7,9 @@
     <script type="text/javascript">
         window.onload = function() {
 
-            function SlideShow (img,delay,el,size){
+            function SlideShow (img,delay,type,el,size){
                 if (arguments.length>0) this.render(img,delay,type,el,size);
-            }/*Slideshow Class Constructor Function*/
+            }//Class Constructor
 
             SlideShow.prototype.render = function(img,delay,type,el,size) {
                 this.init(img,delay,type,el,size);
@@ -18,15 +18,17 @@
                 this.inner = document.createElement("div");
                 this.inner.className = "slideshow-inner";
                 this.inner.ul = document.createElement("ul");
+                this.inner.ul.innerHTML +=('<li name="slide last clone" style="width:'+100/(this.img.length+2)+'%; "> \n <img src="'+this.img[this.img.length-1].src+'" /> \n<div class="description"> \n<h2>'+this.img[this.img.length-1].description+'</h2></div></li>')
                 for(var i = 0, len=this.img.length; i < len; i++) {
                     this.wrap.innerHTML +=('<span class="buttons" data-button="'+(i+1)+'" data-active="'+0+'" style="margin-left:'+(-18*len/2+18*i)+'px;"></span> \n');
                     if (this.img[i].description) {
-                        this.inner.ul.innerHTML +=('<li name="slide'+(i+1)+'" style="width:'+100/this.img.length+'%; "> \n <img src="'+this.img[i].src+'" /> \n<div class="description"> \n<h2>'+this.img[i].description+'</h2></div></li>');
+                        this.inner.ul.innerHTML +=('<li name="slide'+(i+1)+'" style="width:'+100/(this.img.length+2)+'%; "> \n <img src="'+this.img[i].src+'" /> \n<div class="description"> \n<h2>'+this.img[i].description+'</h2></div></li>');
                     }
                     else{
-                        this.inner.ul.innerHTML +=('<li name="slide'+(i+1)+'" style="width:'+100/this.img.length+'%; "> \n <img src="'+this.img[i].src+'" /> \n');
+                        this.inner.ul.innerHTML +=('<li name="slide'+(i+1)+'" style="width:'+100/(this.img.length+2)+'%; "> \n <img src="'+this.img[i].src+'" /> \n');
                     }
                 }
+                this.inner.ul.innerHTML +=('<li name="slide first clone" style="width:'+100/(this.img.length+2)+'%; "> \n <img src="'+this.img[0].src+'" /> \n<div class="description"> \n<h2>'+this.img[0].description+'</h2></div></li>')
                 this.wrap.innerHTML +=('<span class="arrows" data-arrow="left"><</span> \n');
                 this.wrap.innerHTML +=('<span class="arrows" data-arrow="right">></span> \n');
                 this.inner.appendChild(this.inner.ul);
@@ -34,19 +36,28 @@
                 this.el.appendChild(this.wrap);
                 this.wrap.style.width=this.width;
                 this.wrap.style.height=this.height;
-                this.inner.ul.style.width=''+100*this.img.length+'%';
+                this.inner.ul.style.width=''+100*(this.img.length+2)+'%';
                 this.inner.ul.style.height=this.height;
-                this.inner.ul.style.left="0%";
                 this.slides = this.wrap.querySelectorAll('.slideshow-inner img, .slideshow-inner div.description');
                 this.btn = this.wrap.querySelectorAll('.buttons');
                 this.arrowLeft=this.wrap.querySelector('.arrows[data-arrow="left"]');
                 this.arrowRight=this.wrap.querySelector('.arrows[data-arrow="right"]');
-                if (this.type=="bidi") this.arrowLeft.style.display="none";
-                this.btn[0].dataset.active="1";
-                this.inner.dataset.status=0;
+                if (this.type == "rtl") {
+                    this.btn[this.btn.length-1].dataset.active = "1";
+                    this.inner.dataset.status = this.btn.length-1;
+                    this.arrowRight.style.display="none";
+                    this.inner.ul.style.left="-"+100*this.img.length+"%";
+                }
+                else {
+                    this.btn[0].dataset.active = "1";
+                    this.inner.dataset.status = 0;
+                    this.arrowLeft.style.display="none";
+                    this.inner.ul.style.left="-100%";
+                }
+                this.direction = 1; /*for bi-directional type*/
                 this.bindEvents();
                 this.stop();
-            }/*render*/
+            }//Render
 
             SlideShow.prototype.init = function(img,delay,type,el,size) {
                 /* img=[{src:"...", description:"..."},...], delay=1000-10000(ms), el=document.querySelector('...'), size={width:"1%-100%", height:"100-1920"}*/
@@ -94,7 +105,7 @@
                 else {
                     this.height = "110px";
                 }
-            }/*initialization*/
+            }//Initialization
 
             SlideShow.prototype.bindEvents = function(){
                 var self=this;
@@ -111,16 +122,21 @@
                     self.arrowLeft.addEventListener("click", function() {
                         if (self.inner.dataset.status==0) self.inner.dataset.status=self.img.length-1;
                         else self.inner.dataset.status--;
+                        if (self.type=="bidi") self.direction = -1;
                     });
                     self.arrowRight.addEventListener("click", function() {
                         if (self.inner.dataset.status==self.img.length-1) self.inner.dataset.status=0;
                         else self.inner.dataset.status++;
+                        if (self.type=="bidi") self.direction = 1;
                     });
                     for(var i = 0, len = self.btn.length; i < len; i++) {
                         (function () {
                             var j = i;
                             self.btn[j].addEventListener("click", function () {
+                                self.btn[j].dataset.active="1";
                                 self.inner.dataset.status=j;
+                                if (self.type=="bidi" && j==self.btn.length-1) self.direction = -1;
+                                if (self.type=="bidi" && j==0) self.direction = 1;
                             });
                         })();
                     }
@@ -129,16 +145,34 @@
                 function mutationObjectCallback(mutationRecordsList) {
                     mutationRecordsList.forEach(function(mutationRecord) {
                         if ("attributes" === mutationRecord.type) {
-                            self.inner.ul.style.left="-"+100*self.inner.dataset.status+"%";
+                            if (mutationRecord.oldValue==0 && self.inner.dataset.status==self.img.length-1 && self.btn[self.inner.dataset.status].dataset.active=="0"){
+                                self.inner.ul.style.left="0%";
+                                setTimeout(function(){
+                                    self.inner.ul.style.transition= "none";
+                                    self.inner.ul.style.left="-"+100*self.img.length+"%";
+                                    setTimeout(function(){self.inner.ul.style.transition="left .8s cubic-bezier(0.77, 0, 0.175, 1)"},200);
+
+                                },800);
+                            }
+                            else if (mutationRecord.oldValue==self.img.length-1 && self.inner.dataset.status==0 && self.btn[self.inner.dataset.status].dataset.active=="0"){
+                                self.inner.ul.style.left="-"+100*self.img.length-100+"%";
+                                setTimeout(function(){
+                                    self.inner.ul.style.transition= "none";
+                                    self.inner.ul.style.left="-100%";
+                                    setTimeout(function(){self.inner.ul.style.transition="left .8s cubic-bezier(0.77, 0, 0.175, 1)"},200);
+
+                                },800);
+                            }
+                            else self.inner.ul.style.left="-"+100*self.inner.dataset.status-100+"%";
                             for (var i = 0, len = self.btn.length; i < len; i++){
                                self.btn[i].dataset.active="0";
                             }
                             self.btn[self.inner.dataset.status].dataset.active="1";
-                            if (self.inner.dataset.status==0 && (self.type=="bidi" || self.type=="ltr")) {
+                            if (self.inner.dataset.status==0) {
                                 self.arrowLeft.style.display="none";
                                 self.arrowRight.style.display="block";
                             }
-                            else if (self.inner.dataset.status==self.btn.length-1 && (self.type=="bidi" || self.type=="rtl")) {
+                            else if (self.inner.dataset.status==self.btn.length-1) {
                                 self.arrowRight.style.display="none";
                                 self.arrowLeft.style.display="block";
                             }
@@ -150,40 +184,59 @@
                     });
                 }
                 mutationObserver.observe(self.inner, {attributes: true,  attributeFilter: ["data-status"], attributeOldValue: true,  childList: false});
-            }/*binding events*/
+            }//Binding events
 
             SlideShow.prototype.stop = function() {
                 clearInterval(this.interval);
                 this.state="stopped";
-            }/*stop continual animation*/
+            }//Stop continual animation
 
             SlideShow.prototype.start = function() {
                 var self=this;
                 this.interval=setInterval(function() { self.animate.call(self) }, self.delay);
                 this.state="started";
-            }/*start continual animation*/
+            }//Start continual animation
 
             SlideShow.prototype.animate = function() {
                 if (this.img.length<=1) return;
-                if (this.inner.dataset.status==this.img.length-1 && this.type=="bidi" || this.type=="rtl") this.direction=-1;
-                if (this.inner.dataset.status==0 && this.type=="bidi" || this.type=="ltr") this.direction=1;
-                if (this.inner.dataset.status==0 && this.type=="rtl") {
-                    this.inner.dataset.status=this.img.length-1;
-                    return;
+                if (this.type=="bidi") {
+                    if (this.inner.dataset.status==this.img.length-1) {
+                        this.inner.dataset.status--;
+                        this.direction=-1;
+                    }
+                    else if (this.inner.dataset.status==0) {
+                        this.inner.dataset.status++;
+                        this.direction=1;
+                    }
+                    else if (this.direction==1) this.inner.dataset.status++;
+                    else if (this.direction==-1) this.inner.dataset.status--;
                 }
-                if (this.inner.dataset.status==this.img.length-1 && this.type=="ltr") {
-                    this.inner.dataset.status=0;
-                    return;
+                if (this.type=="rtl") {
+                    if (this.inner.dataset.status==0) this.inner.dataset.status=this.img.length-1;
+                    else this.inner.dataset.status--;
                 }
-                if (this.type=="rdm") this.direction=0;
-                if (this.direction==1) this.inner.dataset.status++;
-                if (this.direction==-1) this.inner.dataset.status--;
-                if (this.direction==0) {
-                    this.inner.dataset.status=Math.floor(Math.random()*5);
+                if (this.type=="ltr") {
+                    if (this.inner.dataset.status==this.img.length-1) this.inner.dataset.status=0;
+                    else this.inner.dataset.status++;
                 }
-            }/*next image*/
+                if (this.type=="rdm") this.inner.dataset.status=Math.floor(Math.random()*5);
+            }//Next image
 
-                /*DetSlideShow.prototype = new SlideShow();
+            /*SlideShow.prototype.getJSON = function( url, callback ) {
+                callback = callback || function() {};
+                var request = new XMLHttpRequest();
+                request.open( "GET", url, true );
+                request.send( null );
+                request.onreadystatechange = function() {
+                    if ( request.status == 200 && request.readyState == 4 ) {
+                        var data = JSON.parse( request.responseText ); // JSON object
+                        callback( data );
+                    } else {
+                        console.log( request.status );
+                    }
+                };
+            }*///Requesting images from the server
+            /*DetSlideShow.prototype = new SlideShow();
             DetSlideShow.prototype.constructor = DetSlideShow;
             DetSlideShow.superclass=SlideShow.prototype;
             function DetSlideShow(img,detdesc,delay,el,size) {
@@ -193,17 +246,15 @@
             DetSlideShow.prototype.init = function(img,detdesc,delay,el,size) {
                 DetSlideShow.superclass.init.call(this, img,delay,el,size);
                 this.detdesc = detdesc;
-            }*/
+            }*///Creating subclass
+
             var qwe=new SlideShow();
             qwe.render();
             qwe.start();
-            qwe.stop();
+            //qwe.stop();
 
-
-
-
-               /*Изменение цвета div по нажатию кнопки*/
-                /*  var createStuff = function(el){
+            //Изменение цвета div по нажатию кнопки
+            /*  var createStuff = function(el){
                 if(el instanceof  Element){
                     var parent = document.createElement("div");
                     parent.className = "content";
@@ -227,7 +278,7 @@
                 }
             }*/
 
-        /*Изменение цвета div по нажатию кнопки*/
+            //Изменение цвета div по нажатию кнопки
             var stuff = function(el){
                 this.count = 0;
                 this.el = document.createElement("div");

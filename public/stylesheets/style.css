@@ -142,9 +142,9 @@ label:hover{
     -webkit-margin-start: 0px;
     -webkit-margin-end: 0px;
     -webkit-padding-start: 0px;
-    -webkit-transition: left .8s cubic-bezier(0.77, 0, 0.175, 1);
+   /* -webkit-transition: left .8s cubic-bezier(0.77, 0, 0.175, 1);
     -moz-transition: left .8s cubic-bezier(0.77, 0, 0.175, 1);
-    -o-transition: left .8s cubic-bezier(0.77, 0, 0.175, 1);
+    -o-transition: left .8s cubic-bezier(0.77, 0, 0.175, 1);*/
     transition: left .8s cubic-bezier(0.77, 0, 0.175, 1);
 }
 .slideshow-inner>ul>li {

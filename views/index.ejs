@@ -8,11 +8,63 @@
         window.onload = function() {
 
             function SlideShow (img,delay,type,el,size){
-                if (arguments.length>0) this.render(img,delay,type,el,size);
+                if (arguments.length>0) this.init(img,delay,type,el,size);
             }//Class Constructor
 
-            SlideShow.prototype.render = function(img,delay,type,el,size) {
-                this.init(img,delay,type,el,size);
+            SlideShow.prototype.init = function(img,delay,type,el,size) {
+                /* img=[{src:"...", description:"..."},...], delay=1000-10000(ms), el=document.querySelector('...'), size={width:"1%-100%", height:"100-1920"}*/
+                if (delay <= 10000 && delay >= 1000) {
+                    this.delay = delay;
+                } else {
+                    this.delay = 4000;
+                }/*Delay may be >=1sec and <=10sec. Otherwise used default delay.*/
+                if (type == "bidi") this.type=type;
+                else if (type == "rtl") this.type=type;
+                else if (type == "ltr") this.type=type;
+                else if (type == "rdm") this.type=type;
+                else this.type="bidi";
+                if (el instanceof  Element) {
+                    this.el = el;
+                } else {
+                    this.el = document.body;
+                }
+                var minSize=100;    /*in px*/
+                var maxSize=1920;   /*in px*/
+                var height=window.getComputedStyle(this.el,null).getPropertyValue("height").slice(0,-2);
+                var width=window.getComputedStyle(this.el,null).getPropertyValue("width").slice(0,-2);
+                if ((size) && (size.width) && size.width.slice(-1)=="%" && size.width.slice(0,-1)<=100 && size.width.slice(0,-1)>0 && (width * size.width.slice(0, -1) / 100) >= minSize){
+                    this.width = ""+ width * size.width.slice(0, -1) / 100 + "px";
+                }else if ((size) && (size.width) && size.width <= maxSize && size.width >= minSize && size.width <= width) {
+                    this.width = ""+size.width+"px";
+                }else if (((!size) || ((size) && (!size.width))) && width <= maxSize && width >= minSize) {
+                    this.width = ""+width+"px";
+                }else {
+                    this.width = ""+minSize+"px";
+                }
+                if ((size) && (size.height) && size.height.slice(-1)=="%" && size.height.slice(0,-1)<=minSize && size.height.slice(0,-1)>0 && (height * size.height.slice(0, -1) / 100) >= minSize) {
+                    this.height = "" + height * size.height.slice(0, -1) / 100 + "px";
+                }else if ((size) && (size.height) && size.height <= maxSize && size.height >= minSize && size.height <= height) {
+                    this.height = ""+size.height+"px";
+                }else if (((!size) || ((size) && (!size.height))) && height <= maxSize && height >= minSize) {
+                    this.height = ""+height+"px";
+                }else {
+                    this.height = ""+minSize+"px";
+                }
+                var self = this;
+                if (img) {
+                    this.img = img;
+                    this.render();
+                }
+                else {
+                    this.timedGetJSON('http://localhost:3000/images.ajax', 5000, handleRequest);
+                    function handleRequest(req) {
+                        self.img = req.data || [{src:"http://7themes.su/_ph/40/806761392.jpg", description:"The Hobbit"},{src:"http://7themes.su/_ph/38/351815896.jpg", description:"Инь и ян"},{src:"http://7themes.su/_ph/23/855840339.jpg", description:"Lamborghini aventador"},{src:"http://7themes.su/_ph/38/686375918.jpg", description:"Отражение в очках"}];
+                        self.render();
+                    }
+                }
+            }//Initialization
+
+            SlideShow.prototype.render = function() {
                 this.wrap = document.createElement("div");
                 this.wrap.className = "slideshow-wrap";
                 this.inner = document.createElement("div");
@@ -20,11 +72,10 @@
                 this.inner.ul = document.createElement("ul");
                 this.inner.ul.innerHTML +=('<li name="slide last clone" style="width:'+100/(this.img.length+2)+'%; "> \n <img src="'+this.img[this.img.length-1].src+'" /> \n<div class="description"> \n<h2>'+this.img[this.img.length-1].description+'</h2></div></li>')
                 for(var i = 0, len=this.img.length; i < len; i++) {
-                    this.wrap.innerHTML +=('<span class="buttons" data-button="'+(i+1)+'" data-active="'+0+'" style="margin-left:'+(-18*len/2+18*i)+'px;"></span> \n');
+                    if (len > 1) this.wrap.innerHTML +=('<span class="buttons" data-button="'+(i+1)+'" data-active="'+0+'" style="margin-left:'+(-18*len/2+18*i)+'px;"></span> \n');
                     if (this.img[i].description) {
                         this.inner.ul.innerHTML +=('<li name="slide'+(i+1)+'" style="width:'+100/(this.img.length+2)+'%; "> \n <img src="'+this.img[i].src+'" /> \n<div class="description"> \n<h2>'+this.img[i].description+'</h2></div></li>');
-                    }
-                    else{
+                    } else{
                         this.inner.ul.innerHTML +=('<li name="slide'+(i+1)+'" style="width:'+100/(this.img.length+2)+'%; "> \n <img src="'+this.img[i].src+'" /> \n');
                     }
                 }
@@ -42,70 +93,21 @@
                 this.btn = this.wrap.querySelectorAll('.buttons');
                 this.arrowLeft=this.wrap.querySelector('.arrows[data-arrow="left"]');
                 this.arrowRight=this.wrap.querySelector('.arrows[data-arrow="right"]');
-                if (this.type == "rtl") {
+                if (this.type == "rtl" && this.img.length>1) {
                     this.btn[this.btn.length-1].dataset.active = "1";
                     this.inner.dataset.status = this.btn.length-1;
-                    this.arrowRight.style.display="none";
+                    this.arrowLeft.style.display="block";
                     this.inner.ul.style.left="-"+100*this.img.length+"%";
-                }
-                else {
+                } else if (this.img.length>1){
                     this.btn[0].dataset.active = "1";
                     this.inner.dataset.status = 0;
-                    this.arrowLeft.style.display="none";
+                    this.arrowRight.style.display="block";
                     this.inner.ul.style.left="-100%";
                 }
                 this.direction = 1; /*for bi-directional type*/
                 this.bindEvents();
-                this.stop();
+                if (this.state=="started" && !(this.interval)) this.start();
             }//Render
-
-            SlideShow.prototype.init = function(img,delay,type,el,size) {
-                /* img=[{src:"...", description:"..."},...], delay=1000-10000(ms), el=document.querySelector('...'), size={width:"1%-100%", height:"100-1920"}*/
-                this.img = img || [{src:"http://7themes.su/_ph/40/806761392.jpg", description:"The Hobbit"},{src:"http://7themes.su/_ph/40/109111701.jpg", description:"Мстители: Эра Альтрона"},{src:"http://7themes.su/_ph/38/351815896.jpg", description:"Инь и ян"},{src:"http://7themes.su/_ph/23/855840339.jpg", description:"Lamborghini aventador"},{src:"http://7themes.su/_ph/38/686375918.jpg", description:"Отражение в очках"}];
-                if (delay <= 10000 && delay >= 1000) {
-                    this.delay = delay;
-                } else {
-                    this.delay = 4000;
-                }/*Delay may be >=1sec and <=10sec. Otherwise used default delay.*/
-                if (type == "bidi") this.type=type;
-                    else if (type == "rtl") this.type=type;
-                    else if (type == "ltr") this.type=type;
-                    else if (type == "rdm") this.type=type;
-                        else this.type="bidi";
-                if (el instanceof  Element) {
-                    this.el = el;
-                } else {
-                    this.el = document.body;
-                }
-                var minSize=100;    /*in px*/
-                var maxSize=1920;   /*in px*/
-                var height=window.getComputedStyle(this.el,null).getPropertyValue("height").slice(0,-2);
-                var width=window.getComputedStyle(this.el,null).getPropertyValue("width").slice(0,-2);
-                if ((size) && (size.width) && size.width.slice(-1)=="%" && size.width.slice(0,-1)<=100 && size.width.slice(0,-1)>0){
-                    this.width = ""+width*size.width.slice(0,-1)/100+"px";
-                }
-                else if ((size) && (size.width) && size.width <= maxSize && size.width >= minSize && size.width <= width) {
-                    this.width = ""+size.width+"px";
-                }
-                else if (((!size) || ((size) && (!size.width))) && width <= maxSize && width >= minSize) {
-                    this.width = ""+width+"px";
-                }
-                else {
-                    this.width = "180px";
-                }
-                if ((size) && (size.height) && size.height.slice(-1)=="%" && size.height.slice(0,-1)<=minSize && size.height.slice(0,-1)>0) {
-                    this.height = "" + height * size.height.slice(0, -1) / 100 + "px";
-                }
-                else if ((size) && (size.height) && size.height <= maxSize && size.height >= minSize && size.height <= height) {
-                    this.height = ""+size.height+"px";
-                }
-                else if (((!size) || ((size) && (!size.height))) && height <= maxSize && height >= minSize) {
-                    this.height = ""+height+"px";
-                }
-                else {
-                    this.height = "110px";
-                }
-            }//Initialization
 
             SlideShow.prototype.bindEvents = function(){
                 var self=this;
@@ -145,25 +147,21 @@
                 function mutationObjectCallback(mutationRecordsList) {
                     mutationRecordsList.forEach(function(mutationRecord) {
                         if ("attributes" === mutationRecord.type) {
-                            if (mutationRecord.oldValue==0 && self.inner.dataset.status==self.img.length-1 && self.btn[self.inner.dataset.status].dataset.active=="0"){
+                            if ((self.type=="rdm"|| self.type=="rtl") && mutationRecord.oldValue==0 && self.inner.dataset.status==self.img.length-1 && self.btn[self.inner.dataset.status].dataset.active=="0"){
                                 self.inner.ul.style.left="0%";
                                 setTimeout(function(){
                                     self.inner.ul.style.transition= "none";
                                     self.inner.ul.style.left="-"+100*self.img.length+"%";
-                                    setTimeout(function(){self.inner.ul.style.transition="left .8s cubic-bezier(0.77, 0, 0.175, 1)"},200);
-
+                                    setTimeout(function(){self.inner.ul.style.transition="left .8s cubic-bezier(0.77, 0, 0.175, 1)"},150);
                                 },800);
-                            }
-                            else if (mutationRecord.oldValue==self.img.length-1 && self.inner.dataset.status==0 && self.btn[self.inner.dataset.status].dataset.active=="0"){
+                            } else if ((self.type=="rdm"|| self.type=="ltr") && mutationRecord.oldValue==self.img.length-1 && self.inner.dataset.status==0 && self.btn[self.inner.dataset.status].dataset.active=="0"){
                                 self.inner.ul.style.left="-"+100*self.img.length-100+"%";
                                 setTimeout(function(){
                                     self.inner.ul.style.transition= "none";
                                     self.inner.ul.style.left="-100%";
-                                    setTimeout(function(){self.inner.ul.style.transition="left .8s cubic-bezier(0.77, 0, 0.175, 1)"},200);
-
+                                    setTimeout(function(){self.inner.ul.style.transition="left .8s cubic-bezier(0.77, 0, 0.175, 1)"},150);
                                 },800);
-                            }
-                            else self.inner.ul.style.left="-"+100*self.inner.dataset.status-100+"%";
+                            } else self.inner.ul.style.left="-"+100*self.inner.dataset.status-100+"%";
                             for (var i = 0, len = self.btn.length; i < len; i++){
                                self.btn[i].dataset.active="0";
                             }
@@ -171,12 +169,10 @@
                             if (self.inner.dataset.status==0) {
                                 self.arrowLeft.style.display="none";
                                 self.arrowRight.style.display="block";
-                            }
-                            else if (self.inner.dataset.status==self.btn.length-1) {
+                            } else if (self.inner.dataset.status==self.btn.length-1) {
                                 self.arrowRight.style.display="none";
                                 self.arrowLeft.style.display="block";
-                            }
-                            else {
+                            } else {
                                 self.arrowRight.style.display="block";
                                 self.arrowLeft.style.display="block";
                             }
@@ -192,9 +188,12 @@
             }//Stop continual animation
 
             SlideShow.prototype.start = function() {
+                this.state="started";
+                if (this.direction !== 1) {
+                    return;
+                } // Don't start animation before render complete
                 var self=this;
                 this.interval=setInterval(function() { self.animate.call(self) }, self.delay);
-                this.state="started";
             }//Start continual animation
 
             SlideShow.prototype.animate = function() {
@@ -203,12 +202,10 @@
                     if (this.inner.dataset.status==this.img.length-1) {
                         this.inner.dataset.status--;
                         this.direction=-1;
-                    }
-                    else if (this.inner.dataset.status==0) {
+                    } else if (this.inner.dataset.status==0) {
                         this.inner.dataset.status++;
                         this.direction=1;
-                    }
-                    else if (this.direction==1) this.inner.dataset.status++;
+                    } else if (this.direction==1) this.inner.dataset.status++;
                     else if (this.direction==-1) this.inner.dataset.status--;
                 }
                 if (this.type=="rtl") {
@@ -219,23 +216,29 @@
                     if (this.inner.dataset.status==this.img.length-1) this.inner.dataset.status=0;
                     else this.inner.dataset.status++;
                 }
-                if (this.type=="rdm") this.inner.dataset.status=Math.floor(Math.random()*5);
+                if (this.type=="rdm") this.inner.dataset.status=Math.floor(Math.random()*this.img.length);
             }//Next image
 
-            /*SlideShow.prototype.getJSON = function( url, callback ) {
-                callback = callback || function() {};
-                var request = new XMLHttpRequest();
-                request.open( "GET", url, true );
-                request.send( null );
-                request.onreadystatechange = function() {
-                    if ( request.status == 200 && request.readyState == 4 ) {
-                        var data = JSON.parse( request.responseText ); // JSON object
-                        callback( data );
-                    } else {
-                        console.log( request.status );
+            SlideShow.prototype.timedGetJSON = function(url, timeout, callback) {
+                var request = new XMLHttpRequest(); // Create new request.
+                var timedout = false; // Whether we timed out or not.
+                // Start a timer that will abort the request after timeout ms.
+                var timer = setTimeout(function() { // Start a timer. If triggered,
+                    timedout = true; // set a flag and then
+                    request.abort(); // abort the request.
+                        },timeout);
+                request.open("GET", url, true); // Specify URL to fetch
+                request.onreadystatechange = function () { // Define event listener.
+                    if (request.readyState !== 4) return; // Ignore incomplete requests.
+                    if (timedout) callback(""); // Ignore aborted requests.
+                    clearTimeout(timer); // Cancel pending timeout.
+                    if (request.status === 200) { // If request was successful
+                        callback(JSON.parse(request.responseText)); // pass response to callback.
                     }
                 };
-            }*///Requesting images from the server
+                request.send(null); // Send the request now
+            }//Send request to the server
+
             /*DetSlideShow.prototype = new SlideShow();
             DetSlideShow.prototype.constructor = DetSlideShow;
             DetSlideShow.superclass=SlideShow.prototype;
@@ -249,9 +252,17 @@
             }*///Creating subclass
 
             var qwe=new SlideShow();
-            qwe.render();
+            qwe.init();
             qwe.start();
-            //qwe.stop();
+
+            var qwe=new SlideShow([{src:"http://7themes.su/_ph/40/806761392.jpg", description:"The Hobbit"},{src:"http://7themes.su/_ph/40/109111701.jpg", description:"Мстители: Эра Альтрона"}],1000, "rtl", document.querySelector('.main'));
+            qwe.start();
+            var qwe=new SlideShow([{src:"http://7themes.su/_ph/40/806761392.jpg", description:"The Hobbit"},{src:"http://7themes.su/_ph/40/109111701.jpg", description:"Мстители: Эра Альтрона"},{src:"http://7themes.su/_ph/38/351815896.jpg", description:"Инь и ян"},{src:"http://7themes.su/_ph/23/855840339.jpg", description:"Lamborghini aventador"},{src:"http://7themes.su/_ph/38/686375918.jpg", description:"Отражение в очках"},{src:"http://7themes.su/_ph/40/806761392.jpg", description:"The Hobbit"},{src:"http://7themes.su/_ph/40/109111701.jpg", description:"Мстители: Эра Альтрона"},{src:"http://7themes.su/_ph/38/351815896.jpg", description:"Инь и ян"},{src:"http://7themes.su/_ph/23/855840339.jpg", description:"Lamborghini aventador"},{src:"http://7themes.su/_ph/38/686375918.jpg", description:"Отражение в очках"}], 5000, "rdm", document.querySelector('.footer'), {height: "30%", width: "800"});
+            qwe.start();
+            var qwe=new SlideShow([{src:"http://7themes.su/_ph/40/806761392.jpg", description:"The Hobbit"},{src:"http://7themes.su/_ph/40/109111701.jpg", description:"Мстители: Эра Альтрона"}], 1000, "ltr",document.querySelector('.sidebar'), {height: "500", width: "133"});
+            qwe.start();
+
+
 
             //Изменение цвета div по нажатию кнопки
             /*  var createStuff = function(el){

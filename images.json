@@ -1,7 +1,9 @@
 [
-  {"src":"http://7themes.su/_ph/40/806761392.jpg", "description":"The Hobbit"},
-  {"src":"http://7themes.su/_ph/40/109111701.jpg", "description":"Мстители: Эра Альтрона"},
-  {"src":"http://7themes.su/_ph/38/351815896.jpg", "description":"Инь и ян"},
-  {"src":"http://7themes.su/_ph/23/855840339.jpg", "description":"Lamborghini aventador"},
-  {"src":"http://7themes.su/_ph/38/686375918.jpg", "description":"Отражение в очках"}
+  {"src":"/images/iron man.jpg", "description":"IRON MAN"},
+  {"src":"/images/captain america.jpg", "description":"CAPTAIN AMERICA"},
+  {"src":"/images/hulk.jpeg", "description":"HULK"},
+  {"src":"/images/thor.jpg", "description":"THOR"},
+  {"src":"/images/black widow.jpg", "description":"BLACK WIDOW"},
+  {"src":"/images/hawkeye.jpg", "description":"HAWKEYE"},
+  {"src":"/images/loki.jpg", "description":"LOKI"}
 ]

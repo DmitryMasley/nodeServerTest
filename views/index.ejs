@@ -2,7 +2,9 @@
 <html>
 <head>
     <meta charset="utf-8" />  <meta name="description" content="Приглашаем детей и взрослых для увлекательного изучения английского языка" />
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
     <link rel='stylesheet' href='/stylesheets/style.css' />
+    <link rel='stylesheet' href='/stylesheets/main.css' />
     <title><%= __("Title") %></title>
     <script type="text/javascript">
         window.onload = function() {
@@ -50,29 +52,39 @@
                 }else {
                     this.height = ""+minSize+"px";
                 }
+                this.renderWrap();
+                this.animationInProgress=false;
                 var self = this;
                 if (img) {
                     this.img = img;
-                    this.render();
-                }
-                else {
-                    this.timedGetJSON('http://localhost:3000/images.ajax', 5000, handleRequest);
+                    this.renderImages();
+
+                } else {
+                    this.timedGetJSON('/images.ajax', 5000, handleRequest);
                     function handleRequest(req) {
-                        self.img = req.data || [{src:"http://7themes.su/_ph/40/806761392.jpg", description:"The Hobbit"},{src:"http://7themes.su/_ph/38/351815896.jpg", description:"Инь и ян"},{src:"http://7themes.su/_ph/23/855840339.jpg", description:"Lamborghini aventador"},{src:"http://7themes.su/_ph/38/686375918.jpg", description:"Отражение в очках"}];
-                        self.render();
+                        self.img = req.data || [{"src":"/images/iron man.jpg", "description":"IRON MAN"},{"src":"/images/captain america.jpg", "description":"CAPTAIN AMERICA"},{"src":"/images/hulk.jpeg", "description":"HULK"},{"src":"/images/thor.jpg", "description":"THOR"},{"src":"/images/black widow.jpg", "description":"BLACK WIDOW"},{"src":"/images/hawkeye.jpg", "description":"HAWKEYE"},{"src":"/images/loki.jpg", "description":"LOKI"}];
+                        self.renderImages();
                     }
                 }
             }//Initialization
 
-            SlideShow.prototype.render = function() {
+            SlideShow.prototype.renderWrap = function() {
                 this.wrap = document.createElement("div");
                 this.wrap.className = "slideshow-wrap";
+                this.wrap.innerHTML += '<i class="fa fa-spinner fa-pulse" style="text-shadow:none; font-size:100px; position:relative; top:50%; margin-top:-50px"></i>';
+                this.el.appendChild(this.wrap);
+                this.wrap.style.width = this.width;
+                this.wrap.style.height = this.height;
+            }//Render container for images
+
+            SlideShow.prototype.renderImages = function() {
+                this.wrap.innerHTML='';
                 this.inner = document.createElement("div");
                 this.inner.className = "slideshow-inner";
                 this.inner.ul = document.createElement("ul");
                 this.inner.ul.innerHTML +=('<li name="slide last clone" style="width:'+100/(this.img.length+2)+'%; "> \n <img src="'+this.img[this.img.length-1].src+'" /> \n<div class="description"> \n<h2>'+this.img[this.img.length-1].description+'</h2></div></li>')
                 for(var i = 0, len=this.img.length; i < len; i++) {
-                    if (len > 1) this.wrap.innerHTML +=('<span class="buttons" data-button="'+(i+1)+'" data-active="'+0+'" style="margin-left:'+(-18*len/2+18*i)+'px;"></span> \n');
+                    if (len > 1) this.wrap.innerHTML +=('<span class="buttons" data-button="'+(i+1)+'" data-active="'+0+'" style="margin-left:'+(-3-18*len/2+18*i)+'px;"></span> \n');
                     if (this.img[i].description) {
                         this.inner.ul.innerHTML +=('<li name="slide'+(i+1)+'" style="width:'+100/(this.img.length+2)+'%; "> \n <img src="'+this.img[i].src+'" /> \n<div class="description"> \n<h2>'+this.img[i].description+'</h2></div></li>');
                     } else{
@@ -80,34 +92,30 @@
                     }
                 }
                 this.inner.ul.innerHTML +=('<li name="slide first clone" style="width:'+100/(this.img.length+2)+'%; "> \n <img src="'+this.img[0].src+'" /> \n<div class="description"> \n<h2>'+this.img[0].description+'</h2></div></li>')
-                this.wrap.innerHTML +=('<span class="arrows" data-arrow="left"><</span> \n');
-                this.wrap.innerHTML +=('<span class="arrows" data-arrow="right">></span> \n');
+                this.wrap.innerHTML +=('<span class="fa fa-arrow-circle-left fa-2x arrows" data-arrow="left"></span> \n');
+                this.wrap.innerHTML +=('<span class="fa fa-arrow-circle-right fa-2x arrows " data-arrow="right"></span> \n');
                 this.inner.appendChild(this.inner.ul);
                 this.wrap.appendChild(this.inner);
-                this.el.appendChild(this.wrap);
-                this.wrap.style.width=this.width;
-                this.wrap.style.height=this.height;
                 this.inner.ul.style.width=''+100*(this.img.length+2)+'%';
                 this.inner.ul.style.height=this.height;
-                this.slides = this.wrap.querySelectorAll('.slideshow-inner img, .slideshow-inner div.description');
+                this.slides = this.wrap.querySelectorAll('.slideshow-inner img, .slideshow-inner div.description, .arrows, .buttons');
                 this.btn = this.wrap.querySelectorAll('.buttons');
                 this.arrowLeft=this.wrap.querySelector('.arrows[data-arrow="left"]');
                 this.arrowRight=this.wrap.querySelector('.arrows[data-arrow="right"]');
                 if (this.type == "rtl" && this.img.length>1) {
                     this.btn[this.btn.length-1].dataset.active = "1";
                     this.inner.dataset.status = this.btn.length-1;
-                    this.arrowLeft.style.display="block";
                     this.inner.ul.style.left="-"+100*this.img.length+"%";
                 } else if (this.img.length>1){
                     this.btn[0].dataset.active = "1";
                     this.inner.dataset.status = 0;
-                    this.arrowRight.style.display="block";
                     this.inner.ul.style.left="-100%";
                 }
-                this.direction = 1; /*for bi-directional type*/
+
+                this.direction = 1; //for bi-directional type
                 this.bindEvents();
                 if (this.state=="started" && !(this.interval)) this.start();
-            }//Render
+            }//Render images
 
             SlideShow.prototype.bindEvents = function(){
                 var self=this;
@@ -122,23 +130,27 @@
                             })();
                     }
                     self.arrowLeft.addEventListener("click", function() {
-                        if (self.inner.dataset.status==0) self.inner.dataset.status=self.img.length-1;
+                        if (self.animationInProgress==true) return;
+                        if (self.inner.dataset.status == 0) self.inner.dataset.status = self.img.length - 1;
                         else self.inner.dataset.status--;
-                        if (self.type=="bidi") self.direction = -1;
+                        self.direction = -1;
                     });
                     self.arrowRight.addEventListener("click", function() {
-                        if (self.inner.dataset.status==self.img.length-1) self.inner.dataset.status=0;
+                        if (self.animationInProgress==true) return;
+                        if (self.inner.dataset.status == self.img.length - 1) self.inner.dataset.status = 0;
                         else self.inner.dataset.status++;
-                        if (self.type=="bidi") self.direction = 1;
+                        self.direction = 1;
                     });
                     for(var i = 0, len = self.btn.length; i < len; i++) {
                         (function () {
                             var j = i;
                             self.btn[j].addEventListener("click", function () {
-                                self.btn[j].dataset.active="1";
-                                self.inner.dataset.status=j;
-                                if (self.type=="bidi" && j==self.btn.length-1) self.direction = -1;
-                                if (self.type=="bidi" && j==0) self.direction = 1;
+                                if (self.animationInProgress==false) {
+                                    self.btn[j].dataset.active = "1";
+                                    self.inner.dataset.status = j;
+                                    if (self.type=="bidi" && j==self.btn.length-1) self.direction = -1;
+                                    if (self.type=="bidi" && j==0) self.direction = 1;
+                                }
                             });
                         })();
                     }
@@ -147,35 +159,27 @@
                 function mutationObjectCallback(mutationRecordsList) {
                     mutationRecordsList.forEach(function(mutationRecord) {
                         if ("attributes" === mutationRecord.type) {
-                            if ((self.type=="rdm"|| self.type=="rtl") && mutationRecord.oldValue==0 && self.inner.dataset.status==self.img.length-1 && self.btn[self.inner.dataset.status].dataset.active=="0"){
+                            self.animationInProgress=true;
+                            if ( mutationRecord.oldValue==0 && self.inner.dataset.status==self.img.length-1 && self.btn[self.inner.dataset.status].dataset.active=="0" && self.direction == -1){
                                 self.inner.ul.style.left="0%";
                                 setTimeout(function(){
                                     self.inner.ul.style.transition= "none";
                                     self.inner.ul.style.left="-"+100*self.img.length+"%";
                                     setTimeout(function(){self.inner.ul.style.transition="left .8s cubic-bezier(0.77, 0, 0.175, 1)"},150);
-                                },800);
-                            } else if ((self.type=="rdm"|| self.type=="ltr") && mutationRecord.oldValue==self.img.length-1 && self.inner.dataset.status==0 && self.btn[self.inner.dataset.status].dataset.active=="0"){
+                                },600);
+                            } else if ( mutationRecord.oldValue==self.img.length-1 && self.inner.dataset.status==0 && self.btn[self.inner.dataset.status].dataset.active=="0" && self.direction == 1){
                                 self.inner.ul.style.left="-"+100*self.img.length-100+"%";
                                 setTimeout(function(){
                                     self.inner.ul.style.transition= "none";
                                     self.inner.ul.style.left="-100%";
                                     setTimeout(function(){self.inner.ul.style.transition="left .8s cubic-bezier(0.77, 0, 0.175, 1)"},150);
-                                },800);
+                                },600);
                             } else self.inner.ul.style.left="-"+100*self.inner.dataset.status-100+"%";
                             for (var i = 0, len = self.btn.length; i < len; i++){
                                self.btn[i].dataset.active="0";
                             }
                             self.btn[self.inner.dataset.status].dataset.active="1";
-                            if (self.inner.dataset.status==0) {
-                                self.arrowLeft.style.display="none";
-                                self.arrowRight.style.display="block";
-                            } else if (self.inner.dataset.status==self.btn.length-1) {
-                                self.arrowRight.style.display="none";
-                                self.arrowLeft.style.display="block";
-                            } else {
-                                self.arrowRight.style.display="block";
-                                self.arrowLeft.style.display="block";
-                            }
+                            setTimeout(function(){self.animationInProgress=false;},1000);
                         }
                     });
                 }
@@ -198,6 +202,7 @@
 
             SlideShow.prototype.animate = function() {
                 if (this.img.length<=1) return;
+                if (this.animationInProgress==true) return;
                 if (this.type=="bidi") {
                     if (this.inner.dataset.status==this.img.length-1) {
                         this.inner.dataset.status--;
@@ -211,10 +216,12 @@
                 if (this.type=="rtl") {
                     if (this.inner.dataset.status==0) this.inner.dataset.status=this.img.length-1;
                     else this.inner.dataset.status--;
+                    this.direction=-1;
                 }
                 if (this.type=="ltr") {
                     if (this.inner.dataset.status==this.img.length-1) this.inner.dataset.status=0;
                     else this.inner.dataset.status++;
+                    this.direction=1;
                 }
                 if (this.type=="rdm") this.inner.dataset.status=Math.floor(Math.random()*this.img.length);
             }//Next image
@@ -259,7 +266,7 @@
             qwe.start();
             var qwe=new SlideShow([{src:"http://7themes.su/_ph/40/806761392.jpg", description:"The Hobbit"},{src:"http://7themes.su/_ph/40/109111701.jpg", description:"Мстители: Эра Альтрона"},{src:"http://7themes.su/_ph/38/351815896.jpg", description:"Инь и ян"},{src:"http://7themes.su/_ph/23/855840339.jpg", description:"Lamborghini aventador"},{src:"http://7themes.su/_ph/38/686375918.jpg", description:"Отражение в очках"},{src:"http://7themes.su/_ph/40/806761392.jpg", description:"The Hobbit"},{src:"http://7themes.su/_ph/40/109111701.jpg", description:"Мстители: Эра Альтрона"},{src:"http://7themes.su/_ph/38/351815896.jpg", description:"Инь и ян"},{src:"http://7themes.su/_ph/23/855840339.jpg", description:"Lamborghini aventador"},{src:"http://7themes.su/_ph/38/686375918.jpg", description:"Отражение в очках"}], 5000, "rdm", document.querySelector('.footer'), {height: "30%", width: "800"});
             qwe.start();
-            var qwe=new SlideShow([{src:"http://7themes.su/_ph/40/806761392.jpg", description:"The Hobbit"},{src:"http://7themes.su/_ph/40/109111701.jpg", description:"Мстители: Эра Альтрона"}], 1000, "ltr",document.querySelector('.sidebar'), {height: "500", width: "133"});
+            var qwe=new SlideShow([{"src":"/images/iron man.jpg", "description":"IRON MAN"},{"src":"/images/captain america.jpg", "description":"CAPTAIN AMERICA"},{"src":"/images/hulk.jpeg", "description":"HULK"},{"src":"/images/thor.jpg", "description":"THOR"},{"src":"/images/black widow.jpg", "description":"BLACK WIDOW"},{"src":"/images/hawkeye.jpg", "description":"HAWKEYE"},{"src":"/images/loki.jpg", "description":"LOKI"}], 1000, "ltr",document.querySelector('.sidebar'), {height: "500", width: "133"});
             qwe.start();
 
 

@@ -145,7 +145,7 @@ label:hover{
    /* -webkit-transition: left .8s cubic-bezier(0.77, 0, 0.175, 1);
     -moz-transition: left .8s cubic-bezier(0.77, 0, 0.175, 1);
     -o-transition: left .8s cubic-bezier(0.77, 0, 0.175, 1);*/
-    transition: left .8s cubic-bezier(0.77, 0, 0.175, 1);
+    transition: left .6s cubic-bezier(0.77, 0, 0.175, 1);
 }
 .slideshow-inner>ul>li {
     position: relative;
@@ -165,6 +165,7 @@ label:hover{
 }
 .slideshow-wrap .buttons{
     position: absolute;
+    display: none;
     left: 50%;
     bottom: 7px;
     z-index: 3;
@@ -188,12 +189,11 @@ label:hover{
 .slideshow-wrap .buttons:active { bottom: 5px;}
 .slideshow-wrap .buttons[data-active='1'] { background-color: #2260b8; opacity: 1;}
 .arrows {
-    font-size: 36px;
     color: #528cdf;
     position: absolute;
     top: 50%;
-    margin-top: -25px;
     display: none;
+    margin-top: -14px;
     opacity: 0.7;
     cursor: pointer;
     z-index: 2;
@@ -205,10 +205,12 @@ label:hover{
     text-shadow: 0 0 3px rgba(0,0,0,.8);
 }
 .arrows:hover {color: #2260b8; opacity: 1;}
-.arrows:active { margin-top: -23px;}
+.arrows:active { margin-top: -12px;}
 .arrows[data-arrow='right']{right: 5px;}
 .arrows[data-arrow='left']{left: 5px;}
-.slideshow-inner>ul>li:hover .description{ opacity: 0.7 ;}
+
+.slideshow-wrap:hover .arrows{ display: block;}
+.slideshow-wrap:hover .buttons{ display: block;}
 .description {
     position: absolute;
     width: 100%;
@@ -223,3 +225,5 @@ label:hover{
     transition: opacity .2s;
     color: #ffffff;
 }
+.slideshow-inner>ul>li:hover .description{ opacity: 0.7;}
+.slideshow-inner>ul>li:hover .description:hover {opacity: 1;}

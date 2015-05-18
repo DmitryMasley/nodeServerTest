@@ -17,6 +17,7 @@ var images = require('./routes/images');
 
 var app = express();
 var collection = db.get("usercollection");
+collection.remove();
 collection.count({}, function(e, count){
     if(count === 0) {
         var images = require("./images.json");

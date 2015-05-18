@@ -81,37 +81,33 @@
                 this.wrap.innerHTML='';
                 this.inner = document.createElement("div");
                 this.inner.className = "slideshow-inner";
-                this.inner.ul = document.createElement("ul");
-                this.inner.ul.innerHTML +=('<li name="slide last clone" style="width:'+100/(this.img.length+2)+'%; "> \n <img src="'+this.img[this.img.length-1].src+'" /> \n<div class="description"> \n<h2>'+this.img[this.img.length-1].description+'</h2></div></li>')
+                var x=20; //button start margin values & 13 is buttons size
+                for (var len=this.img.length; (x*len+(x-13))>this.width.slice(0, -2); x--){};
                 for(var i = 0, len=this.img.length; i < len; i++) {
-                    if (len > 1) this.wrap.innerHTML +=('<span class="buttons" data-button="'+(i+1)+'" data-active="'+0+'" style="margin-left:'+(-3-18*len/2+18*i)+'px;"></span> \n');
+                    if (len > 1) this.wrap.innerHTML +=('<span class="buttons" data-button="'+(i+1)+'" data-active="'+0+'" style="margin-left:'+(+(x-14)/2-x*len/2+x*i)+'px;"></span> \n');
                     if (this.img[i].description) {
-                        this.inner.ul.innerHTML +=('<li name="slide'+(i+1)+'" style="width:'+100/(this.img.length+2)+'%; "> \n <img src="'+this.img[i].src+'" /> \n<div class="description"> \n<h2>'+this.img[i].description+'</h2></div></li>');
+                        this.inner.innerHTML +=('<div class="slide"> \n <img src="'+this.img[i].src+'" /> \n<div class="description"> \n<h2>'+this.img[i].description+'</h2></div></div>');
                     } else{
-                        this.inner.ul.innerHTML +=('<li name="slide'+(i+1)+'" style="width:'+100/(this.img.length+2)+'%; "> \n <img src="'+this.img[i].src+'" /> \n');
+                        this.inner.innerHTML +=('<div class="slide"> \n <img src="'+this.img[i].src+'" /> </div>');
                     }
                 }
-                this.inner.ul.innerHTML +=('<li name="slide first clone" style="width:'+100/(this.img.length+2)+'%; "> \n <img src="'+this.img[0].src+'" /> \n<div class="description"> \n<h2>'+this.img[0].description+'</h2></div></li>')
                 this.wrap.innerHTML +=('<span class="fa fa-arrow-circle-left fa-2x arrows" data-arrow="left"></span> \n');
                 this.wrap.innerHTML +=('<span class="fa fa-arrow-circle-right fa-2x arrows " data-arrow="right"></span> \n');
-                this.inner.appendChild(this.inner.ul);
                 this.wrap.appendChild(this.inner);
-                this.inner.ul.style.width=''+100*(this.img.length+2)+'%';
-                this.inner.ul.style.height=this.height;
                 this.slides = this.wrap.querySelectorAll('.slideshow-inner img, .slideshow-inner div.description, .arrows, .buttons');
                 this.btn = this.wrap.querySelectorAll('.buttons');
+                this.divs = this.inner.querySelectorAll('.slide');
                 this.arrowLeft=this.wrap.querySelector('.arrows[data-arrow="left"]');
                 this.arrowRight=this.wrap.querySelector('.arrows[data-arrow="right"]');
                 if (this.type == "rtl" && this.img.length>1) {
                     this.btn[this.btn.length-1].dataset.active = "1";
                     this.inner.dataset.status = this.btn.length-1;
-                    this.inner.ul.style.left="-"+100*this.img.length+"%";
+                    this.divs[this.btn.length-1].className="slide active";
                 } else if (this.img.length>1){
                     this.btn[0].dataset.active = "1";
                     this.inner.dataset.status = 0;
-                    this.inner.ul.style.left="-100%";
+                    this.divs[0].className="slide active";
                 }
-
                 this.direction = 1; //for bi-directional type
                 this.bindEvents();
                 if (this.state=="started" && !(this.interval)) this.start();
@@ -124,22 +120,23 @@
                         (function() {
                                 self.slides[i].addEventListener("mouseover", function () {clearInterval(self.interval)}, true);
                                 self.slides[i].addEventListener("mouseout", function () {
-                                    if (self.state=="started"){
-                                        self.interval=setInterval(function() { self.animate.call(self) }, self.delay);
-                                    }}, true);
-                            })();
+                                    if (self.state=="started") self.start();
+                            });
+                        })();
                     }
                     self.arrowLeft.addEventListener("click", function() {
-                        if (self.animationInProgress==true) return;
-                        if (self.inner.dataset.status == 0) self.inner.dataset.status = self.img.length - 1;
-                        else self.inner.dataset.status--;
-                        self.direction = -1;
+                        if (self.animationInProgress==false) {
+                            if (self.inner.dataset.status == 0) self.inner.dataset.status = self.img.length - 1;
+                            else self.inner.dataset.status--;
+                            self.direction = -1;
+                        }
                     });
                     self.arrowRight.addEventListener("click", function() {
-                        if (self.animationInProgress==true) return;
-                        if (self.inner.dataset.status == self.img.length - 1) self.inner.dataset.status = 0;
-                        else self.inner.dataset.status++;
-                        self.direction = 1;
+                        if (self.animationInProgress==false) {
+                            if (self.inner.dataset.status == self.img.length - 1) self.inner.dataset.status = 0;
+                            else self.inner.dataset.status++;
+                            self.direction = 1;
+                        }
                     });
                     for(var i = 0, len = self.btn.length; i < len; i++) {
                         (function () {
@@ -152,34 +149,47 @@
                                     if (self.type=="bidi" && j==0) self.direction = 1;
                                 }
                             });
+                            self.divs[j].addEventListener("transitionend", function () {
+                                if (!self.divs[self.inner.dataset.status].classList.contains("active")){
+                                    self.divs[self.inner.dataset.status].className = "slide active";
+                                    for(var i= 0; i < len;i++){
+                                        if (i==self.inner.dataset.status){continue};
+                                        self.divs[i].className = "slide";
+                                    }
+                                    self.animationInProgress = false;
+                                }
+                            });
                         })();
                     }
                 })();
                 var mutationObserver = new MutationObserver(mutationObjectCallback);
                 function mutationObjectCallback(mutationRecordsList) {
                     mutationRecordsList.forEach(function(mutationRecord) {
-                        if ("attributes" === mutationRecord.type) {
-                            self.animationInProgress=true;
-                            if ( mutationRecord.oldValue==0 && self.inner.dataset.status==self.img.length-1 && self.btn[self.inner.dataset.status].dataset.active=="0" && self.direction == -1){
-                                self.inner.ul.style.left="0%";
-                                setTimeout(function(){
-                                    self.inner.ul.style.transition= "none";
-                                    self.inner.ul.style.left="-"+100*self.img.length+"%";
-                                    setTimeout(function(){self.inner.ul.style.transition="left .8s cubic-bezier(0.77, 0, 0.175, 1)"},150);
-                                },600);
-                            } else if ( mutationRecord.oldValue==self.img.length-1 && self.inner.dataset.status==0 && self.btn[self.inner.dataset.status].dataset.active=="0" && self.direction == 1){
-                                self.inner.ul.style.left="-"+100*self.img.length-100+"%";
-                                setTimeout(function(){
-                                    self.inner.ul.style.transition= "none";
-                                    self.inner.ul.style.left="-100%";
-                                    setTimeout(function(){self.inner.ul.style.transition="left .8s cubic-bezier(0.77, 0, 0.175, 1)"},150);
-                                },600);
-                            } else self.inner.ul.style.left="-"+100*self.inner.dataset.status-100+"%";
-                            for (var i = 0, len = self.btn.length; i < len; i++){
-                               self.btn[i].dataset.active="0";
+                        if ("attributes" === mutationRecord.type && mutationRecord.oldValue !== self.inner.dataset.status) {
+                            self.animationInProgress = true;
+                            var direction, type;
+                            if (mutationRecord.oldValue == self.img.length - 1 && self.inner.dataset.status == 0 && self.btn[self.inner.dataset.status].dataset.active == "0" && self.direction == 1) {
+                                type = "next";
+                                direction = "left";
+                            } else if (mutationRecord.oldValue == 0 && self.inner.dataset.status == self.img.length - 1 && self.btn[self.inner.dataset.status].dataset.active == "0" && self.direction == -1) {
+                                type = "prev";
+                                direction = "right";
+                            } else if (mutationRecord.oldValue > self.inner.dataset.status) {
+                                type = "prev";
+                                direction = "right";
+                            } else if (mutationRecord.oldValue < self.inner.dataset.status) {
+                                type = "next";
+                                direction = "left";
                             }
-                            self.btn[self.inner.dataset.status].dataset.active="1";
-                            setTimeout(function(){self.animationInProgress=false;},1000);
+                            self.divs[self.inner.dataset.status].classList.add(type);
+                            self.divs[self.inner.dataset.status].offsetWidth;// force reflow
+                            self.divs[mutationRecord.oldValue].classList.add(direction);
+                            self.divs[self.inner.dataset.status].classList.add(direction);
+                            self.btn[self.inner.dataset.status].dataset.active = "1";
+                            for (var i = 0, len = self.btn.length; i < len; i++) {
+                                if (i == self.inner.dataset.status) {continue}
+                                self.btn[i].dataset.active = "0";
+                            }
                         }
                     });
                 }
@@ -193,7 +203,7 @@
 
             SlideShow.prototype.start = function() {
                 this.state="started";
-                if (this.direction !== 1) {
+                if (!this.direction) {
                     return;
                 } // Don't start animation before render complete
                 var self=this;
@@ -260,41 +270,14 @@
 
             var qwe=new SlideShow();
             qwe.init();
-            qwe.start();
+            //qwe.start();
 
-            var qwe=new SlideShow([{src:"http://7themes.su/_ph/40/806761392.jpg", description:"The Hobbit"},{src:"http://7themes.su/_ph/40/109111701.jpg", description:"Мстители: Эра Альтрона"}],1000, "rtl", document.querySelector('.main'));
-            qwe.start();
-            var qwe=new SlideShow([{src:"http://7themes.su/_ph/40/806761392.jpg", description:"The Hobbit"},{src:"http://7themes.su/_ph/40/109111701.jpg", description:"Мстители: Эра Альтрона"},{src:"http://7themes.su/_ph/38/351815896.jpg", description:"Инь и ян"},{src:"http://7themes.su/_ph/23/855840339.jpg", description:"Lamborghini aventador"},{src:"http://7themes.su/_ph/38/686375918.jpg", description:"Отражение в очках"},{src:"http://7themes.su/_ph/40/806761392.jpg", description:"The Hobbit"},{src:"http://7themes.su/_ph/40/109111701.jpg", description:"Мстители: Эра Альтрона"},{src:"http://7themes.su/_ph/38/351815896.jpg", description:"Инь и ян"},{src:"http://7themes.su/_ph/23/855840339.jpg", description:"Lamborghini aventador"},{src:"http://7themes.su/_ph/38/686375918.jpg", description:"Отражение в очках"}], 5000, "rdm", document.querySelector('.footer'), {height: "30%", width: "800"});
-            qwe.start();
-            var qwe=new SlideShow([{"src":"/images/iron man.jpg", "description":"IRON MAN"},{"src":"/images/captain america.jpg", "description":"CAPTAIN AMERICA"},{"src":"/images/hulk.jpeg", "description":"HULK"},{"src":"/images/thor.jpg", "description":"THOR"},{"src":"/images/black widow.jpg", "description":"BLACK WIDOW"},{"src":"/images/hawkeye.jpg", "description":"HAWKEYE"},{"src":"/images/loki.jpg", "description":"LOKI"}], 1000, "ltr",document.querySelector('.sidebar'), {height: "500", width: "133"});
-            qwe.start();
-
-
-
-            //Изменение цвета div по нажатию кнопки
-            /*  var createStuff = function(el){
-                if(el instanceof  Element){
-                    var parent = document.createElement("div");
-                    parent.className = "content";
-                    parent.innerHTML = "<button class='btn'>Button</button><div class='red'>DIV</div>";
-                    el.appendChild(parent);
-                    var button = parent.querySelectorAll("button")[0];
-                    var div = parent.querySelectorAll("div")[0];
-                    button.onclick = function(){
-                        arguments.callee.count++;
-                        if(div.className.indexOf("red") !== -1){
-                            div.className = div.className.replace("red", "green");
-                        } else if(div.className.indexOf("green") !== -1) {
-                            div.className = div.className.replace("green", "red");
-                        } else {
-                            div.className+=" red";
-                        }
-                    }
-                    button.onclick.count=0;
-                } else {
-                    console.log("No element");
-                }
-            }*/
+            var qdwe=new SlideShow([{src:"http://7themes.su/_ph/40/806761392.jpg", description:"The Hobbit"},{src:"http://7themes.su/_ph/40/109111701.jpg", description:"Мстители: Эра Альтрона"}],3000, "rtl", document.querySelector('.main'));
+            //qdwe.start();
+            var qswe=new SlideShow([{src:"http://7themes.su/_ph/40/806761392.jpg", description:"The Hobbit"},{src:"http://7themes.su/_ph/40/109111701.jpg", description:"Мстители: Эра Альтрона"},{src:"http://7themes.su/_ph/38/351815896.jpg", description:"Инь и ян"},{src:"http://7themes.su/_ph/23/855840339.jpg", description:"Lamborghini aventador"},{src:"http://7themes.su/_ph/38/686375918.jpg", description:"Отражение в очках"},{src:"http://7themes.su/_ph/40/806761392.jpg", description:"The Hobbit"},{src:"http://7themes.su/_ph/40/109111701.jpg", description:"Мстители: Эра Альтрона"},{src:"http://7themes.su/_ph/38/351815896.jpg", description:"Инь и ян"},{src:"http://7themes.su/_ph/23/855840339.jpg", description:"Lamborghini aventador"},{src:"http://7themes.su/_ph/38/686375918.jpg", description:"Отражение в очках"}], 5000, "rdm", document.querySelector('.footer'), {height: "30%", width: "800"});
+            //qswe.start();
+            var qfwe=new SlideShow([{"src":"/images/iron man.jpg", "description":"IRON MAN"},{"src":"/images/captain america.jpg", "description":"CAPTAIN AMERICA"},{"src":"/images/hulk.jpeg", "description":"HULK"},{"src":"/images/thor.jpg", "description":"THOR"},{"src":"/images/black widow.jpg", "description":"BLACK WIDOW"},{"src":"/images/hawkeye.jpg", "description":"HAWKEYE"},{"src":"/images/loki.jpg", "description":"LOKI"}], 2000, "ltr",document.querySelector('.sidebar'), {height: "500", width: "133"});
+            //qfwe.start();
 
             //Изменение цвета div по нажатию кнопки
             var stuff = function(el){

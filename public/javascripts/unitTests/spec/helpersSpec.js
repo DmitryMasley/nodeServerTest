@@ -24,18 +24,18 @@ define(["helpers"], function(Helpers){
             assert.isFalse(Helpers.validateEmail("@exmplegmail.com"), "Should not start from @");
         });
         it("Not allow unicode characters", function(){
-            assert.isFalse("üñîçøðé@gmail.com", "Should not allow unicode characters");
-            assert.isFalse("example@ыыы.com", "Should not allow unicode characters");
+            assert.isFalse(Helpers.validateEmail("üñîçøðé@gmail.com"), "Should not allow unicode characters");
+            assert.isFalse(Helpers.validateEmail("example@ыыы.com"), "Should not allow unicode characters");
         });
         it("Not allow special characters and punctuation", function(){
-            assert.isFalse("examp'e@gmail.com", "Should not allow punctuation");
-            assert.isFalse("examp,e@gmail.com", "Should not allow punctuation");
-            assert.isFalse("examp\"e@gmail.com", "Should not allow special characters");
-            assert.isFalse("examp$e@gmail.com", "Should not allow special characters");
-            assert.isFalse("examp<e@gmail.com", "Should not allow special characters");
-            assert.isFalse("examp\\e@gmail.com", "Should not allow special characters");
-            assert.isFalse("examp\/e@gmail.com", "Should not allow special characters");
-            assert.isFalse("examp\/e@gmail.com", "Should not allow special characters");
+            assert.isFalse(Helpers.validateEmail("examp'e@gmail.com"), "Should not allow punctuation");
+            assert.isFalse(Helpers.validateEmail("examp,e@gmail.com"), "Should not allow punctuation");
+            assert.isFalse(Helpers.validateEmail("examp\"e@gmail.com"), "Should not allow special characters");
+            assert.isFalse(Helpers.validateEmail("examp$e@gmail.com"), "Should not allow special characters");
+            assert.isFalse(Helpers.validateEmail("examp<e@gmail.com"), "Should not allow special characters");
+            assert.isFalse(Helpers.validateEmail("examp\\e@gmail.com"), "Should not allow special characters");
+            assert.isFalse(Helpers.validateEmail("examp\/e@gmail.com"), "Should not allow special characters");
+            assert.isFalse(Helpers.validateEmail("examp\/e@gmail.com"), "Should not allow special characters");
         });
     });
 });

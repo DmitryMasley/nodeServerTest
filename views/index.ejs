@@ -3,7 +3,6 @@
 <head>
     <meta charset="utf-8" />  <meta name="description" content="Приглашаем детей и взрослых для увлекательного изучения английского языка" />
     <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
-    <link rel='stylesheet' href='/stylesheets/style.css' />
     <link rel='stylesheet' href='/stylesheets/main.css' />
     <title><%= __("Title") %></title>
     <script type="text/javascript">
@@ -58,11 +57,11 @@
                 if (img) {
                     this.img = img;
                     this.renderImages();
-
                 } else {
                     this.timedGetJSON('/images.ajax', 5000, handleRequest);
                     function handleRequest(req) {
-                        self.img = req.data || [{"src":"/images/iron man.jpg", "description":"IRON MAN"},{"src":"/images/captain america.jpg", "description":"CAPTAIN AMERICA"},{"src":"/images/hulk.jpeg", "description":"HULK"},{"src":"/images/thor.jpg", "description":"THOR"},{"src":"/images/black widow.jpg", "description":"BLACK WIDOW"},{"src":"/images/hawkeye.jpg", "description":"HAWKEYE"},{"src":"/images/loki.jpg", "description":"LOKI"}];
+                        if (req.data && req.data.length>0){self.img = req.data}
+                        else {self.img =[{"src":"/images/iron man.jpg", "description":"IRON MAN"},{"src":"/images/captain america.jpg", "description":"CAPTAIN AMERICA"},{"src":"/images/hulk.jpeg", "description":"HULK"},{"src":"/images/thor.jpg", "description":"THOR"},{"src":"/images/black widow.jpg", "description":"BLACK WIDOW"},{"src":"/images/hawkeye.jpg", "description":"HAWKEYE"},{"src":"/images/loki.jpg", "description":"LOKI"}]}
                         self.renderImages();
                     }
                 }
@@ -94,7 +93,7 @@
                 this.wrap.innerHTML +=('<span class="fa fa-arrow-circle-left fa-2x arrows" data-arrow="left"></span> \n');
                 this.wrap.innerHTML +=('<span class="fa fa-arrow-circle-right fa-2x arrows " data-arrow="right"></span> \n');
                 this.wrap.appendChild(this.inner);
-                this.slides = this.wrap.querySelectorAll('.slideshow-inner img, .slideshow-inner div.description, .arrows, .buttons');
+                this.slides = this.wrap.querySelectorAll('div img, div  div.description, .arrows, .buttons');
                 this.btn = this.wrap.querySelectorAll('.buttons');
                 this.divs = this.inner.querySelectorAll('.slide');
                 this.arrowLeft=this.wrap.querySelector('.arrows[data-arrow="left"]');
@@ -156,7 +155,7 @@
                                         if (i==self.inner.dataset.status){continue};
                                         self.divs[i].className = "slide";
                                     }
-                                    self.animationInProgress = false;
+                                    setTimeout(function(){self.animationInProgress = false;},100);
                                 }
                             });
                         })();
@@ -187,13 +186,12 @@
                             self.divs[self.inner.dataset.status].classList.add(direction);
                             self.btn[self.inner.dataset.status].dataset.active = "1";
                             for (var i = 0, len = self.btn.length; i < len; i++) {
-                                if (i == self.inner.dataset.status) {continue}
-                                self.btn[i].dataset.active = "0";
+                                if (i != self.inner.dataset.status) {self.btn[i].dataset.active = "0"}
                             }
                         }
                     });
                 }
-                mutationObserver.observe(self.inner, {attributes: true,  attributeFilter: ["data-status"], attributeOldValue: true,  childList: false});
+                mutationObserver.observe(self.inner, {attributes: true, attributeFilter: ["data-status"], attributeOldValue: true, childList: false});
             }//Binding events
 
             SlideShow.prototype.stop = function() {
@@ -270,14 +268,14 @@
 
             var qwe=new SlideShow();
             qwe.init();
-            //qwe.start();
+            qwe.start();
 
             var qdwe=new SlideShow([{src:"http://7themes.su/_ph/40/806761392.jpg", description:"The Hobbit"},{src:"http://7themes.su/_ph/40/109111701.jpg", description:"Мстители: Эра Альтрона"}],3000, "rtl", document.querySelector('.main'));
-            //qdwe.start();
+            qdwe.start();
             var qswe=new SlideShow([{src:"http://7themes.su/_ph/40/806761392.jpg", description:"The Hobbit"},{src:"http://7themes.su/_ph/40/109111701.jpg", description:"Мстители: Эра Альтрона"},{src:"http://7themes.su/_ph/38/351815896.jpg", description:"Инь и ян"},{src:"http://7themes.su/_ph/23/855840339.jpg", description:"Lamborghini aventador"},{src:"http://7themes.su/_ph/38/686375918.jpg", description:"Отражение в очках"},{src:"http://7themes.su/_ph/40/806761392.jpg", description:"The Hobbit"},{src:"http://7themes.su/_ph/40/109111701.jpg", description:"Мстители: Эра Альтрона"},{src:"http://7themes.su/_ph/38/351815896.jpg", description:"Инь и ян"},{src:"http://7themes.su/_ph/23/855840339.jpg", description:"Lamborghini aventador"},{src:"http://7themes.su/_ph/38/686375918.jpg", description:"Отражение в очках"}], 5000, "rdm", document.querySelector('.footer'), {height: "30%", width: "800"});
-            //qswe.start();
+            qswe.start();
             var qfwe=new SlideShow([{"src":"/images/iron man.jpg", "description":"IRON MAN"},{"src":"/images/captain america.jpg", "description":"CAPTAIN AMERICA"},{"src":"/images/hulk.jpeg", "description":"HULK"},{"src":"/images/thor.jpg", "description":"THOR"},{"src":"/images/black widow.jpg", "description":"BLACK WIDOW"},{"src":"/images/hawkeye.jpg", "description":"HAWKEYE"},{"src":"/images/loki.jpg", "description":"LOKI"}], 2000, "ltr",document.querySelector('.sidebar'), {height: "500", width: "133"});
-            //qfwe.start();
+            qfwe.start();
 
             //Изменение цвета div по нажатию кнопки
             var stuff = function(el){

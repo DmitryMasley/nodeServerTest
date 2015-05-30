@@ -15,7 +15,7 @@ require.config({
         "tpl": "vendor/requirejs/tpl",
         "text": "vendor/requirejs/text",
         "domReady": "vendor/requirejs/domReady",
-
+        "helpers": "lib/helpers",
         "app" : "app/app"
     },
     shim: {

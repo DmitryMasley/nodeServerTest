@@ -1,0 +1,32 @@
+{
+    "name": "WebApps",
+    "version": "0.0.0",
+    "description": "Unit tests",
+    "main": "Gruntfile.js",
+    "scripts": {
+    "test": "grunt test"
+    },
+    "author": "Smartling, Inc.",
+    "license": "BSD-2-Clause",
+    "devDependencies": {
+        "grunt": "~0.4.1",
+        "grunt-cli": "~0.1.13",
+        "grunt-blanket-mocha": "~0.4.0",
+        "grunt-casperjs": "^2.0.2",
+        "grunt-complexity": "~0.1.4",
+        "grunt-contrib-copy": "~0.4.1",
+        "grunt-contrib-jshint": "~0.10.0",
+        "grunt-contrib-less": "~0.8.2",
+        "grunt-contrib-requirejs": "~0.4.1",
+        "grunt-contrib-uglify": "^0.3.0",
+        "grunt-contrib-watch": "~0.4.4",
+        "grunt-docco": "~0.2.0",
+        "grunt-mocha": "~0.4.1",
+        "grunt-r2": "~0.1.0",
+        "grunt-shell": "~0.6.4",
+        "jshint-stylish": "~0.2.0",
+        "phantomjs": "1.9.8",
+        "casperjs": "~1.1.0-beta2",
+        "mocha-phantomjs": "3.5.2"
+    }
+}

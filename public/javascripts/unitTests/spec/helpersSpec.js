@@ -3,11 +3,11 @@ define(["helpers"], function(Helpers){
     "use strict";
     describe("Email validation", function(){
         it("Should reject email without @", function(){
-            assert.isFalse(Helpers.validateEmail("example.com"), "example.com has passed validation");
+            assert.isFalse(Helpers.validateEmail("example.com"), "Should reject email without @");
         });
         it("Should reject email without domain", function(){
-            assert.isFalse(Helpers.validateEmail("example@"), "example@ has passed validation")
-            assert.isFalse(Helpers.validateEmail("example@gmail"), "example@gmail has passed validation")
+            assert.isFalse(Helpers.validateEmail("example@"), "Should reject email without domain")
+            assert.isFalse(Helpers.validateEmail("example@gmail"), "Should reject email with invalid domain")
         });
         it("Should validate dots", function(){
             assert.isFalse(Helpers.validateEmail(".example@gmail.com"), "Email should not begin form '.'");
@@ -37,5 +37,17 @@ define(["helpers"], function(Helpers){
             assert.isFalse(Helpers.validateEmail("examp\/e@gmail.com"), "Should not allow special characters");
             assert.isFalse(Helpers.validateEmail("examp\/e@gmail.com"), "Should not allow special characters");
         });
+    });
+    describe("Date validation", function(){
+        it("Should accept valid date", function(){
+            assert.isTrue(Helpers.isDateString("21.11.1987"), "Valid date do not pass validation");
+        });
+        it("Should validate max values", function(){
+            assert.isFalse(Helpers.isDateString("21.13.1987"), "Should validate month number");
+            assert.isFalse(Helpers.isDateString("35.12.1987"), "Should validate days number");
+        })
+        it("Should validate in fixed format", function(){
+            assert.isFalse(Helpers.isDateString("21/13/1987"));
+        })
     });
 });

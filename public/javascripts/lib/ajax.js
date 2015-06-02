@@ -1,4 +1,4 @@
-define([], function(){
+define([], function() {
     "use strict";
     var ajax = function (method, url, responseSuccess, responseError, responseComplete) {
         var xmlhttp = new XMLHttpRequest();
@@ -19,4 +19,4 @@ define([], function(){
         xmlhttp.send();
     };
     return ajax;
-});
+}

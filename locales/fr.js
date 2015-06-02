@@ -34,5 +34,13 @@
 	"Agree": "Agree",
 	"Register": "Register",
 	"Data submitted": "Data submitted",
-	"Hello": "Hello"
+	"Hello": "Hello",
+	"invite": "invite",
+	"Continent": "Continent",
+	"About": "About",
+	"Gallery": "Gallery",
+	"Rules": "Rules",
+	"Blog": "Blog",
+	"Contact": "Contact",
+	"Registration": "Registration"
 }

@@ -1,21 +1,19 @@
-define([], function(){
+define(["helpers", "jquery"], function(helpers, $){
     "use strict";
-    var ajax = function (method, url, responseSuccess, responseError, responseComplete) {
+    var ajax = function (args) {
         var xmlhttp = new XMLHttpRequest();
         xmlhttp.onreadystatechange = function () {
             if (xmlhttp.readyState == XMLHttpRequest.DONE) {
                 if (xmlhttp.status == 200) {
-                    responseSuccess(xmlhttp.responseText);
-                }
-                else if (xmlhttp.status == 400) {
-                    responseError(xmlhttp.status);
+                    args.responseSuccess(xmlhttp.responseText);
                 }
                 else {
-                    responseComplete(xmlhttp.status, xmlhttp.responseText)
+                    args.responseError(xmlhttp.status);
                 }
+                args.responseComplete(xmlhttp.status, xmlhttp.responseText);
             }
         };
-        xmlhttp.open(method, url, true);
+        xmlhttp.open(args.method, args.url, true);
         xmlhttp.send();
     };
     return ajax;

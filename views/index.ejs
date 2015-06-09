@@ -9,73 +9,41 @@
     <script type="text/javascript" src="/javascripts/require-config.js"></script>
     <script type="text/javascript">
         require(["helpers", "domReady", "lib/ajax"], function(Helpers, domReady, ajax){
-            // you can use helpers here
-        });
-    </script>
-    <script type="text/javascript">
-        window.onload = function() {
 
-            function SlideShow (img,delay,order,type,el,size){
-                if (arguments.length>0) this.init(img,delay,order,type,el,size);
+            function SlideShow (args){//img,delay,order,type,el,size
+                if (arguments.length>0) this.init(args);
             }//Class Constructor
 
-            SlideShow.prototype.init = function(img,delay,order,type,el,size) {
+            SlideShow.prototype.init = function(args) {
                 /* img=[{src:"...", description:"..."},...], delay=1000-10000(ms), el=document.querySelector('...'), size={width:"1%-100%", height:"100-1920"}*/
-                if (delay <= 10000 && delay >= 1000) {
-                    this.delay = delay;
-                } else {
-                    this.delay = 4000;
-                }/*Delay may be >=1sec and <=10sec. Otherwise used default delay.*/
-                if (order == "bidi") this.order=order;
-                else if (order == "rtl") this.order=order;
-                else if (order == "ltr") this.order=order;
-                else if (order == "rdm") this.order=order;
-                else this.order="bidi";
-                if (type == "crossfade") this.type=type;
-                else if (type == "slide") this.type=type;
-                else this.type="slide";
-                if (el instanceof  Element) {
-                    this.el = el;
-                } else {
-                    this.el = document.body.querySelector('.container');
-                }
-                var minSize=100;    /*in px*/
-                var maxSize=1920;   /*in px*/
-                var height=window.getComputedStyle(this.el,null).getPropertyValue("height").slice(0,-2);
-                var width=window.getComputedStyle(this.el,null).getPropertyValue("width").slice(0,-2);
-                if ((size) && (size.width) && size.width.slice(-1)=="%" && size.width.slice(0,-1)<=100 && size.width.slice(0,-1)>0 && (width * size.width.slice(0, -1) / 100) >= minSize){
-                    this.width = ""+ width * size.width.slice(0, -1) / 100 + "px";
-                }else if ((size) && (size.width) && size.width <= maxSize && size.width >= minSize && size.width <= width) {
-                    this.width = ""+size.width+"px";
-                }else if (((!size) || ((size) && (!size.width))) && width <= maxSize && width >= minSize) {
-                    this.width = ""+width+"px";
-                }else if ((size) && (size.width) && (size.width > maxSize || size.width < minSize) && minSize <= width) {
-                    this.width = ""+minSize+"px";
-                }else {
-                    this.width = "0px"; //minSize > element.width - so we set width to 0px
-                }
-                if ((size) && (size.height) && size.height.slice(-1)=="%" && size.height.slice(0,-1)<=minSize && size.height.slice(0,-1)>0 && (height * size.height.slice(0, -1) / 100) >= minSize) {
-                    this.height = "" + height * size.height.slice(0, -1) / 100 + "px";
-                }else if ((size) && (size.height) && size.height <= maxSize && size.height >= minSize && size.height <= height) {
-                    this.height = ""+size.height+"px";
-                }else if (((!size) || ((size) && (!size.height))) && height <= maxSize && height >= minSize) {
-                    this.height = "" + height + "px";
-                }else if ((size) && (size.height) && (size.height > maxSize || size.height < minSize) && minSize <= height) {
-                    this.height = ""+minSize+"px";
-                }else {
-                    this.height = "0px"; //minSize > element.height - so we set height to 0px
-                }
+                this.delay = (args && (args.delay <= 10000 && args.delay >= 1000)) ? args.delay : 4000; //*Delay may be >=1sec and <=10sec. Otherwise used default delay.*/
+                this.order = (args && args.order === "rtl") ? "rtl" :
+                             (args && args.order === "ltr") ? "ltr" :
+                             (args && args.order === "rdm") ? "rdm" : "bidi";
+                this.type = (args && args.type === "crossfade") ? "crossfade" : "slide";
+                this.el = (args && args.el instanceof Element) ? args.el : document.body.querySelector('.container');
+                var minSize = 100, maxSize = 1920;
+                var size = (args && args.size) ? args.size : null;
+                var height = window.getComputedStyle(this.el,null).getPropertyValue("height").slice(0,-2);
+                var width = window.getComputedStyle(this.el,null).getPropertyValue("width").slice(0,-2);
+                this.width = ((size) && (size.width) && size.width.slice(-1)=="%" && size.width.slice(0,-1)<=100 && size.width.slice(0,-1)>0 && (width * size.width.slice(0, -1) / 100) >= minSize) ? "" + width * size.width.slice(0, -1) / 100 + "px" :
+                             ((size) && (size.width) && size.width <= maxSize && size.width >= minSize && size.width <= width) ? "" + size.width + "px" :
+                             (((!size) || ((size) && (!size.width))) && width <= maxSize && width >= minSize) ? "" + width + "px" :
+                             ((size) && (size.width) && (size.width > maxSize || size.width < minSize) && minSize <= width) ? "" + minSize + "px" : "0px"; //minSize > element.width - so we set width to 0px
+                this.height = ((size) && (size.height) && size.height.slice(-1)=="%" && size.height.slice(0,-1)<=minSize && size.height.slice(0,-1)>0 && (height * size.height.slice(0, -1) / 100) >= minSize) ? "" + height * size.height.slice(0, -1) / 100 + "px" :
+                              ((size) && (size.height) && size.height <= maxSize && size.height >= minSize && size.height <= height) ? "" + size.height + "px" :
+                              (((!size) || ((size) && (!size.height))) && height <= maxSize && height >= minSize) ? "" + height + "px" :
+                              ((size) && (size.height) && (size.height > maxSize || size.height < minSize) && minSize <= height) ? "" + minSize + "px" : "0px"; //minSize > element.height - so we set height to 0px
                 this.renderWrap();
                 this.animationInProgress=false;
-                var self = this;
-                if (img) {
-                    this.img = img;
+                if (args && args.img) {
+                    this.img=args.img;
                     this.renderImages();
-                } else {
-                    this.timedGetJSON('/images.ajax', 5000, handleRequest);
+                }else{
+                    var self = this;
+                    ajax({method:"GET", url:'/images.ajax', timeout:5000, responseSuccess:handleRequest});
                     function handleRequest(req) {
-                        if (req.data && req.data.length>0){self.img = req.data}
-                        else {self.img =[{"src":"/images/iron man.jpg", "description":"IRON MAN"},{"src":"/images/captain america.jpg", "description":"CAPTAIN AMERICA"},{"src":"/images/hulk.jpeg", "description":"HULK"},{"src":"/images/thor.jpg", "description":"THOR"},{"src":"/images/black widow.jpg", "description":"BLACK WIDOW"},{"src":"/images/hawkeye.jpg", "description":"HAWKEYE"},{"src":"/images/loki.jpg", "description":"LOKI"}]}
+                        self.img = (req.data && req.data.length>0) ? req.data : [{"src":"/images/iron man.jpg", "description":"IRON MAN"},{"src":"/images/captain america.jpg", "description":"CAPTAIN AMERICA"},{"src":"/images/hulk.jpeg", "description":"HULK"},{"src":"/images/thor.jpg", "description":"THOR"},{"src":"/images/black widow.jpg", "description":"BLACK WIDOW"},{"src":"/images/hawkeye.jpg", "description":"HAWKEYE"},{"src":"/images/loki.jpg", "description":"LOKI"}]
                         self.renderImages();
                     }
                 }
@@ -139,29 +107,24 @@
                         })();
                     }
                     self.arrowLeft.addEventListener("click", function() {
-                        if (self.animationInProgress==false) {
-                            if (self.inner.dataset.status == 0) self.inner.dataset.status = self.img.length - 1;
-                            else self.inner.dataset.status--;
+                        if (self.animationInProgress==true) return;
+                            (self.inner.dataset.status == 0) ? (self.inner.dataset.status = self.img.length - 1) : self.inner.dataset.status--;
                             self.direction = -1;
-                        }
                     });
                     self.arrowRight.addEventListener("click", function() {
-                        if (self.animationInProgress==false) {
-                            if (self.inner.dataset.status == self.img.length - 1) self.inner.dataset.status = 0;
-                            else self.inner.dataset.status++;
+                        if (self.animationInProgress==true) return;
+                            (self.inner.dataset.status == self.img.length - 1) ? (self.inner.dataset.status = 0) : self.inner.dataset.status++;
                             self.direction = 1;
-                        }
                     });
                     for(var i = 0, len = self.btn.length; i < len; i++) {
                         (function () {
                             var j = i;
                             self.btn[j].addEventListener("click", function () {
-                                if (self.animationInProgress==false) {
+                                if (self.animationInProgress==true) return;
                                     self.btn[j].dataset.active = "1";
                                     self.inner.dataset.status = j;
                                     if (self.order=="bidi" && j==self.btn.length-1) self.direction = -1;
                                     if (self.order=="bidi" && j==0) self.direction = 1;
-                                }
                             });
                             self.divs[j].addEventListener("transitionend", function () {
                                 if (!self.divs[self.inner.dataset.status].classList.contains("active")){
@@ -182,19 +145,10 @@
                         if ("attributes" === mutationRecord.type && mutationRecord.oldValue !== self.inner.dataset.status) {
                             self.animationInProgress = true;
                             var direction, order;
-                            if (mutationRecord.oldValue == self.img.length - 1 && self.inner.dataset.status == 0 && self.btn[self.inner.dataset.status].dataset.active == "0" && self.direction == 1) {
-                                order = "next";
-                                direction = "left";
-                            } else if (mutationRecord.oldValue == 0 && self.inner.dataset.status == self.img.length - 1 && self.btn[self.inner.dataset.status].dataset.active == "0" && self.direction == -1) {
-                                order = "prev";
-                                direction = "right";
-                            } else if (mutationRecord.oldValue > self.inner.dataset.status) {
-                                order = "prev";
-                                direction = "right";
-                            } else if (mutationRecord.oldValue < self.inner.dataset.status) {
-                                order = "next";
-                                direction = "left";
-                            }
+                            (mutationRecord.oldValue == self.img.length - 1 && self.inner.dataset.status == 0 && self.btn[self.inner.dataset.status].dataset.active == "0" && self.direction == 1) ? (order = "next") & (direction = "left") :
+                            (mutationRecord.oldValue == 0 && self.inner.dataset.status == self.img.length - 1 && self.btn[self.inner.dataset.status].dataset.active == "0" && self.direction == -1) ? (order = "prev") & (direction = "right") :
+                            (mutationRecord.oldValue > self.inner.dataset.status) ? (order = "prev") & (direction = "right") :
+                            (mutationRecord.oldValue < self.inner.dataset.status) ? (order = "next") & ( direction = "left") : 0;
                             self.divs[self.inner.dataset.status].classList.add(order);
                             self.divs[self.inner.dataset.status].offsetWidth;// force reflow
                             self.divs[mutationRecord.oldValue].classList.add(direction);
@@ -227,47 +181,21 @@
                 if (this.img.length<=1) return;
                 if (this.animationInProgress==true) return;
                 if (this.order=="bidi") {
-                    if (this.inner.dataset.status==this.img.length-1) {
-                        this.inner.dataset.status--;
-                        this.direction=-1;
-                    } else if (this.inner.dataset.status==0) {
-                        this.inner.dataset.status++;
-                        this.direction=1;
-                    } else if (this.direction==1) this.inner.dataset.status++;
-                    else if (this.direction==-1) this.inner.dataset.status--;
+                    (this.inner.dataset.status==this.img.length-1) ? (this.inner.dataset.status--) & (this.direction=-1) :
+                    (this.inner.dataset.status==0) ? (this.inner.dataset.status++) & (this.direction=1) :
+                    (this.direction==1) ? this.inner.dataset.status++ :
+                    (this.direction==-1) ? this.inner.dataset.status-- : 0;
                 }
                 if (this.order=="rtl") {
-                    if (this.inner.dataset.status==0) this.inner.dataset.status=this.img.length-1;
-                    else this.inner.dataset.status--;
+                    (this.inner.dataset.status==0) ? (this.inner.dataset.status=this.img.length-1) : this.inner.dataset.status--;
                     this.direction=-1;
                 }
                 if (this.order=="ltr") {
-                    if (this.inner.dataset.status==this.img.length-1) this.inner.dataset.status=0;
-                    else this.inner.dataset.status++;
+                    (this.inner.dataset.status==this.img.length-1) ? this.inner.dataset.status=0 : this.inner.dataset.status++;
                     this.direction=1;
                 }
                 if (this.order=="rdm") this.inner.dataset.status=Math.floor(Math.random()*this.img.length);
             }//Next image
-
-            SlideShow.prototype.timedGetJSON = function(url, timeout, callback) {
-                var request = new XMLHttpRequest(); // Create new request.
-                var timedout = false; // Whether we timed out or not.
-                // Start a timer that will abort the request after timeout ms.
-                var timer = setTimeout(function() { // Start a timer. If triggered,
-                    timedout = true; // set a flag and then
-                    request.abort(); // abort the request.
-                        },timeout);
-                request.open("GET", url, true); // Specify URL to fetch
-                request.onreadystatechange = function () { // Define event listener.
-                    if (request.readyState !== 4) return; // Ignore incomplete requests.
-                    if (timedout) callback(""); // Ignore aborted requests.
-                    clearTimeout(timer); // Cancel pending timeout.
-                    if (request.status === 200) { // If request was successful
-                        callback(JSON.parse(request.responseText)); // pass response to callback.
-                    }
-                };
-                request.send(null); // Send the request now
-            }//Send request to the server
 
             /*DetSlideShow.prototype = new SlideShow();
             DetSlideShow.prototype.constructor = DetSlideShow;
@@ -285,11 +213,11 @@
             qwe.init();
             qwe.start();
 
-            var qdwe=new SlideShow([{src:"http://7themes.su/_ph/40/806761392.jpg", description:"The Hobbit"},{src:"http://7themes.su/_ph/40/109111701.jpg", description:"Мстители: Эра Альтрона"}],3000, "rtl", "slide", document.querySelector('.main'));
+            var qdwe=new SlideShow({img:[{src:"http://7themes.su/_ph/40/806761392.jpg", description:"The Hobbit"},{src:"http://7themes.su/_ph/40/109111701.jpg", description:"Мстители: Эра Альтрона"}],delay:3000, order:"rtl", type:"slide", el:document.querySelector('.main')});
             qdwe.start();
-            var qswe=new SlideShow([{src:"http://7themes.su/_ph/40/806761392.jpg", description:"The Hobbit"},{src:"http://7themes.su/_ph/40/109111701.jpg", description:"Мстители: Эра Альтрона"},{src:"http://7themes.su/_ph/38/351815896.jpg", description:"Инь и ян"},{src:"http://7themes.su/_ph/23/855840339.jpg", description:"Lamborghini aventador"},{src:"http://7themes.su/_ph/38/686375918.jpg", description:"Отражение в очках"},{src:"http://7themes.su/_ph/40/806761392.jpg", description:"The Hobbit"},{src:"http://7themes.su/_ph/40/109111701.jpg", description:"Мстители: Эра Альтрона"},{src:"http://7themes.su/_ph/38/351815896.jpg", description:"Инь и ян"},{src:"http://7themes.su/_ph/23/855840339.jpg", description:"Lamborghini aventador"},{src:"http://7themes.su/_ph/38/686375918.jpg", description:"Отражение в очках"}], 5000, "rdm", "crossfade", document.querySelector('.footer'), {height: "50", width: "800"});
+            var qswe=new SlideShow({size:{height: "50", width: "800"}, delay:5000, order:"rdm", type:"crossfade", el:document.querySelector('.footer')});
             qswe.start();
-            var qfwe=new SlideShow([{"src":"/images/iron man.jpg", "description":"IRON MAN"},{"src":"/images/captain america.jpg", "description":"CAPTAIN AMERICA"},{"src":"/images/hulk.jpeg", "description":"HULK"},{"src":"/images/thor.jpg", "description":"THOR"},{"src":"/images/black widow.jpg", "description":"BLACK WIDOW"},{"src":"/images/hawkeye.jpg", "description":"HAWKEYE"},{"src":"/images/loki.jpg", "description":"LOKI"}], 2000, "ltr", "crossfade", document.querySelector('.sidebar'), {height: "99", width: "133"});
+            var qfwe=new SlideShow({type:"crossfade", el:document.querySelector('.sidebar'), delay:2000, size:{height: "99", width: "133"}});
             qfwe.start();
 
             //Изменение цвета div по нажатию кнопки
@@ -325,7 +253,7 @@
                 }
             }
             var obj = new stuff(document.querySelector('[class="sidebar"]'));
-        }
+        })
     </script>
 </head>
 <body>

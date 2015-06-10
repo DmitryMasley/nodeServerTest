@@ -1,14 +1,15 @@
 define(["helpers", "jquery"], function(Helpers, $){
     "use strict";
     var ajax = function (args) {
-        var xmlhttp = new XMLHttpRequest(); // Create new request.
+        if (!args || !args.method || !args.url || !args.responseSuccess || !args.responseError) return;
+        var timeout = (args && args.timeout) ? args.timeout : 30000;
         var timedout = false; // Whether we timed out or not.
         // Start a timer that will abort the request after timeout ms.
-        var timeout = (args && args.timeout) ? args.timeout : 30000;
         var timer = setTimeout(function() { // Start a timer. If triggered,
             timedout = true; // set a flag and then
-            request.abort(); // abort the request.
+            xmlhttp.abort(); // abort the request.
         },timeout);
+        var xmlhttp = new XMLHttpRequest(); // Create new request.
         xmlhttp.onreadystatechange = function () { // Define event listener.
             if (xmlhttp.readyState == XMLHttpRequest.DONE) { // Ignore incomplete requests.
                 if (timedout) {
@@ -17,12 +18,11 @@ define(["helpers", "jquery"], function(Helpers, $){
                 }
                 if (xmlhttp.status == 200) { // If request was successful
                     clearTimeout(timer); // Cancel pending timeout.
-                    args.responseSuccess(JSON.parse(xmlhttp.responseText)); // pass response to callback.
-                }
-                else {
+                    args.responseSuccess(xmlhttp.responseText); // pass response to callback.
+                }else {
                     args.responseError(xmlhttp.status);
                 }
-                args.responseComplete(xmlhttp.status, xmlhttp.responseText);
+                (args.responseComplete) ? args.responseComplete(xmlhttp.status, xmlhttp.responseText) : 0;
             }
         };
         xmlhttp.open(args.method, args.url, true); // Specify URL to fetch

@@ -41,9 +41,10 @@
                     this.renderImages();
                 }else{
                     var self = this;
-                    ajax({method:"GET", url:'/images.ajax', timeout:5000, responseSuccess:handleRequest});
-                    function handleRequest(req) {
-                        self.img = (req.data && req.data.length>0) ? req.data : [{"src":"/images/iron man.jpg", "description":"IRON MAN"},{"src":"/images/captain america.jpg", "description":"CAPTAIN AMERICA"},{"src":"/images/hulk.jpeg", "description":"HULK"},{"src":"/images/thor.jpg", "description":"THOR"},{"src":"/images/black widow.jpg", "description":"BLACK WIDOW"},{"src":"/images/hawkeye.jpg", "description":"HAWKEYE"},{"src":"/images/loki.jpg", "description":"LOKI"}]
+                    ajax({method:"GET", url:'/images.ajax', timeout:5000, responseSuccess:handleRequest, responseError:handleRequest});
+                    function handleRequest(resp) {
+                        var img = JSON.parse(resp);
+                        self.img = (img.data && img.data.length>0) ? img.data : [{"src":"/images/captain america.jpg", "description":"CAPTAIN AMERICA"},{"src":"/images/hulk.jpeg", "description":"HULK"},{"src":"/images/thor.jpg", "description":"THOR"},{"src":"/images/black widow.jpg", "description":"BLACK WIDOW"},{"src":"/images/hawkeye.jpg", "description":"HAWKEYE"}]
                         self.renderImages();
                     }
                 }
@@ -2593,6 +2594,7 @@
                 </ul>
             </li>
         </ul>
+        <a href="/dragtest">drag test</a>
     </div>
     <div class="main"></div>
     <div class="footer">

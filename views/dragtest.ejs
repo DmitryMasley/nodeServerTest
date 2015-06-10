@@ -5,13 +5,40 @@
     <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
     <link rel='stylesheet' href='/stylesheets/main.css' />
     <title><%= __("Title") %></title>
+    <style>
+        #div1, #div2, #div3, #div4, #div5, #div6, #div7, #div8
+        {float:left; width:192px; height:140px; margin:10px;padding:10px;border:1px solid #aaaaaa;}
+    </style>
     <script type="text/javascript" src="/javascripts/vendor/requirejs/require.js"></script>
     <script type="text/javascript" src="/javascripts/require-config.js"></script>
     <script type="text/javascript">
+        function allowDrop(ev) {
+            ev.preventDefault();
+        }
 
+        function drag(ev) {
+            ev.dataTransfer.setData("text", ev.target.id);
+        }
+
+        function drop(ev) {
+            ev.preventDefault();
+            var data = ev.dataTransfer.getData("text");
+            ev.target.appendChild(document.getElementById(data));
+        }
 
     </script>
 </head>
 <body>
+<h1>Drag & Drop image between containers</h1>
+<div id="div1" ondrop="drop(event)" ondragover="allowDrop(event)">
+    <img src="/images/continent.png" draggable="true" ondragstart="drag(event)" id="drag1" width="192" height="140">
+</div>
+<div id="div2" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
+<div id="div3" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
+<div id="div4" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
+<div id="div5" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
+<div id="div6" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
+<div id="div7" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
+<div id="div8" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
 </body>
 </html>

@@ -4,6 +4,10 @@ require.config({
         {
             name: "users",
             location: "app/users"
+        },
+        {
+            name: "dragdrop",
+            location:"app/dragdrop"
         }
     ],
     paths:{

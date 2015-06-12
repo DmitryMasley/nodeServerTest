@@ -51,6 +51,7 @@ define(["jquery", "underscore", "marionette", "tpl!../templates/simpleView"], fu
             y = this.ui.container.height()-item.height() > y ? y : this.ui.container.height()-item.height();
 
             item.css({top:y, left:x});
+            this.ui.container.removeClass("active");
         },
         dropItem: function(e){
             e.preventDefault();

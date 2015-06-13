@@ -10,12 +10,54 @@
     <script type="text/javascript">
         window.onload = function() {
             var dropTargets = document.querySelectorAll('.dd-container');
-            var item = document.querySelector('.dd-item');
+            var counter = (function() {
+                var privateCounter = 0;
+                function changeBy(val) {
+                    privateCounter += val;
+                }
+                return {
+                    increment: function() {
+                        changeBy(1);
+                    },
+                    decrement: function() {
+                        changeBy(-1);
+                    },
+                    value: function() {
+                        return privateCounter;
+                    }
+                };
+            })();
+            var buttonDiv = document.createElement("div");
+            document.body.appendChild(buttonDiv);
+            buttonDiv.innerHTML = "<button class='btn'>Add image to container</button>";
+            var button = buttonDiv.querySelector("button");
+            button.addEventListener("click", function(){addImage(dropTargets[dropTargets.length-1])}, true);
+
+            function addImage(el){
+                var dispInfo=document.createElement("div");
+                document.body.appendChild(dispInfo);
+                var date=new Date();
+                dispInfo.innerHTML = date.toLocaleTimeString();
+                counter.increment();
+                var image=document.createElement("img");
+                image.src="/images/continent.png";
+                image.setAttribute("draggable", "true");
+                image.className="dd-item";
+                image.id = "drag" + counter.value();
+                if(el instanceof  Element) {
+                    el.appendChild(image);
+                } else {
+                    dropTargets[0].appendChild(image);
+                }
+                dispInfo.innerHTML += " image " + image.id + " ADDED to the element &lt" + image.parentNode.tagName.toLowerCase() +  "&gt at x:" + image.getBoundingClientRect().left + " y:"+ image.getBoundingClientRect().top + "";
+                image.addEventListener('mousedown', drag, false);
+            }
 
             function drag(event) {
                 var dispInfo=document.createElement("div");
                 document.body.appendChild(dispInfo);
                 var elToDrag=this;
+                var mouseDownAt={x: event.clientX, y: event.clientY};
                 var orig = elToDrag.getBoundingClientRect();
                 var deltaX = event.clientX - orig.left;
                 var deltaY = event.clientY - orig.top;
@@ -24,7 +66,7 @@
                 document.addEventListener("mousemove", moveHandler, true);
                 document.addEventListener("mouseup", upHandler, true);
 
-                var currentDropTarget,dropTargetRectangles=[];
+                var currentDropTarget, dropTargetRectangles=[];
                     function cacheDropTargetRectangles(dropTargets) {
                     for (var i = 0, len=dropTargets.length; i<len; i++){
                         dropTargetRectangles[i]={};
@@ -57,10 +99,13 @@
                 var parentLeft = elToDrag.parentNode.getBoundingClientRect().left + parseInt(window.getComputedStyle(elToDrag.parentNode,null).getPropertyValue("border-left-width"));
                 var parentTop = elToDrag.parentNode.getBoundingClientRect().top + parseInt(window.getComputedStyle(elToDrag.parentNode,null).getPropertyValue("border-top-width"));
                 function moveHandler(e) {
+                    if (Math.abs(mouseDownAt.x-e.clientX)<6 && Math.abs(mouseDownAt.y-e.clientY)<6) {
+                        return;
+                    }
                     elToDrag.style.left = (e.clientX - deltaX - parentLeft) + "px";
                     elToDrag.style.top = (e.clientY - deltaY - parentTop) + "px";
                     var newTarget = getCurrentTarget(dropTargetRectangles,elToDrag);
-                    if (currentDropTarget && currentDropTarget != newTarget) {
+                    if (currentDropTarget && currentDropTarget !== newTarget) {
                         currentDropTarget.classList.remove("active");
                     }
                     currentDropTarget = newTarget;
@@ -72,6 +117,7 @@
 
                 function upHandler(e) {
                     var date=new Date();
+                    dispInfo.innerHTML = date.toLocaleTimeString();
                     document.ondragstart = null;
                     document.body.onselectstart = null;
                     document.removeEventListener("mouseup", upHandler, true);
@@ -82,25 +128,23 @@
                         elToDrag.style.left = "" + (e.clientX - elToDrag.parentNode.getBoundingClientRect().left - deltaX - window.getComputedStyle(elToDrag.parentNode,null).getPropertyValue("border-left-width").slice(0,-2)) + "px";
                         elToDrag.style.top = "" + (e.clientY - elToDrag.parentNode.getBoundingClientRect().top - deltaY  - window.getComputedStyle(elToDrag.parentNode,null).getPropertyValue("border-top-width").slice(0,-2)) + "px";
                         currentDropTarget.classList.remove("active")
-                        dispInfo.innerHTML="" + date.toLocaleTimeString() + "  SUCCESS on image drop to acceptor container";
+                        dispInfo.innerHTML += "  image " + elToDrag.id + " DROPPED to acceptor container at x:" + elToDrag.getBoundingClientRect().left + " y:"+ elToDrag.getBoundingClientRect().top + "";
                     }else{
                         elToDrag.style.left = "" + orig.left - elToDrag.parentNode.getBoundingClientRect().left - window.getComputedStyle(elToDrag.parentNode,null).getPropertyValue("border-left-width").slice(0,-2) + "px";
                         elToDrag.style.top = "" + orig.top - elToDrag.parentNode.getBoundingClientRect().top  - window.getComputedStyle(elToDrag.parentNode,null).getPropertyValue("border-top-width").slice(0,-2) + "px";
-                        dispInfo.innerHTML="" + date.toLocaleTimeString() + "  FAIL on image drop to acceptor container";
+                        dispInfo.innerHTML += (currentDropTarget===undefined) ? "  image " + elToDrag.id +" CLICKED at x:" + e.clientX + " y:"+ e.clientY + "" : "  image " + elToDrag.id +" drop FAILED at x:" + elToDrag.getBoundingClientRect().left + " y:"+ elToDrag.getBoundingClientRect().top + "";
                     }
                     elToDrag.style.opacity='1';
                     (function(){elToDrag=null;}());
                 }
             }
-            item.addEventListener('mousedown', drag, false);
+
         };
     </script>
 </head>
 <body class="dd-main">
 <h1>Drag & Drop image inside or between containers</h1>
-<div class="dd-container">
-    <img src="/images/continent.png" class="dd-item" draggable="true" id="drag1">
-</div>
+<div class="dd-container"></div>
 <div class="dd-container"></div>
 <div class="dd-container"></div>
 <div class="dd-container"></div>

@@ -265,30 +265,32 @@ html,body {
       }
     }
   }
-
-
 }
 .dd-main {
   width:100%;
   height:100%;
   .dd-container {
+    float: left;
     position: relative;
-    width: 50%;
-    height: 50%;
-    margin: 0 auto;
+    width: 400px;
+    height: 300px;
+    margin: 30px;
     background: white;
-    min-width: 800px;
-    min-height: 600px;
+    min-width: 400px;
+    min-height: 300px;
     border: 5px dashed #808080;
     &.active {
       border-color:#ffff00;
     }
     .dd-item {
+      left: 0px;
+      top: 0px;
       cursor: move;
-      width: 50px;
-      height: 50px;
+      width: 96px;
+      height: 70px;
       background: #0000ff;
       position:absolute;
+      z-index: 1000;
     }
   }
 }

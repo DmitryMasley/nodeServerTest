@@ -5,40 +5,105 @@
     <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
     <link rel='stylesheet' href='/stylesheets/main.css' />
     <title><%= __("Title") %></title>
-    <style>
-        #div1, #div2, #div3, #div4, #div5, #div6, #div7, #div8
-        {float:left; width:192px; height:140px; margin:10px;padding:10px;border:1px solid #aaaaaa;}
-    </style>
     <script type="text/javascript" src="/javascripts/vendor/requirejs/require.js"></script>
     <script type="text/javascript" src="/javascripts/require-config.js"></script>
     <script type="text/javascript">
-        function allowDrop(ev) {
-            ev.preventDefault();
-        }
+        window.onload = function() {
+            var dropTargets = document.querySelectorAll('.dd-container');
+            var item = document.querySelector('.dd-item');
 
-        function drag(ev) {
-            ev.dataTransfer.setData("text", ev.target.id);
-        }
+            function drag(event) {
+                var dispInfo=document.createElement("div");
+                document.body.appendChild(dispInfo);
+                var elToDrag=this;
+                var orig = elToDrag.getBoundingClientRect();
+                var deltaX = event.clientX - orig.left;
+                var deltaY = event.clientY - orig.top;
+                document.ondragstart = function() { return false };
+                document.body.onselectstart = function() { return false };
+                document.addEventListener("mousemove", moveHandler, true);
+                document.addEventListener("mouseup", upHandler, true);
 
-        function drop(ev) {
-            ev.preventDefault();
-            var data = ev.dataTransfer.getData("text");
-            ev.target.appendChild(document.getElementById(data));
-        }
+                var currentDropTarget,dropTargetRectangles=[];
+                    function cacheDropTargetRectangles(dropTargets) {
+                    for (var i = 0, len=dropTargets.length; i<len; i++){
+                        dropTargetRectangles[i]={};
+                        dropTargetRectangles[i].item = dropTargets[i];
+                        dropTargetRectangles[i].top = dropTargets[i].getBoundingClientRect().top + parseInt(window.getComputedStyle(dropTargets[i],null).getPropertyValue("border-top-width"));
+                        dropTargetRectangles[i].right = dropTargets[i].getBoundingClientRect().right - parseInt(window.getComputedStyle(dropTargets[i],null).getPropertyValue("border-right-width"));
+                        dropTargetRectangles[i].bottom = dropTargets[i].getBoundingClientRect().bottom - parseInt(window.getComputedStyle(dropTargets[i],null).getPropertyValue("border-bottom-width"));
+                        dropTargetRectangles[i].left = dropTargets[i].getBoundingClientRect().left + parseInt(window.getComputedStyle(dropTargets[i],null).getPropertyValue("border-left-width"));
+                    }
+                }
+                cacheDropTargetRectangles(dropTargets);
 
+                function getCurrentTarget(dropTargetRectangles,el) {
+                    var dropTarget=null;
+                    for (var i = 0, len = dropTargetRectangles.length; i < len; i++) {
+                        var targ = dropTargetRectangles[i];
+                        if((el.getBoundingClientRect().left > targ.left) &&
+                           (el.getBoundingClientRect().right < targ.right) &&
+                           (el.getBoundingClientRect().top > targ.top) &&
+                           (el.getBoundingClientRect().bottom < targ.bottom)){
+                                dropTarget=targ.item;
+                        }
+                    }
+                    return dropTarget;
+                }
+
+                event.stopPropagation();
+                event.preventDefault();
+                elToDrag.style.opacity='0.5';
+                var parentLeft = elToDrag.parentNode.getBoundingClientRect().left + parseInt(window.getComputedStyle(elToDrag.parentNode,null).getPropertyValue("border-left-width"));
+                var parentTop = elToDrag.parentNode.getBoundingClientRect().top + parseInt(window.getComputedStyle(elToDrag.parentNode,null).getPropertyValue("border-top-width"));
+                function moveHandler(e) {
+                    elToDrag.style.left = (e.clientX - deltaX - parentLeft) + "px";
+                    elToDrag.style.top = (e.clientY - deltaY - parentTop) + "px";
+                    var newTarget = getCurrentTarget(dropTargetRectangles,elToDrag);
+                    if (currentDropTarget && currentDropTarget != newTarget) {
+                        currentDropTarget.classList.remove("active");
+                    }
+                    currentDropTarget = newTarget;
+                    if (newTarget) {
+                        newTarget.classList.add("active");
+                    }
+                    e.stopPropagation();
+                }
+
+                function upHandler(e) {
+                    var date=new Date();
+                    document.ondragstart = null;
+                    document.body.onselectstart = null;
+                    document.removeEventListener("mouseup", upHandler, true);
+                    document.removeEventListener("mousemove", moveHandler, true);
+                    e.stopPropagation();
+                    if (currentDropTarget) {
+                        currentDropTarget.appendChild(elToDrag);
+                        elToDrag.style.left = "" + (e.clientX - elToDrag.parentNode.getBoundingClientRect().left - deltaX - window.getComputedStyle(elToDrag.parentNode,null).getPropertyValue("border-left-width").slice(0,-2)) + "px";
+                        elToDrag.style.top = "" + (e.clientY - elToDrag.parentNode.getBoundingClientRect().top - deltaY  - window.getComputedStyle(elToDrag.parentNode,null).getPropertyValue("border-top-width").slice(0,-2)) + "px";
+                        currentDropTarget.classList.remove("active")
+                        dispInfo.innerHTML="" + date.toLocaleTimeString() + "  SUCCESS on image drop to acceptor container";
+                    }else{
+                        elToDrag.style.left = "" + orig.left - elToDrag.parentNode.getBoundingClientRect().left - window.getComputedStyle(elToDrag.parentNode,null).getPropertyValue("border-left-width").slice(0,-2) + "px";
+                        elToDrag.style.top = "" + orig.top - elToDrag.parentNode.getBoundingClientRect().top  - window.getComputedStyle(elToDrag.parentNode,null).getPropertyValue("border-top-width").slice(0,-2) + "px";
+                        dispInfo.innerHTML="" + date.toLocaleTimeString() + "  FAIL on image drop to acceptor container";
+                    }
+                    elToDrag.style.opacity='1';
+                    (function(){elToDrag=null;}());
+                }
+            }
+            item.addEventListener('mousedown', drag, false);
+        };
     </script>
 </head>
-<body>
-<h1>Drag & Drop image between containers</h1>
-<div id="div1" ondrop="drop(event)" ondragover="allowDrop(event)">
-    <img src="/images/continent.png" draggable="true" ondragstart="drag(event)" id="drag1" width="192" height="140">
+<body class="dd-main">
+<h1>Drag & Drop image inside or between containers</h1>
+<div class="dd-container">
+    <img src="/images/continent.png" class="dd-item" draggable="true" id="drag1">
 </div>
-<div id="div2" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
-<div id="div3" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
-<div id="div4" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
-<div id="div5" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
-<div id="div6" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
-<div id="div7" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
-<div id="div8" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
+<div class="dd-container"></div>
+<div class="dd-container"></div>
+<div class="dd-container"></div>
+
 </body>
 </html>

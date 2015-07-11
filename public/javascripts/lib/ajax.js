@@ -3,6 +3,13 @@ define(["helpers", "jquery"], function(Helpers, $){
     var ajax = function (args) {
         if (!args || !args.method || !args.url || !args.responseSuccess || !args.responseError) return;
         var timeout = (args && args.timeout) ? args.timeout : 30000;
+        $.ajax({type:args.method,
+            url:args.url,
+            success:args.responseSuccess,
+            error:args.responseError,
+            timeout:timeout});
+
+        /*
         var timedout = false; // Whether we timed out or not.
         // Start a timer that will abort the request after timeout ms.
         var timer = setTimeout(function() { // Start a timer. If triggered,
@@ -27,6 +34,7 @@ define(["helpers", "jquery"], function(Helpers, $){
         };
         xmlhttp.open(args.method, args.url, true); // Specify URL to fetch
         xmlhttp.send(null); // Send the request now
+        */
     };
     return ajax;
 });

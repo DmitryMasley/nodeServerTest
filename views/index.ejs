@@ -8,7 +8,7 @@
     <script type="text/javascript" src="/javascripts/vendor/requirejs/require.js"></script>
     <script type="text/javascript" src="/javascripts/require-config.js"></script>
     <script type="text/javascript">
-        require(["helpers", "domReady", "lib/ajax"], function(Helpers, domReady, ajax){
+        require(["helpers", "domReady", "lib/ajax", "jquery"], function(Helpers, domReady, ajax, $){
 
             function SlideShow (args){//img,delay,order,type,el,size
                 if (arguments.length>0) this.init(args);
@@ -42,9 +42,8 @@
                 }else{
                     var self = this;
                     ajax({method:"GET", url:'/images.ajax', timeout:5000, responseSuccess:handleRequest, responseError:handleRequest});
-                    function handleRequest(resp) {
-                        var img = JSON.parse(resp);
-                        self.img = (img.data && img.data.length>0) ? img.data : [{"src":"/images/captain america.jpg", "description":"CAPTAIN AMERICA"},{"src":"/images/hulk.jpeg", "description":"HULK"},{"src":"/images/thor.jpg", "description":"THOR"},{"src":"/images/black widow.jpg", "description":"BLACK WIDOW"},{"src":"/images/hawkeye.jpg", "description":"HAWKEYE"}]
+                    function handleRequest(result) {
+                        self.img = (result.data && result.data.length>0) ? result.data : [{"src":"/images/captain america.jpg", "description":"CAPTAIN AMERICA"},{"src":"/images/hulk.jpeg", "description":"HULK"},{"src":"/images/thor.jpg", "description":"THOR"},{"src":"/images/black widow.jpg", "description":"BLACK WIDOW"},{"src":"/images/hawkeye.jpg", "description":"HAWKEYE"}]
                         self.renderImages();
                     }
                 }
@@ -99,6 +98,11 @@
             SlideShow.prototype.bindEvents = function(){
                 var self=this;
                 (function() {
+                    $(self.items).on("mouseover", function () {clearInterval(self.interval)});
+                    $(self.items).on("mouseout", function () {
+                        if (self.state=="started") self.start();
+                    });
+                    /*
                     for(var i = 0, len = self.items.length; i < len; i++) {
                         (function() {
                                 self.items[i].addEventListener("mouseover", function () {clearInterval(self.interval)}, true);
@@ -107,25 +111,58 @@
                             });
                         })();
                     }
+                    */
+                    $(self.arrowLeft).on("click", function() {
+                        if (self.animationInProgress==true) return;
+                        (self.inner.dataset.status == 0) ? (self.inner.dataset.status = self.img.length - 1) : self.inner.dataset.status--;
+                        self.direction = -1;
+                    });
+                    /*
                     self.arrowLeft.addEventListener("click", function() {
                         if (self.animationInProgress==true) return;
                             (self.inner.dataset.status == 0) ? (self.inner.dataset.status = self.img.length - 1) : self.inner.dataset.status--;
                             self.direction = -1;
                     });
+                    */
+                    $(self.arrowRight).on("click", function() {
+                        if (self.animationInProgress==true) return;
+                        (self.inner.dataset.status == self.img.length - 1) ? (self.inner.dataset.status = 0) : self.inner.dataset.status++;
+                        self.direction = 1;
+                    });
+                    /*
                     self.arrowRight.addEventListener("click", function() {
                         if (self.animationInProgress==true) return;
                             (self.inner.dataset.status == self.img.length - 1) ? (self.inner.dataset.status = 0) : self.inner.dataset.status++;
                             self.direction = 1;
                     });
+                    */
+                    $(self.btn).on("click", function () {
+                        if (self.animationInProgress==true) return;
+                        this.dataset.active = "1";
+                        self.inner.dataset.status = this.dataset.button-1;
+                        if (self.order=="bidi" && this.dataset.button==self.btn.length) self.direction = -1;
+                        if (self.order=="bidi" && this.dataset.button==1) self.direction = 1;
+                    });
+                    $(self.divs).on("transitionend", function () {
+                        if (!self.divs[self.inner.dataset.status].classList.contains("active")){
+                            self.divs[self.inner.dataset.status].className = "item active";
+                            for(var i = 0, len = self.divs.length; i < len; i++){
+                                if (i==self.inner.dataset.status){continue};
+                                self.divs[i].className = "item";
+                            }
+                            setTimeout(function(){self.animationInProgress = false;},0);
+                        }
+                    });
+                    /*
                     for(var i = 0, len = self.btn.length; i < len; i++) {
                         (function () {
                             var j = i;
                             self.btn[j].addEventListener("click", function () {
                                 if (self.animationInProgress==true) return;
-                                    self.btn[j].dataset.active = "1";
-                                    self.inner.dataset.status = j;
-                                    if (self.order=="bidi" && j==self.btn.length-1) self.direction = -1;
-                                    if (self.order=="bidi" && j==0) self.direction = 1;
+                                    this.dataset.active = "1";
+                                    self.inner.dataset.status = this.dataset.button-1;
+                                    if (self.order=="bidi" && (this.dataset.button-1)==self.btn.length-1) self.direction = -1;
+                                    if (self.order=="bidi" && (this.dataset.button-1)==0) self.direction = 1;
                             });
                             self.divs[j].addEventListener("transitionend", function () {
                                 if (!self.divs[self.inner.dataset.status].classList.contains("active")){
@@ -139,6 +176,7 @@
                             });
                         })();
                     }
+                    */
                 })();
                 var mutationObserver = new MutationObserver(mutationObjectCallback);
                 function mutationObjectCallback(mutationRecordsList) {

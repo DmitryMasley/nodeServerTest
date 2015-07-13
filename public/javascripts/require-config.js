@@ -8,6 +8,18 @@ require.config({
         {
             name: "dragdrop",
             location:"app/dragdrop"
+        },
+        {
+            name: "addImage",
+            location:"app/addImage"
+        },
+        {
+            name: "slideShow",
+            location:"app/slideShow"
+        },
+        {
+            name: "stuff",
+            location:"app/stuff"
         }
     ],
     paths:{
@@ -20,6 +32,7 @@ require.config({
         "text": "vendor/requirejs/text",
         "domReady": "vendor/requirejs/domReady",
         "helpers": "lib/helpers",
+        "ajax": "lib/ajax",
         "app" : "app/app"
     },
     shim: {

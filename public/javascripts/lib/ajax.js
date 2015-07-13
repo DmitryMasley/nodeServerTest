@@ -1,4 +1,4 @@
-define(["helpers", "jquery"], function(Helpers, $){
+define(["jquery"], function($){
     "use strict";
     var ajax = function (args) {
         if (!args || !args.method || !args.url || !args.responseSuccess || !args.responseError) return;

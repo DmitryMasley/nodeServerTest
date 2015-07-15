@@ -1,9 +1,9 @@
 [
-  {"src":"/images/captain america.jpg", "description":"CAPTAIN AMERICA", "left":0, "top":110},
-  {"src":"/images/hulk.jpeg", "description":"HULK", "left":0, "top":220},
-  {"src":"/images/thor.jpg", "description":"THOR", "left":140, "top":0},
-  {"src":"/images/black widow.jpg", "description":"BLACK WIDOW", "left":140, "top":110},
-  {"src":"/images/hawkeye.jpg", "description":"HAWKEYE", "left":140, "top":220},
-  {"src":"/images/loki.jpg", "description":"LOKI", "left":280, "top":0},
-  {"src":"/images/iron man.jpg", "description":"IRON MAN", "left":280, "top":110}
+  {"src":"/images/captain america.jpg", "description":"CAPTAIN AMERICA", "left":"0px", "top":"110px"},
+  {"src":"/images/hulk.jpeg", "description":"HULK", "left":"0px", "top":"220px"},
+  {"src":"/images/thor.jpg", "description":"THOR", "left":"140px", "top":"0px"},
+  {"src":"/images/black widow.jpg", "description":"BLACK WIDOW", "left":"140px", "top":"110px"},
+  {"src":"/images/hawkeye.jpg", "description":"HAWKEYE", "left":"140px", "top":"220px"},
+  {"src":"/images/loki.jpg", "description":"LOKI", "left":"280px", "top":"0px"},
+  {"src":"/images/iron man.jpg", "description":"IRON MAN", "left":"280px", "top":"110px"}
 ]

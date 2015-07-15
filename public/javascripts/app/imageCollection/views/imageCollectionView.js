@@ -36,6 +36,7 @@ define(["jquery", "backbone", "underscore", "../models/imageModel", "../collecti
         },
         appendImage: function(image){
             var imageView = new ImageModelView({
+                el: this.el,
                 model: image
             });
             $(this.el).append(imageView.render().el);

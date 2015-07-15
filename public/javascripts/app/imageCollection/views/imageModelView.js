@@ -1,24 +1,17 @@
-define(["jquery","backbone"], function($,Backbone){
+define(["jquery","backbone", "underscore", "tpl!../templates/imageView"], function($,Backbone,_,template){
     "use strict";
     var ImageModelView = Backbone.View.extend({
-    tagName: 'div', // name of tag to be created
     initialize: function(){
         this.listenTo(this.model, 'change', this.render, this);
     },
     render: function(){
-        var img = $("<img/>", // Create a new <img> element
-            {src:this.model.get('src'),
-                description:this.model.get('description')
-            });
-        $(this.el).append(img);
-        $(this.el).attr({draggable:"true",
-            id:this.model.get("_id")
-        });
-        $(this.el).addClass("dd-item");
-        $(this.el).css({'zIndex':'100',
-                        'left':this.model.get("left"),
-                        'top':this.model.get("top")
-                        });
+        $(this.el).append(template({
+            src: this.model.get('src'),
+            description: this.model.get('description'),
+            id: this.model.get("_id"),
+            left: this.model.get("left"),
+            top: this.model.get("top")
+        }));
         return this; // for chainable calls, like .render().el
     }
     });

@@ -15,7 +15,10 @@ define(["jquery","backbone"], function($,Backbone){
             id:this.model.get("_id")
         });
         $(this.el).addClass("dd-item");
-        $(this.el).css({'zIndex':'100'});
+        $(this.el).css({'zIndex':'100',
+                        'left':this.model.get("left"),
+                        'top':this.model.get("top")
+                        });
         return this; // for chainable calls, like .render().el
     }
     });

@@ -12,7 +12,7 @@ define(["jquery", "backbone", "underscore", "../models/imageModel", "../collecti
             this.renderImages();
         },
         renderButton: function(){
-            $(".dd-main").append("<button id='add'>Add image</button>");
+            $(".dd-main").append("<button id='add'>Add image to imageCollection</button>");
             $(".dd-main button#add").on("click", this.addImage);
         },
         renderImages: function(){

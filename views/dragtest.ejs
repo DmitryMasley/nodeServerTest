@@ -8,9 +8,9 @@
     <script type="text/javascript" src="/javascripts/vendor/requirejs/require.js"></script>
     <script type="text/javascript" src="/javascripts/require-config.js"></script>
     <script type="text/javascript">
-        require(["domReady","addImage","imageListView","jquery"], function(domReady, addImage, ImageListView, $){
-            var imageListView = new ImageListView();
-            //imageListView.fetch();
+        require(["domReady","addImage","imageList","jquery"], function(domReady, addImage, ImageList, $){
+            var imageList = new ImageList({el:document.querySelector('.dd-container')});
+
             var dropTargets = document.querySelectorAll('.dd-container');
             var buttonDiv = document.createElement("div");
             document.body.appendChild(buttonDiv);

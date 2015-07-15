@@ -1,11 +1,11 @@
-define(["jquery", "backbone", "underscore", "../image", "../imageList", "./imageView"], function($, Backbone, _, Image, ImageList, ImageView){
+define(["jquery", "backbone", "underscore", "../models/imageModel", "../collections/imageCollection", "./imageModelView"], function($, Backbone, _, ImageModel, ImageCollection, ImageModelView){
     "use strict";
-    var ImageListView = Backbone.View.extend({
+    var ImageCollectionView = Backbone.View.extend({
         el: $(".dd-main"), // el attaches to existing element
         initialize: function(){
             _.bindAll(this, 'renderButton', 'addImage'); // every function that uses 'this' as the current object should be in here
             this.counter = 0;
-            this.collection = new ImageList();
+            this.collection = new ImageCollection();
             this.listenTo(this.collection, "add", this.appendImage, this); // collection event binder
             this.listenTo(this.collection, "reset", this.renderImages, this); // collection event binder
             this.renderButton();
@@ -26,7 +26,7 @@ define(["jquery", "backbone", "underscore", "../image", "../imageList", "./image
         },
         addImage: function(){
             this.counter++;
-            var image = new Image();
+            var image = new ImageModel();
             image.set({
                 _id: 'image' + this.counter + '',
                 src: prompt("Please enter src", "http://www.w3schools.com/images/colorpicker.gif"),
@@ -35,11 +35,11 @@ define(["jquery", "backbone", "underscore", "../image", "../imageList", "./image
             (image.get("src") != false) ? this.collection.add(image) : false;
         },
         appendImage: function(image){
-            var imageView = new ImageView({
+            var imageView = new ImageModelView({
                 model: image
             });
             $(this.el).append(imageView.render().el);
         }
     });
-    return ImageListView;
+    return ImageCollectionView;
 });

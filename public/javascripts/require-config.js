@@ -14,8 +14,8 @@ require.config({
             location:"app/addImage"
         },
         {
-            name: "imageList",
-            location:"app/imageList"
+            name: "imageCollection",
+            location:"app/imageCollection"
         },
         {
             name: "slideShow",

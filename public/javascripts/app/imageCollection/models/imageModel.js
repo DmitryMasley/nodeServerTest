@@ -1,6 +1,6 @@
 define(["jquery","backbone"], function($,Backbone){
-    var Image = Backbone.Model.extend({
+    var ImageModel = Backbone.Model.extend({
         idAttribute: "_id"
     });
-    return Image;
+    return ImageModel;
 });

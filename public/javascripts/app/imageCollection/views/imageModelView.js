@@ -1,6 +1,6 @@
 define(["jquery","backbone"], function($,Backbone){
     "use strict";
-    var ImageView = Backbone.View.extend({
+    var ImageModelView = Backbone.View.extend({
     tagName: 'div', // name of tag to be created
     initialize: function(){
         this.listenTo(this.model, 'change', this.render, this);
@@ -19,5 +19,5 @@ define(["jquery","backbone"], function($,Backbone){
         return this; // for chainable calls, like .render().el
     }
     });
-    return ImageView;
+    return ImageModelView;
 });

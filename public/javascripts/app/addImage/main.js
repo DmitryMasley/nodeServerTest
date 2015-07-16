@@ -21,7 +21,7 @@ define(["jquery"], function($){
         }
         imageWrap.style.zIndex = 100;
         imageWrap.appendChild(image);
-        imageWrap.innerHTML += '<span class="resize-handle resize-handle-nw"></span>\n<span class="resize-handle resize-handle-ne"></span>\n<span class="resize-handle resize-handle-se"></span>\n<span class="resize-handle resize-handle-sw"></span>';
+        imageWrap.innerHTML += '<span class="resize-handle north west"></span><span class="resize-handle north east"></span><span class="resize-handle south east"></span><span class="resize-handle south west"></span>';
         dispInfo.innerHTML += " image " + imageWrap.id + " ADDED to the element &lt" + imageWrap.parentNode.tagName.toLowerCase() + "&gt at x:" + imageWrap.getBoundingClientRect().left + " y:" + imageWrap.getBoundingClientRect().top + "";
 
         AddImage.prototype.drag = function (event) {
@@ -174,7 +174,7 @@ define(["jquery"], function($){
                 }
 
                 function resizing(e) {
-                    if (source.classList.contains('resize-handle-se')) {
+                    if (source.classList.contains('south') && source.classList.contains('east')) {
                         if (e.shiftKey) {
                             container.style.width = Math.min((Math.max((e.clientX - self.left - parent.left), min_width)), (parent.height - self.top) / orig_src.height * orig_src.width, parent.width - self.left, max_width) + "px";
                             container.style.height = container.style.width.slice(0, -2) / orig_src.width * orig_src.height + "px";
@@ -184,7 +184,7 @@ define(["jquery"], function($){
                         }
                         container.style.left = self.left + "px";
                         container.style.top = self.top + "px";
-                    } else if (source.classList.contains('resize-handle-sw')) {
+                    } else if (source.classList.contains('south') && source.classList.contains('west')) {
                         if (e.shiftKey) {
                             container.style.width = Math.min((Math.max((self.width - (Math.max(e.clientX, parent.left) - self.left - parent.left)), min_width)), (parent.height - self.top) / orig_src.height * orig_src.width, max_width) + "px";
                             container.style.height = container.style.width.slice(0, -2) / orig_src.width * orig_src.height + "px";
@@ -194,7 +194,7 @@ define(["jquery"], function($){
                         }
                         container.style.left = self.left - (container.style.width.slice(0, -2) - self.width) + "px";
                         container.style.top = self.top + "px";
-                    } else if (source.classList.contains('resize-handle-nw')) {
+                    } else if (source.classList.contains('north') && source.classList.contains('west')) {
                         if (e.shiftKey) {
                             container.style.width = Math.min((Math.max((self.width - (Math.max(e.clientX, parent.left) - self.left - parent.left)), min_width)), (self.height + self.top) / orig_src.height * orig_src.width, max_width) + "px";
                             container.style.height = container.style.width.slice(0, -2) / orig_src.width * orig_src.height + "px";
@@ -204,7 +204,7 @@ define(["jquery"], function($){
                         }
                         container.style.left = self.left - (container.style.width.slice(0, -2) - self.width) + "px";
                         container.style.top = self.top - (container.style.height.slice(0, -2) - self.height) + "px";
-                    } else if (source.classList.contains('resize-handle-ne')) {
+                    } else if (source.classList.contains('north') && source.classList.contains('east')) {
                         if (e.shiftKey) {
                             container.style.width = Math.min((Math.max((e.clientX - self.left - parent.left), min_width)), (self.height + self.top) / orig_src.height * orig_src.width, parent.width - self.left, max_width) + "px";
                             container.style.height = container.style.width.slice(0, -2) / orig_src.width * orig_src.height + "px";

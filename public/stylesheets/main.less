@@ -298,36 +298,53 @@ html,body {
         outline: 2px dashed rgba(222, 60, 80, .9);
       }
       &.resizable {
-        .resize-handle-ne,
-        .resize-handle-se,
-        .resize-handle-nw,
-        .resize-handle-sw {
+        .resize-handle{
           position: absolute;
           display: block;
           width: 10px;
           height: 10px;
           background-color: rgba(222, 60, 80, .9);
           z-index: 999;
-        }
-        .resize-handle-nw {
-          top: -5px;
-          left: -5px;
-          cursor: nw-resize;
-        }
-        .resize-handle-sw {
-          bottom: -5px;
-          left: -5px;
-          cursor: sw-resize;
-        }
-        .resize-handle-ne {
-          top: -5px;
-          right: -5px;
-          cursor: ne-resize;
-        }
-        .resize-handle-se {
-          bottom: -5px;
-          right: -5px;
-          cursor: se-resize;
+          &.east {
+            right: -5px;
+            top: 30px;
+            cursor: e-resize;
+          }
+          &.west{
+            left: -5px;
+            top: 30px;
+            cursor: w-resize;
+          }
+          &.north {
+            top: -5px;
+            left: 43px;
+            cursor: n-resize;
+            &.east {
+              left: auto;
+              right: -5px;
+              cursor: ne-resize;
+            }
+            &.west{
+              left: -5px;
+              cursor: nw-resize;
+            }
+          }
+          &.south{
+            top: auto;
+            bottom: -5px;
+            left: 43px;
+            cursor: s-resize;
+            &.east{
+              left: auto;
+              right: -5px;
+              cursor: se-resize;
+            }
+            &.west{
+              left: -5px;
+              cursor: sw-resize;
+            }
+          }
+
         }
       }
       img {

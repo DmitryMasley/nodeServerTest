@@ -1,7 +1,9 @@
-define(["jquery", "./views/imageCollectionView"], function($, ImageCollectionView){
-    var ImageCollectionMain = function(config){
-        var imageCollectionView = new ImageCollectionView(config);
-        imageCollectionView.collection.fetch();
-    };
+define(["jquery", "./views/imageCollectionView"], function($, ImageCollectionView) {
+    var ImageCollectionMain = Backbone.View.extend({
+        initialize: function(config){
+            this.view = new ImageCollectionView(config);
+            //this.view.collection.fetch();
+        }
+    });
     return ImageCollectionMain;
 });

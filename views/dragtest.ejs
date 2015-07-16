@@ -9,23 +9,21 @@
     <script type="text/javascript" src="/javascripts/require-config.js"></script>
     <script type="text/javascript">
         require(["domReady","addImage","imageCollection","jquery"], function(domReady, addImage, ImageCollection, $){
-            var imageCollection = new ImageCollection({el:document.querySelector('.dd-container')});
-
             var dropTargets = document.querySelectorAll('.dd-container');
             var buttonDiv = document.createElement("div");
             document.body.appendChild(buttonDiv);
             buttonDiv.innerHTML = "<button class='btn'>Add image to container</button>";
             var button = buttonDiv.querySelector("button");
             $(button).on("click", function(){new addImage({el:dropTargets[dropTargets.length-2], dropTargets:dropTargets})});
-            //button.addEventListener("click", function(){addImage(dropTargets[dropTargets.length-1])}, true);
+
+            var imageCollection = new ImageCollection();
+            imageCollection.view.collection.fetch();
+            $(".dd-main").append(imageCollection.view.render().$el);
         });
     </script>
 </head>
 <body class="dd-main">
 <h1>Drag & Drop image inside or between containers</h1>
-<div class="dd-container"></div>
-<div class="dd-container"></div>
-<div class="dd-container"></div>
 <div class="dd-container"></div>
 </body>
 </html>

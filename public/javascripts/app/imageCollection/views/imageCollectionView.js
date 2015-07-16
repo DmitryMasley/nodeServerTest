@@ -1,19 +1,21 @@
-define(["jquery", "backbone", "underscore", "../models/imageModel", "../collections/imageCollection", "./imageModelView"], function($, Backbone, _, ImageModel, ImageCollection, ImageModelView){
+define(["jquery", "backbone", "underscore", "../models/imageModel", "../collections/imageCollection", "./imageModelView","tpl!../templates/imageCollectionView"], function($, Backbone, _, ImageModel, ImageCollection, ImageModelView, template){
     "use strict";
     var ImageCollectionView = Backbone.View.extend({
-        el: $(".dd-main"), // el attaches to existing element
+        template:template,
+        events: {
+            'click button#add': 'addImage'
+        },
         initialize: function(){
-            _.bindAll(this, 'renderButton', 'addImage'); // every function that uses 'this' as the current object should be in here
+            _.bindAll(this, 'render', 'addImage'); // every function that uses 'this' as the current object should be in here
             this.counter = 0;
             this.collection = new ImageCollection();
             this.listenTo(this.collection, "add", this.appendImage, this); // collection event binder
             this.listenTo(this.collection, "reset", this.renderImages, this); // collection event binder
-            this.renderButton();
-            this.renderImages();
         },
-        renderButton: function(){
-            $(".dd-main").append("<button id='add'>Add image to imageCollection</button>");
-            $(".dd-main button#add").on("click", this.addImage);
+        render: function(){
+            this.setElement(this.template());
+            this.$el.append("<button id='add'>Add image to imageCollection</button>");
+            return this;
         },
         renderImages: function(){
             var self = this;
@@ -36,10 +38,9 @@ define(["jquery", "backbone", "underscore", "../models/imageModel", "../collecti
         },
         appendImage: function(image){
             var imageView = new ImageModelView({
-                el: this.el,
                 model: image
             });
-            $(this.el).append(imageView.render().el);
+            this.$el.append(imageView.render().$el);
         }
     });
     return ImageCollectionView;

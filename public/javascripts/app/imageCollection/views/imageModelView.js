@@ -14,11 +14,13 @@ define(["jquery","backbone", "underscore", "tpl!../templates/imageModelView"], f
             this.listenTo(this.model, 'change', this.render, this);
         },
         render: function(){
+            console.log("render",this.model);
             this.setElement(this.template(this.model.toJSON()));
             this.$el.addClass("resizable");
             return this; // for chainable calls, like .render().el
         },
         startResize: function(e){
+            console.log("startResize",this.model);
             this.source = e.toElement;
             this.source.width=$(this.source).css("width").slice(0, -2);
             this.orig_src = {};
@@ -43,13 +45,14 @@ define(["jquery","backbone", "underscore", "tpl!../templates/imageModelView"], f
             $(document).on('mouseup', this.endResize);
         },
         endResize:function(e) {
-            this.model.attributes.left = $(this.el).css("left");
-            this.model.attributes.top = $(this.el).css("top");
-            //this.el.parentNode.appendChild(this.el);
+            console.log("endResize",this.model);
+            this.model.set({
+                left: $(this.el).css("left"),
+                top: $(this.el).css("top")
+            });
             e.preventDefault();
-            $(document).off('mouseup', this.endResize);
             $(document).off('mousemove', this.resizing);
-
+            $(document).off('mouseup', this.endResize);
         },
         resizing: function(e) {
             if ($(this.source).hasClass('south') && !(e.shiftKey)){

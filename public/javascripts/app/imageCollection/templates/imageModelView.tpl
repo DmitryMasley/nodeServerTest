@@ -1,11 +1,9 @@
-<div draggable="true" id="<%= _id %>" class="dd-item" style="z-index: 100; left: <%= left %>; top: <%= top %>;">
 <img src="<%= src %>" description="<%= description %>">
-<span class="resize-handle north west"></span>
-<span class="resize-handle north east"></span>
-<span class="resize-handle south east"></span>
-<span class="resize-handle south west"></span>
-<span class="resize-handle north"></span>
-<span class="resize-handle east"></span>
-<span class="resize-handle south"></span>
-<span class="resize-handle west"></span>
-</div>
+<span class="resize-handle north west" style="cursor: nw-resize; width: <%= resizeHandlerSize %>; height: <%= resizeHandlerSize %>;"></span>
+<span class="resize-handle north east" style="cursor: ne-resize; width: <%= resizeHandlerSize %>; height: <%= resizeHandlerSize %>;"></span>
+<span class="resize-handle south east" style="cursor: se-resize; width: <%= resizeHandlerSize %>; height: <%= resizeHandlerSize %>;"></span>
+<span class="resize-handle south west" style="cursor: sw-resize; width: <%= resizeHandlerSize %>; height: <%= resizeHandlerSize %>;"></span>
+<span class="resize-handle north" style="cursor: n-resize; width: <%= resizeHandlerSize %>; height: <%= resizeHandlerSize %>; left: <%= middleX %>;"></span>
+<span class="resize-handle east" style="cursor: e-resize; width: <%= resizeHandlerSize %>; height: <%= resizeHandlerSize %>; top: <%= middleY %>;"></span>
+<span class="resize-handle south" style="cursor: s-resize; width: <%= resizeHandlerSize %>; height: <%= resizeHandlerSize %>; left: <%= middleX %>;"></span>
+<span class="resize-handle west" style="cursor: w-resize; width: <%= resizeHandlerSize %>; height: <%= resizeHandlerSize %>; top: <%= middleY %>;"></span>

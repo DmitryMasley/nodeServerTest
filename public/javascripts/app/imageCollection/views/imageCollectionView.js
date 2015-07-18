@@ -1,20 +1,26 @@
 define(["jquery", "backbone", "underscore", "../models/imageModel", "../collections/imageCollection", "./imageModelView","tpl!../templates/imageCollectionView"], function($, Backbone, _, ImageModel, ImageCollection, ImageModelView, template){
     "use strict";
     var ImageCollectionView = Backbone.View.extend({
-        template:template,
+        tagName: 'div',
+        width: '768px',
+        height: '432px',
+        template: template,
         events: {
             'click button#add': 'addImage'
         },
         initialize: function(){
-            _.bindAll(this, 'render', 'addImage'); // every function that uses 'this' as the current object should be in here
+            _.bindAll(this, 'render', 'appendImage' , 'renderImages'); // every function that uses 'this' as the current object should be in here
+            this.$el.append(this.template());
             this.counter = 0;
             this.collection = new ImageCollection();
             this.listenTo(this.collection, "add", this.appendImage, this); // collection event binder
             this.listenTo(this.collection, "reset", this.renderImages, this); // collection event binder
         },
         render: function(){
-            this.setElement(this.template());
-            this.$el.append("<button id='add'>Add image to imageCollection</button>");
+            this.$el.attr({
+                "class":"dd-container",
+                "style":"width: "+ this.width +"; height: "+ this.height +""
+            });
             return this;
         },
         renderImages: function(){

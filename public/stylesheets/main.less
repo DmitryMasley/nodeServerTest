@@ -282,9 +282,13 @@ html,body {
     &.active {
       border-color:#ffff00;
     }
-    button{
-      position: relative;
-      top:-30px;
+    button#add{
+      position:absolute;
+      bottom: -30px;
+    }
+    p{
+      position:absolute;
+      top:-50px;
     }
     .dd-item {
       left: 0px;
@@ -294,6 +298,10 @@ html,body {
       height: 70px;
       background-color: #DDDDDD;
       position:absolute;
+      z-index: 100;
+      &.active,&:hover{
+        z-index: 200;
+      }
       &.resizable,&:hover {
         outline: 2px dashed rgba(222, 60, 80, .9);
       }
@@ -307,40 +315,29 @@ html,body {
           z-index: 999;
           &.east {
             right: -5px;
-            top: 30px;
             cursor: e-resize;
           }
           &.west{
             left: -5px;
-            top: 30px;
             cursor: w-resize;
           }
           &.north {
             top: -5px;
-            left: 43px;
             cursor: n-resize;
             &.east {
-              left: auto;
-              right: -5px;
               cursor: ne-resize;
             }
             &.west{
-              left: -5px;
               cursor: nw-resize;
             }
           }
           &.south{
-            top: auto;
             bottom: -5px;
-            left: 43px;
             cursor: s-resize;
             &.east{
-              left: auto;
-              right: -5px;
               cursor: se-resize;
             }
             &.west{
-              left: -5px;
               cursor: sw-resize;
             }
           }

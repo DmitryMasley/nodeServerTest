@@ -5,8 +5,7 @@ define(["jquery","backbone"], function($,Backbone){
             left: '0px',
             top: '0px',
             width: '192px',
-            height: '108px',
-            resizeHandlerSize: "8px"
+            height: '108px'
         }
     });
     return ImageModel;

@@ -1,6 +1,6 @@
-define(["jquery","backbone", "underscore", "tpl!../templates/imageModelView"], function($,Backbone,_,template){
+define(["jquery","backbone", "underscore", "tpl!../templates/imageView"], function($,Backbone,_,template){
     "use strict";
-    var ImageModelView = Backbone.View.extend({
+    var ImageView = Backbone.View.extend({
         tagName: 'div',
         template: template,
         events: {
@@ -8,10 +8,6 @@ define(["jquery","backbone", "underscore", "tpl!../templates/imageModelView"], f
             'mousedown': 'downHandler'
         },
         initialize: function(){
-            this.model.set({
-                middleX: this.model.get("width").slice(0, -2)/2 - Math.abs(this.model.get("resizeHandlerSize").slice(0, -2)/2) + "px",
-                middleY: this.model.get("height").slice(0, -2)/2 - Math.abs(this.model.get("resizeHandlerSize").slice(0, -2)/2) + "px"
-            });
             this.$el.append(this.template(this.model.toJSON()));
             this.$el.attr({
                 "class":"dd-item",
@@ -33,7 +29,6 @@ define(["jquery","backbone", "underscore", "tpl!../templates/imageModelView"], f
         },
         startResize: function(e){
             this.source = e.toElement;
-            this.source.width=Math.abs(this.model.get("resizeHandlerSize").slice(0, -2)/2);
             this.orig_src = {};
             this.orig_src.item = this.$el.find("img")[0];
             this.orig_src.width = this.orig_src.item.naturalWidth;
@@ -52,37 +47,35 @@ define(["jquery","backbone", "underscore", "tpl!../templates/imageModelView"], f
             }
             if ($(this.source).hasClass('north') && !(e.shiftKey)){
                 this.$el.css("height", Math.min((Math.max((this.self.height - (Math.max(e.pageY, this.parent.top) - this.self.top - this.parent.top)), this.min_height)), this.max_height) + "px");
-                this.$el.css("top", this.self.top - (this.$el.css("height").slice(0, -2) - this.self.height) + "px");
+                this.$el.css("top", this.self.top - parseInt(this.$el.css("height")) + this.self.height + "px");
             }
             if ($(this.source).hasClass('west')) {
                 if (e.shiftKey) {
                     if ($(this.source).hasClass('north')) {
                         this.$el.css("width", Math.min((Math.max((this.self.width - (Math.max(e.pageX, this.parent.left) - this.self.left - this.parent.left)), this.min_width, this.min_height*this.orig_src.width/this.orig_src.height)), (this.self.height + this.self.top) / this.orig_src.height * this.orig_src.width, this.max_width) + "px");
-                        this.$el.css("top", this.self.top - (this.$el.css("width").slice(0, -2) / this.orig_src.width * this.orig_src.height - this.self.height) + "px");
+                        this.$el.css("top", this.self.top - parseInt(this.$el.css("width"))/ this.orig_src.width * this.orig_src.height + this.self.height + "px");
                     }else{
                         this.$el.css("width", Math.min((Math.max((this.self.width - (Math.max(e.pageX, this.parent.left) - this.self.left - this.parent.left)), this.min_width, this.min_height*this.orig_src.width/this.orig_src.height)), (this.parent.height - this.self.top) / this.orig_src.height * this.orig_src.width, this.max_width) + "px");
                     }
-                    this.$el.css("height", this.$el.css("width").slice(0, -2) / this.orig_src.width * this.orig_src.height + "px");
+                    this.$el.css("height", parseInt(this.$el.css("width")) / this.orig_src.width * this.orig_src.height + "px");
                 } else {
                     this.$el.css("width", Math.min((Math.max((this.self.width - (Math.max(e.pageX, this.parent.left) - this.self.left - this.parent.left)), this.min_width)), this.max_width) + "px");
                 }
-                this.$el.css("left", this.self.left - (this.$el.css("width").slice(0, -2) - this.self.width) + "px");
+                this.$el.css("left", this.self.left - parseInt(this.$el.css("width")) + this.self.width + "px");
             }
             if ($(this.source).hasClass('east')) {
                 if (e.shiftKey) {
                     if ($(this.source).hasClass('north')) {
                         this.$el.css("width", Math.min((Math.max((e.pageX - this.self.left - this.parent.left), this.min_width, this.min_height*this.orig_src.width/this.orig_src.height)), (this.self.height + this.self.top) / this.orig_src.height * this.orig_src.width, this.parent.width - this.self.left, this.max_width) + "px");
-                        this.$el.css("top", this.self.top - (this.$el.css("width").slice(0, -2) / this.orig_src.width * this.orig_src.height - this.self.height) + "px");
+                        this.$el.css("top", this.self.top - parseInt(this.$el.css("width")) / this.orig_src.width * this.orig_src.height + this.self.height + "px");
                     }else{
                         this.$el.css("width", Math.min((Math.max((e.pageX - this.self.left - this.parent.left), this.min_width, this.min_height*this.orig_src.width/this.orig_src.height)), (this.parent.height - this.self.top) / this.orig_src.height * this.orig_src.width, this.parent.width - this.self.left, this.max_width) + "px");
                     }
-                    this.$el.css("height", this.$el.css("width").slice(0, -2) / this.orig_src.width * this.orig_src.height + "px");
+                    this.$el.css("height", parseInt(this.$el.css("width")) / this.orig_src.width * this.orig_src.height + "px");
                 } else {
                     this.$el.css("width", Math.min((Math.max((e.pageX - this.self.left - this.parent.left), this.min_width)), this.max_width, this.parent.width - this.self.left) + "px");
                 }
             }
-            this.$el.find(".resize-handle.north , .resize-handle.south").not(".west").not(".east").css("left", this.$el.css("width").slice(0, -2)/2 - this.source.width/2 +"px");
-            this.$el.find(".resize-handle.east , .resize-handle.west").not(".north").not(".south").css("top", this.$el.css("height").slice(0, -2)/2 - this.source.width/2 +"px");
         },
         endResize: function(e){
             this.model.set({
@@ -131,10 +124,10 @@ define(["jquery","backbone", "underscore", "tpl!../templates/imageModelView"], f
             $(document).off("mousemove", this.dragging);
             e.stopPropagation();
             if (this.mouseDownAt.dragStarted === true &&
-                (this.$el.css("left").slice(0, -2) > 0) &&
-                (this.$el.css("top").slice(0, -2) > 0) &&
-                (this.$el.css("left").slice(0, -2) < this.parent.width - this.$el.css("width").slice(0, -2)) &&
-                (this.$el.css("top").slice(0, -2) < this.parent.height - this.$el.css("height").slice(0, -2))){
+                (parseInt(this.$el.css("left")) > 0) &&
+                (parseInt(this.$el.css("top")) > 0) &&
+                (parseInt(this.$el.css("left")) < this.parent.width - parseInt(this.$el.css("width"))) &&
+                (parseInt(this.$el.css("top")) < this.parent.height - parseInt(this.$el.css("height")))){
                 this.model.set({
                     left: "" + (e.pageX - this.mouseDownAt.deltaX - this.parent.left) + "px",
                     top: "" + (e.pageY - this.mouseDownAt.deltaY - this.parent.top) + "px"
@@ -165,5 +158,5 @@ define(["jquery","backbone", "underscore", "tpl!../templates/imageModelView"], f
             };
         }
     });
-    return ImageModelView;
+    return ImageView;
 });

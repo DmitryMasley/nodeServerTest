@@ -1,5 +1,6 @@
 @color:#2260b8;
 @colorLight: lighten(@color, 20%);
+@resizeHandlerHalfSize: 5px;
 html,body {
   position: relative;
   background-color: rgb(207,211,230);
@@ -309,39 +310,59 @@ html,body {
         .resize-handle{
           position: absolute;
           display: block;
-          width: 10px;
-          height: 10px;
+          width: 2*@resizeHandlerHalfSize;
+          height: 2*@resizeHandlerHalfSize;
           background-color: rgba(222, 60, 80, .9);
           z-index: 999;
           &.east {
-            right: -5px;
+            right: -@resizeHandlerHalfSize;
+            top: 50%;
+            margin-top: -@resizeHandlerHalfSize;
             cursor: e-resize;
           }
           &.west{
-            left: -5px;
+            left: -@resizeHandlerHalfSize;
+            top: 50%;
+            margin-top: -@resizeHandlerHalfSize;
             cursor: w-resize;
           }
           &.north {
-            top: -5px;
+            top: -@resizeHandlerHalfSize;
+            left: 50%;
+            margin-left: -@resizeHandlerHalfSize;
+            margin-top:0;
             cursor: n-resize;
-            &.east {
+            &.north.east {
+              margin-left:0;
+              left: auto;
+              right: -@resizeHandlerHalfSize;
               cursor: ne-resize;
             }
-            &.west{
+            &.north.west{
+              margin-left:0;
+              left: -@resizeHandlerHalfSize;
               cursor: nw-resize;
             }
           }
           &.south{
-            bottom: -5px;
+            top: auto;
+            bottom: -@resizeHandlerHalfSize;
+            left: 50%;
+            margin-left: -@resizeHandlerHalfSize;
+            margin-top:0;
             cursor: s-resize;
             &.east{
+              left: auto;
+              margin-left:0;
+              right: -@resizeHandlerHalfSize;
               cursor: se-resize;
             }
             &.west{
+              left: -@resizeHandlerHalfSize;
+              margin-left:0;
               cursor: sw-resize;
             }
           }
-
         }
       }
       img {

@@ -1,4 +1,4 @@
-define(["jquery", "backbone", "underscore", "../models/imageModel", "../collections/imageCollection", "./imageModelView","tpl!../templates/imageCollectionView"], function($, Backbone, _, ImageModel, ImageCollection, ImageModelView, template){
+define(["jquery", "backbone", "underscore", "../models/imageModel", "../collections/imageCollection", "./imageView","tpl!../templates/imageCollectionView"], function($, Backbone, _, ImageModel, ImageCollection, ImageView, template){
     "use strict";
     var ImageCollectionView = Backbone.View.extend({
         tagName: 'div',
@@ -43,7 +43,7 @@ define(["jquery", "backbone", "underscore", "../models/imageModel", "../collecti
             (image.get("src") != false) ? this.collection.add(image) : false;
         },
         appendImage: function(image){
-            var imageView = new ImageModelView({
+            var imageView = new ImageView({
                 model: image
             });
             this.$el.append(imageView.render().$el);

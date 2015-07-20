@@ -10,10 +10,6 @@ require.config({
             location:"app/dragdrop"
         },
         {
-            name: "addImage",
-            location:"app/addImage"
-        },
-        {
             name: "imageCollection",
             location:"app/imageCollection"
         },

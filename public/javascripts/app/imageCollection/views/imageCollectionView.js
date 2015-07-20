@@ -2,24 +2,25 @@ define(["jquery", "backbone", "underscore", "../models/imageModel", "../collecti
     "use strict";
     var ImageCollectionView = Backbone.View.extend({
         tagName: 'div',
-        width: '768px',
-        height: '432px',
+        width: 768,
+        height: 432,
         template: template,
         events: {
             'click button#add': 'addImage'
         },
         initialize: function(){
             _.bindAll(this, 'render', 'appendImage' , 'renderImages'); // every function that uses 'this' as the current object should be in here
-            this.$el.append(this.template());
+            this.$el.attr({"class":"dd-container"});
             this.counter = 0;
             this.collection = new ImageCollection();
             this.listenTo(this.collection, "add", this.appendImage, this); // collection event binder
             this.listenTo(this.collection, "reset", this.renderImages, this); // collection event binder
         },
         render: function(){
-            this.$el.attr({
-                "class":"dd-container",
-                "style":"width: "+ this.width +"; height: "+ this.height +""
+            this.$el.html(this.template());
+            this.$el.css({
+                width: this.width,
+                height: this.height
             });
             return this;
         },
@@ -46,7 +47,12 @@ define(["jquery", "backbone", "underscore", "../models/imageModel", "../collecti
             var imageView = new ImageView({
                 model: image
             });
+            this.listenTo(imageView, "resetResizable", this.resetResizable);
+            this.listenTo(imageView, "close", function(){this.stopListening(imageView, "setResizable", this.resetResizable)});
             this.$el.append(imageView.render().$el);
+        },
+        resetResizable: function(model){
+            $(this.collection.models).not($(model)).each(function(idx,item){item.set("resizable", false)});
         }
     });
     return ImageCollectionView;

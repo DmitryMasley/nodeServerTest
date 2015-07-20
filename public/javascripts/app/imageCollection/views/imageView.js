@@ -8,24 +8,37 @@ define(["jquery","backbone", "underscore", "tpl!../templates/imageView"], functi
             'mousedown': 'downHandler'
         },
         initialize: function(){
-            this.$el.append(this.template(this.model.toJSON()));
             this.$el.attr({
                 "class":"dd-item",
-                id:this.model.get("_id"),
                 draggable:"true"
             });
-            this.min_width = 60;
-            this.min_height = 60;
-            this.max_width = 1000;
-            this.max_height = 600;
-            _.bindAll(this, 'render', 'resizing', 'endResize', 'dragging', 'upHandler', 'getParentPosition', 'getSelfPosition');
+            this.min_width = 96;
+            this.min_height = 54;
+            this.max_width = 960;
+            this.max_height = 540;
+            _.bindAll(this, 'render', 'remove', 'resizing', 'endResize', 'dragging', 'upHandler', 'getParentPosition', 'getSelfPosition');
             this.listenTo(this.model, 'change', this.render, this);
+            this.listenTo(this.model, 'destroy', this.remove, this);
         },
         render: function(){
-            this.$el.attr({
-                style:"left: "+ this.model.get("left") +"; top: "+ this.model.get("top") +"; width: "+ this.model.get("width") +"; height: "+ this.model.get("height") +""
+            this.$el.html(this.template(this.model.toJSON()));
+            this.$el.attr({id:this.model.get("_id")});
+            this.$el.css({
+                left: this.model.get("left"),
+                top: this.model.get("top"),
+                width: this.model.get("width"),
+                height: this.model.get("height")
             });
-            return this; // for chainable calls, like .render().el
+            if (this.model.get('resizable') === true){
+                this.$el.addClass("resizable");
+            } else if (this.model.get('resizable') === false){
+                this.$el.removeClass("resizable");
+            }
+                return this; // for chainable calls, like .render().el
+        },
+        remove: function(){
+            this.trigger("close");
+            Backbone.View.prototype.remove.call(this);
         },
         startResize: function(e){
             this.source = e.toElement;
@@ -42,37 +55,37 @@ define(["jquery","backbone", "underscore", "tpl!../templates/imageView"], functi
         },
         resizing: function(e){
             if ($(this.source).hasClass('south') && !(e.shiftKey)){
-                this.$el.css("height", Math.min((Math.max((e.pageY - this.self.top - this.parent.top), this.min_height)), this.max_height, this.parent.height - this.self.top) + "px");
+                this.$el.css("height", Math.min((Math.max((e.pageY - this.self.top - this.parent.top), this.min_height)), this.max_height, this.parent.height - this.self.top));
             }
             if ($(this.source).hasClass('north') && !(e.shiftKey)){
-                this.$el.css("height", Math.min((Math.max((this.self.height - (Math.max(e.pageY, this.parent.top) - this.self.top - this.parent.top)), this.min_height)), this.max_height) + "px");
-                this.$el.css("top", this.self.top - parseInt(this.$el.css("height")) + this.self.height + "px");
+                this.$el.css("height", Math.min((Math.max((this.self.height - (Math.max(e.pageY, this.parent.top) - this.self.top - this.parent.top)), this.min_height)), this.max_height));
+                this.$el.css("top", this.self.top - parseInt(this.$el.css("height")) + this.self.height);
             }
             if ($(this.source).hasClass('west')) {
                 if (e.shiftKey) {
                     if ($(this.source).hasClass('north')) {
-                        this.$el.css("width", Math.min((Math.max((this.self.width - (Math.max(e.pageX, this.parent.left) - this.self.left - this.parent.left)), this.min_width, this.min_height*this.orig_src.width/this.orig_src.height)), (this.self.height + this.self.top) / this.orig_src.height * this.orig_src.width, this.max_width) + "px");
-                        this.$el.css("top", this.self.top - parseInt(this.$el.css("width"))/ this.orig_src.width * this.orig_src.height + this.self.height + "px");
+                        this.$el.css("width", Math.min((Math.max((this.self.width - (Math.max(e.pageX, this.parent.left) - this.self.left - this.parent.left)), this.min_width, this.min_height*this.orig_src.width/this.orig_src.height)), (this.self.height + this.self.top) / this.orig_src.height * this.orig_src.width, this.max_width));
+                        this.$el.css("top", this.self.top - parseInt(this.$el.css("width"))/ this.orig_src.width * this.orig_src.height + this.self.height);
                     }else{
-                        this.$el.css("width", Math.min((Math.max((this.self.width - (Math.max(e.pageX, this.parent.left) - this.self.left - this.parent.left)), this.min_width, this.min_height*this.orig_src.width/this.orig_src.height)), (this.parent.height - this.self.top) / this.orig_src.height * this.orig_src.width, this.max_width) + "px");
+                        this.$el.css("width", Math.min((Math.max((this.self.width - (Math.max(e.pageX, this.parent.left) - this.self.left - this.parent.left)), this.min_width, this.min_height*this.orig_src.width/this.orig_src.height)), (this.parent.height - this.self.top) / this.orig_src.height * this.orig_src.width, this.max_width));
                     }
-                    this.$el.css("height", parseInt(this.$el.css("width")) / this.orig_src.width * this.orig_src.height + "px");
+                    this.$el.css("height", parseInt(this.$el.css("width")) / this.orig_src.width * this.orig_src.height);
                 } else {
-                    this.$el.css("width", Math.min((Math.max((this.self.width - (Math.max(e.pageX, this.parent.left) - this.self.left - this.parent.left)), this.min_width)), this.max_width) + "px");
+                    this.$el.css("width", Math.min((Math.max((this.self.width - (Math.max(e.pageX, this.parent.left) - this.self.left - this.parent.left)), this.min_width)), this.max_width));
                 }
-                this.$el.css("left", this.self.left - parseInt(this.$el.css("width")) + this.self.width + "px");
+                this.$el.css("left", this.self.left - parseInt(this.$el.css("width")) + this.self.width);
             }
             if ($(this.source).hasClass('east')) {
                 if (e.shiftKey) {
                     if ($(this.source).hasClass('north')) {
-                        this.$el.css("width", Math.min((Math.max((e.pageX - this.self.left - this.parent.left), this.min_width, this.min_height*this.orig_src.width/this.orig_src.height)), (this.self.height + this.self.top) / this.orig_src.height * this.orig_src.width, this.parent.width - this.self.left, this.max_width) + "px");
-                        this.$el.css("top", this.self.top - parseInt(this.$el.css("width")) / this.orig_src.width * this.orig_src.height + this.self.height + "px");
+                        this.$el.css("width", Math.min((Math.max((e.pageX - this.self.left - this.parent.left), this.min_width, this.min_height*this.orig_src.width/this.orig_src.height)), (this.self.height + this.self.top) / this.orig_src.height * this.orig_src.width, this.parent.width - this.self.left, this.max_width));
+                        this.$el.css("top", this.self.top - parseInt(this.$el.css("width")) / this.orig_src.width * this.orig_src.height + this.self.height);
                     }else{
-                        this.$el.css("width", Math.min((Math.max((e.pageX - this.self.left - this.parent.left), this.min_width, this.min_height*this.orig_src.width/this.orig_src.height)), (this.parent.height - this.self.top) / this.orig_src.height * this.orig_src.width, this.parent.width - this.self.left, this.max_width) + "px");
+                        this.$el.css("width", Math.min((Math.max((e.pageX - this.self.left - this.parent.left), this.min_width, this.min_height*this.orig_src.width/this.orig_src.height)), (this.parent.height - this.self.top) / this.orig_src.height * this.orig_src.width, this.parent.width - this.self.left, this.max_width));
                     }
-                    this.$el.css("height", parseInt(this.$el.css("width")) / this.orig_src.width * this.orig_src.height + "px");
+                    this.$el.css("height", parseInt(this.$el.css("width")) / this.orig_src.width * this.orig_src.height);
                 } else {
-                    this.$el.css("width", Math.min((Math.max((e.pageX - this.self.left - this.parent.left), this.min_width)), this.max_width, this.parent.width - this.self.left) + "px");
+                    this.$el.css("width", Math.min((Math.max((e.pageX - this.self.left - this.parent.left), this.min_width)), this.max_width, this.parent.width - this.self.left));
                 }
             }
         },
@@ -109,10 +122,10 @@ define(["jquery","backbone", "underscore", "tpl!../templates/imageView"], functi
                 Math.abs(this.mouseDownAt.y - e.pageY) < 7)) {
                 return;
             }else{}
-            $(this.el.parentNode).find('.resizable').not(this.el).toggleClass('resizable');
+            this.trigger('resetResizable', this.model, this);
             this.mouseDownAt.dragStarted=true;
-            this.$el.css("left", (e.pageX - this.mouseDownAt.deltaX - this.parent.left) + "px");
-            this.$el.css("top", (e.pageY - this.mouseDownAt.deltaY - this.parent.top) + "px");
+            this.$el.css("left", (e.pageX - this.mouseDownAt.deltaX - this.parent.left));
+            this.$el.css("top", (e.pageY - this.mouseDownAt.deltaY - this.parent.top));
             e.stopPropagation();
         },
         upHandler: function(e){
@@ -127,16 +140,16 @@ define(["jquery","backbone", "underscore", "tpl!../templates/imageView"], functi
                 (parseInt(this.$el.css("left")) < this.parent.width - parseInt(this.$el.css("width"))) &&
                 (parseInt(this.$el.css("top")) < this.parent.height - parseInt(this.$el.css("height")))){
                 this.model.set({
-                    left: "" + (e.pageX - this.mouseDownAt.deltaX - this.parent.left) + "px",
-                    top: "" + (e.pageY - this.mouseDownAt.deltaY - this.parent.top) + "px"
+                    left: "" + (e.pageX - this.mouseDownAt.deltaX - this.parent.left),
+                    top: "" + (e.pageY - this.mouseDownAt.deltaY - this.parent.top)
                 });
             } else {
-                this.$el.css("left", this.self.left + "px");
-                this.$el.css("top", this.self.top + "px");
+                this.$el.css("left", this.self.left);
+                this.$el.css("top", this.self.top);
                 if (this.mouseDownAt.dragStarted === false){
-                    this.$el.toggleClass("resizable");
-                    if (this.$el.hasClass("resizable")){
-                        $(this.el.parentNode).find('.resizable').not(this.el).toggleClass('resizable');
+                    if (!this.$el.hasClass("resizable")){
+                        this.trigger('resetResizable', this.model, this);
+                        this.model.set("resizable", true);
                     }
                 }
             }

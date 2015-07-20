@@ -5,7 +5,8 @@ define(["jquery","backbone", "underscore", "tpl!../templates/imageView"], functi
         template: template,
         events: {
             'mousedown span.resize-handle': 'startResize',
-            'button.button': 'remove',
+            'mousedown span.remove-handle': 'remove',
+            'mousedown span.button': 'remove',
             'mousedown': 'downHandler'
 
         },
@@ -24,9 +25,11 @@ define(["jquery","backbone", "underscore", "tpl!../templates/imageView"], functi
         },
         render: function(){
             this.$el.html(this.template(this.model.toJSON()));
-            this.$el.find('button.button').css({
+            this.removeButton = this.$el.find('span.button');
+            this.removeButton.css({
                 display: "none",
-                position: "absolute"
+                position: "absolute",
+                zIndex: 202
             });
             this.$el.attr({id:this.model.get("_id")});
             this.$el.css({
@@ -42,9 +45,11 @@ define(["jquery","backbone", "underscore", "tpl!../templates/imageView"], functi
             }
                 return this; // for chainable calls, like .render().el
         },
-        remove: function(){
+        remove: function(e){
             this.trigger("close");
             Backbone.View.prototype.remove.call(this);
+            e.preventDefault();
+            e.stopPropagation();
         },
         startResize: function(e){
             this.source = e.toElement;
@@ -124,11 +129,18 @@ define(["jquery","backbone", "underscore", "tpl!../templates/imageView"], functi
             if (e.button==0 || e.button==1) {
                 $(document).on("mousemove", this.dragging);
             }else if (e.button===2){
-                this.$el.find('button.button').css({
-                    display: "block",
-                    left: this.mouseDownAt.deltaX,
-                    top: this.mouseDownAt.deltaY
-                });
+                if (parseInt(this.removeButton.css("height"))<this.parent.height-this.self.top-this.mouseDownAt.deltaY){
+                    this.removeButton.css({top: this.mouseDownAt.deltaY-parseInt(this.removeButton.css("margin-top"))});
+                }else{
+                    this.removeButton.css({top: this.mouseDownAt.deltaY-parseInt(this.removeButton.css("height"))-parseInt(this.removeButton.css("margin-top"))});
+                }
+                if (parseInt(this.removeButton.css("width"))<this.parent.width-this.self.left-this.mouseDownAt.deltaX){
+                    this.removeButton.css({left: this.mouseDownAt.deltaX-parseInt(this.removeButton.css("margin-left"))});
+                }else{
+                    this.removeButton.css({left: this.mouseDownAt.deltaX-parseInt(this.removeButton.css("width"))-parseInt(this.removeButton.css("margin-left"))});
+                }
+                this.removeButton.css({display: "block"});
+                this.trigger('resetResizable', this.model, this);
             }
             $(document).on("mouseup", this.upHandler);
         },

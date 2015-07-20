@@ -6,7 +6,7 @@ define(["jquery", "backbone", "underscore", "../models/imageModel", "../collecti
         height: 432,
         template: template,
         events: {
-            'click button#add': 'addImage',
+            'click span#add': 'addImage',
             'click': 'resetResizable'
         },
         initialize: function(){
@@ -50,9 +50,11 @@ define(["jquery", "backbone", "underscore", "../models/imageModel", "../collecti
             });
             this.listenTo(imageView, "resetResizable", this.resetResizable);
             this.listenTo(imageView, "close", function(){this.stopListening(imageView, "setResizable", this.resetResizable)});
+            this.el.oncontextmenu = function () {return false};
             this.$el.append(imageView.render().$el);
         },
         resetResizable: function(model){
+            $(this.collection.models).not($(model)).each(function(idx,item){item.set("resizable", true)});
             $(this.collection.models).not($(model)).each(function(idx,item){item.set("resizable", false)});
         }
     });

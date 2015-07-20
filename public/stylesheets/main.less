@@ -104,10 +104,12 @@ html,body {
     }
   }
   .button, .buttonlng {font-size: 12px;
+    cursor: pointer;
     border-radius:4px;
     margin: 0px 5px;
     line-height:1.42857143;
     display: inline-block;
+    white-space: nowrap;
   }
   .slideshow-wrap {
     display: block;
@@ -282,9 +284,10 @@ html,body {
     &.active {
       border-color:#ffff00;
     }
-    button#add{
+    span#add{
       position:absolute;
-      bottom: -30px;
+      bottom: -40px;
+      right: 0px;
     }
     p{
       position:absolute;
@@ -299,18 +302,40 @@ html,body {
       background-color: #DDDDDD;
       position:absolute;
       z-index: 100;
-      &.resizable,&:hover {
+      .remove-handle,.resize-handle {
+        display: none;
+      }
+      &:hover {
         outline: 2px dashed rgba(222, 60, 80, .9);
         z-index: 200;
       }
       &.resizable {
-        .resize-handle{
+        outline: 2px dashed lighten(rgba(222, 60, 80, .9), 20%);
+        z-index: 200;
+        .remove-handle {
           position: absolute;
+          cursor: pointer;
+          border-radius: 2*@resizeHandlerHalfSize;
+          display: block;
+          color: #ffffff;
+          width: 4*@resizeHandlerHalfSize;
+          height: 4*@resizeHandlerHalfSize;
+          top: 3*@resizeHandlerHalfSize;
+          right: 3*@resizeHandlerHalfSize;
+          background-color: rgba(222, 60, 80, .9);
+          z-index: 201;
+        }
+        .resize-handle {
+          position: absolute;
+          border-radius: @resizeHandlerHalfSize;
           display: block;
           width: 2*@resizeHandlerHalfSize;
           height: 2*@resizeHandlerHalfSize;
           background-color: rgba(222, 60, 80, .9);
-          z-index: 999;
+          z-index: 201;
+          &:hover {
+            background-color: lighten(rgba(222, 60, 80, .9), 20%);
+          }
           &.east {
             right: -@resizeHandlerHalfSize;
             top: 50%;

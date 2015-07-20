@@ -1,5 +1,6 @@
 <img src="<%= src %>" description="<%= description %>">
-<button class='button'>delete from collection</button>
+<span class='button'>delete from collection</span>
+<span class='remove-handle fa fa-times'></span>
 <span class="resize-handle north west" style="cursor: nw-resize;"></span>
 <span class="resize-handle north east" style="cursor: ne-resize;"></span>
 <span class="resize-handle south east" style="cursor: se-resize;"></span>

@@ -26,11 +26,6 @@ define(["jquery","backbone", "underscore", "tpl!../templates/imageView"], functi
         render: function(){
             this.$el.html(this.template(this.model.toJSON()));
             this.removeButton = this.$el.find('span.button');
-            this.removeButton.css({
-                display: "none",
-                position: "absolute",
-                zIndex: 202
-            });
             this.$el.attr({id:this.model.get("_id")});
             this.$el.css({
                 left: this.model.get("left"),
@@ -52,6 +47,7 @@ define(["jquery","backbone", "underscore", "tpl!../templates/imageView"], functi
             e.stopPropagation();
         },
         startResize: function(e){
+            this.removeButton.css("display","none");
             this.source = e.toElement;
             this.orig_src = {};
             this.orig_src.item = this.$el.find("img")[0];
@@ -112,6 +108,7 @@ define(["jquery","backbone", "underscore", "tpl!../templates/imageView"], functi
             $(document).off('mouseup', this.endResize);
         },
         downHandler: function(e){
+            this.removeButton.css("display","none");
             this.getParentPosition();
             this.getSelfPosition();
             this.mouseDownAt = {
@@ -126,6 +123,7 @@ define(["jquery","backbone", "underscore", "tpl!../templates/imageView"], functi
             document.ondragstart = function () {return false};
             this.el.oncontextmenu = function () {return false};
             document.body.onselectstart = function () {return false};
+            this.trigger('resetResizable', this.model, this);
             if (e.button==0 || e.button==1) {
                 $(document).on("mousemove", this.dragging);
             }else if (e.button===2){
@@ -140,7 +138,6 @@ define(["jquery","backbone", "underscore", "tpl!../templates/imageView"], functi
                     this.removeButton.css({left: this.mouseDownAt.deltaX-parseInt(this.removeButton.css("width"))-parseInt(this.removeButton.css("margin-left"))});
                 }
                 this.removeButton.css({display: "block"});
-                this.trigger('resetResizable', this.model, this);
             }
             $(document).on("mouseup", this.upHandler);
         },
@@ -149,11 +146,11 @@ define(["jquery","backbone", "underscore", "tpl!../templates/imageView"], functi
                 (Math.abs(this.mouseDownAt.x - e.pageX) < 7 &&
                 Math.abs(this.mouseDownAt.y - e.pageY) < 7)) {
                 return;
-            }else{}
-            this.trigger('resetResizable', this.model, this);
-            this.mouseDownAt.dragStarted=true;
-            this.$el.css("left", (e.pageX - this.mouseDownAt.deltaX - this.parent.left));
-            this.$el.css("top", (e.pageY - this.mouseDownAt.deltaY - this.parent.top));
+            }else{
+                this.mouseDownAt.dragStarted=true;
+                this.$el.css("left", (e.pageX - this.mouseDownAt.deltaX - this.parent.left));
+                this.$el.css("top", (e.pageY - this.mouseDownAt.deltaY - this.parent.top));
+            }
             e.stopPropagation();
         },
         upHandler: function(e){

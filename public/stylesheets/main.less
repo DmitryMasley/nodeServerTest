@@ -310,32 +310,29 @@ html,body {
         z-index: 200;
       }
       &.resizable {
-        outline: 2px dashed lighten(rgba(222, 60, 80, .9), 20%);
+        outline: 2px dashed darken(rgba(222, 60, 80, .9), 20%);
         z-index: 200;
-        .remove-handle {
-          position: absolute;
+        .remove-handle{
           cursor: pointer;
-          border-radius: 2*@resizeHandlerHalfSize;
-          display: block;
-          color: #ffffff;
           width: 4*@resizeHandlerHalfSize;
           height: 4*@resizeHandlerHalfSize;
           top: 3*@resizeHandlerHalfSize;
           right: 3*@resizeHandlerHalfSize;
-          background-color: rgba(222, 60, 80, .9);
-          z-index: 201;
+          color: #ffffff;
         }
-        .resize-handle {
+        .remove-handle,.resize-handle {
           position: absolute;
-          border-radius: @resizeHandlerHalfSize;
+          border-radius: 50%;
           display: block;
-          width: 2*@resizeHandlerHalfSize;
-          height: 2*@resizeHandlerHalfSize;
           background-color: rgba(222, 60, 80, .9);
           z-index: 201;
           &:hover {
-            background-color: lighten(rgba(222, 60, 80, .9), 20%);
+            background-color: darken(rgba(222, 60, 80, .9), 20%);
           }
+        }
+        .resize-handle {
+          width: 2*@resizeHandlerHalfSize;
+          height: 2*@resizeHandlerHalfSize;
           &.east {
             right: -@resizeHandlerHalfSize;
             top: 50%;

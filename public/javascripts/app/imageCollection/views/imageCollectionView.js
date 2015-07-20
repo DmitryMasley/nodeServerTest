@@ -6,7 +6,8 @@ define(["jquery", "backbone", "underscore", "../models/imageModel", "../collecti
         height: 432,
         template: template,
         events: {
-            'click button#add': 'addImage'
+            'click button#add': 'addImage',
+            'click': 'resetResizable'
         },
         initialize: function(){
             _.bindAll(this, 'render', 'appendImage' , 'renderImages'); // every function that uses 'this' as the current object should be in here

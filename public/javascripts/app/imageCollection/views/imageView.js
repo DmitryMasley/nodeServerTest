@@ -5,7 +5,9 @@ define(["jquery","backbone", "underscore", "tpl!../templates/imageView"], functi
         template: template,
         events: {
             'mousedown span.resize-handle': 'startResize',
+            'button.button': 'remove',
             'mousedown': 'downHandler'
+
         },
         initialize: function(){
             this.$el.attr({
@@ -22,6 +24,10 @@ define(["jquery","backbone", "underscore", "tpl!../templates/imageView"], functi
         },
         render: function(){
             this.$el.html(this.template(this.model.toJSON()));
+            this.$el.find('button.button').css({
+                display: "none",
+                position: "absolute"
+            });
             this.$el.attr({id:this.model.get("_id")});
             this.$el.css({
                 left: this.model.get("left"),
@@ -103,18 +109,28 @@ define(["jquery","backbone", "underscore", "tpl!../templates/imageView"], functi
         downHandler: function(e){
             this.getParentPosition();
             this.getSelfPosition();
-            this.mouseDownAt = {x: e.pageX,
+            this.mouseDownAt = {
+                x: e.pageX,
                 y: e.pageY,
-                deltaX : e.pageX - this.self.left - this.parent.left,
-                deltaY : e.pageY - this.self.top - this.parent.top,
-                dragStarted : false
+                deltaX: e.pageX - this.self.left - this.parent.left,
+                deltaY: e.pageY - this.self.top - this.parent.top,
+                dragStarted: false
             };
-            document.ondragstart = function () {return false};
-            document.body.onselectstart = function () {return false};
-            $(document).on("mousemove", this.dragging);
-            $(document).on("mouseup", this.upHandler);
             e.stopPropagation();
             e.preventDefault();
+            document.ondragstart = function () {return false};
+            this.el.oncontextmenu = function () {return false};
+            document.body.onselectstart = function () {return false};
+            if (e.button==0 || e.button==1) {
+                $(document).on("mousemove", this.dragging);
+            }else if (e.button===2){
+                this.$el.find('button.button').css({
+                    display: "block",
+                    left: this.mouseDownAt.deltaX,
+                    top: this.mouseDownAt.deltaY
+                });
+            }
+            $(document).on("mouseup", this.upHandler);
         },
         dragging: function(e){
             if (this.mouseDownAt.dragStarted === false &&
@@ -135,6 +151,7 @@ define(["jquery","backbone", "underscore", "tpl!../templates/imageView"], functi
             $(document).off("mousemove", this.dragging);
             e.stopPropagation();
             if (this.mouseDownAt.dragStarted === true &&
+                (e.button==0 || e.button==1) &&
                 (parseInt(this.$el.css("left")) > 0) &&
                 (parseInt(this.$el.css("top")) > 0) &&
                 (parseInt(this.$el.css("left")) < this.parent.width - parseInt(this.$el.css("width"))) &&
@@ -146,10 +163,13 @@ define(["jquery","backbone", "underscore", "tpl!../templates/imageView"], functi
             } else {
                 this.$el.css("left", this.self.left);
                 this.$el.css("top", this.self.top);
-                if (this.mouseDownAt.dragStarted === false){
-                    if (!this.$el.hasClass("resizable")){
+                if (this.mouseDownAt.dragStarted === false &&
+                    (e.button==0 || e.button==1)){
+                    if (this.model.get("resizable") === false){
                         this.trigger('resetResizable', this.model, this);
                         this.model.set("resizable", true);
+                    }else {
+                        this.model.set("resizable", false);
                     }
                 }
             }

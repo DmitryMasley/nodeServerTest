@@ -4,7 +4,7 @@ define(["helpers"], function(Helpers) {
         this.count = 0;
         this.el = document.createElement("div");
         this.el.className = "content";
-        this.el.innerHTML = "<button class='btn'>Button</button><div class='red'>DIV</div>"
+        this.el.innerHTML = "<button class='button'>change color</button><div class='red'>DIV</div>"
         if (el instanceof  Element) {
             el.appendChild(this.el);
         } else {

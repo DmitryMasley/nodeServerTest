@@ -35,7 +35,6 @@ define(["jquery","backbone", "underscore", "tpl!../templates/imageView"], functi
             this.orig_src.height = this.orig_src.item.naturalHeight;
             this.getParentPosition();
             this.getSelfPosition();
-            this.$el.addClass("active");
             e.preventDefault();
             e.stopPropagation();
             $(document).on('mousemove', this.resizing);
@@ -84,7 +83,6 @@ define(["jquery","backbone", "underscore", "tpl!../templates/imageView"], functi
                 height: this.$el.css("height"),
                 width: this.$el.css("width")
             });
-            this.$el.removeClass("active");
             e.preventDefault();
             $(document).off('mousemove', this.resizing);
             $(document).off('mouseup', this.endResize);
@@ -98,7 +96,6 @@ define(["jquery","backbone", "underscore", "tpl!../templates/imageView"], functi
                 deltaY : e.pageY - this.self.top - this.parent.top,
                 dragStarted : false
             };
-            this.$el.addClass("active");
             document.ondragstart = function () {return false};
             document.body.onselectstart = function () {return false};
             $(document).on("mousemove", this.dragging);
@@ -112,6 +109,7 @@ define(["jquery","backbone", "underscore", "tpl!../templates/imageView"], functi
                 Math.abs(this.mouseDownAt.y - e.pageY) < 7)) {
                 return;
             }else{}
+            $(this.el.parentNode).find('.resizable').not(this.el).toggleClass('resizable');
             this.mouseDownAt.dragStarted=true;
             this.$el.css("left", (e.pageX - this.mouseDownAt.deltaX - this.parent.left) + "px");
             this.$el.css("top", (e.pageY - this.mouseDownAt.deltaY - this.parent.top) + "px");
@@ -137,9 +135,11 @@ define(["jquery","backbone", "underscore", "tpl!../templates/imageView"], functi
                 this.$el.css("top", this.self.top + "px");
                 if (this.mouseDownAt.dragStarted === false){
                     this.$el.toggleClass("resizable");
+                    if (this.$el.hasClass("resizable")){
+                        $(this.el.parentNode).find('.resizable').not(this.el).toggleClass('resizable');
+                    }
                 }
             }
-            this.$el.removeClass("active");
         },
         getParentPosition: function(){
             this.parent = {

@@ -3,7 +3,12 @@
     margin: 10px;
   }
 }
+body {
+  background-image: url("../images/Flag-of-England.jpg");
+  background-position: center center;
+}
 .main-view {
+  background: transparent;
   font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
   margin:10px;
   .main-title {
@@ -11,7 +16,17 @@
     vertical-align: middle;
     font-weight: bold;
   }
-  .title-image {
+  .main-content {
+    position: relative;
+  }
+  .mask {
+    z-index: -1;
+    opacity: 0.9;
+    position: absolute;
+    top:0;
+    bottom:0;
+    left:0;
+    right:0;
     color: #ffffff;
     background-color: #6f5499;
     background-image: -webkit-gradient(linear,left top,left bottom,from(#563d7c),to(#6f5499));
@@ -20,5 +35,9 @@
     background-image: linear-gradient(to bottom,#563d7c 0,#6f5499 100%);
     filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#563d7c', endColorstr='#6F5499', GradientType=0);
     background-repeat: repeat-x;
+  }
+  .main-content-body {
+    color: #ffffff;
+
   }
 }

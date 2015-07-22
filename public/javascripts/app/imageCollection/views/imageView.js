@@ -5,10 +5,14 @@ define(["jquery","backbone", "underscore", "tpl!../templates/imageView"], functi
         template: template,
         events: {
             'mousedown span.resize-handle': 'startResize',
-            'mousedown span.remove-handle': 'remove',
-            'mousedown span.button': 'remove',
-            'mousedown': 'downHandler'
-
+            "contextmenu": "showContextmenu",
+            'mousedown span.remove-handle': 'removeHandler',
+            'mousedown span.button': 'removeHandler',
+            'mousedown': 'downHandler',
+            'dragstart': 'itemDragStart',
+            "dragover": "dragOver",
+            'dragend': 'dragEnd',
+            'drop': 'dropItem'
         },
         initialize: function(){
             this.$el.attr({
@@ -19,7 +23,7 @@ define(["jquery","backbone", "underscore", "tpl!../templates/imageView"], functi
             this.min_height = 54;
             this.max_width = 960;
             this.max_height = 540;
-            _.bindAll(this, 'render', 'remove', 'resizing', 'endResize', 'dragging', 'upHandler', 'getParentPosition', 'getSelfPosition');
+            _.bindAll(this, 'render', 'remove', 'resizing', 'endResize', 'upHandler', 'getParentPosition', 'getSelfPosition');
             this.listenTo(this.model, 'change', this.render, this);
             this.listenTo(this.model, 'destroy', this.remove, this);
         },
@@ -40,7 +44,15 @@ define(["jquery","backbone", "underscore", "tpl!../templates/imageView"], functi
             }
                 return this; // for chainable calls, like .render().el
         },
+        removeHandler: function(e){
+            if (e.originalEvent) e = e.originalEvent;
+            console.log(e);
+            e.preventDefault();
+            e.stopPropagation();
+            $(e.srcElement).on('mouseup', this.remove);
+        },
         remove: function(e){
+            if (e.originalEvent) e = e.originalEvent;
             this.trigger("close");
             Backbone.View.prototype.remove.call(this);
             e.preventDefault();
@@ -108,7 +120,10 @@ define(["jquery","backbone", "underscore", "tpl!../templates/imageView"], functi
             $(document).off('mouseup', this.endResize);
         },
         downHandler: function(e){
-            this.removeButton.css("display","none");
+            this.trigger('resetResizable', this.model, this);
+            $(document).on("mouseup", this.upHandler);
+        },
+        showContextmenu: function (e) {
             this.getParentPosition();
             this.getSelfPosition();
             this.mouseDownAt = {
@@ -118,70 +133,30 @@ define(["jquery","backbone", "underscore", "tpl!../templates/imageView"], functi
                 deltaY: e.pageY - this.self.top - this.parent.top,
                 dragStarted: false
             };
-            e.stopPropagation();
-            e.preventDefault();
-            document.ondragstart = function () {return false};
-            this.el.oncontextmenu = function () {return false};
-            document.body.onselectstart = function () {return false};
-            this.trigger('resetResizable', this.model, this);
-            if (e.button==0 || e.button==1) {
-                $(document).on("mousemove", this.dragging);
-            }else if (e.button===2){
-                if (parseInt(this.removeButton.css("height"))<this.parent.height-this.self.top-this.mouseDownAt.deltaY){
-                    this.removeButton.css({top: this.mouseDownAt.deltaY-parseInt(this.removeButton.css("margin-top"))});
-                }else{
-                    this.removeButton.css({top: this.mouseDownAt.deltaY-parseInt(this.removeButton.css("height"))-parseInt(this.removeButton.css("margin-top"))});
-                }
-                if (parseInt(this.removeButton.css("width"))<this.parent.width-this.self.left-this.mouseDownAt.deltaX){
-                    this.removeButton.css({left: this.mouseDownAt.deltaX-parseInt(this.removeButton.css("margin-left"))});
-                }else{
-                    this.removeButton.css({left: this.mouseDownAt.deltaX-parseInt(this.removeButton.css("width"))-parseInt(this.removeButton.css("margin-left"))});
-                }
-                this.removeButton.css({display: "block"});
-            }
-            $(document).on("mouseup", this.upHandler);
-        },
-        dragging: function(e){
-            if (this.mouseDownAt.dragStarted === false &&
-                (Math.abs(this.mouseDownAt.x - e.pageX) < 7 &&
-                Math.abs(this.mouseDownAt.y - e.pageY) < 7)) {
-                return;
+            console.log(this);
+            if (parseInt(this.removeButton.css("height"))<this.parent.height-this.self.top-this.mouseDownAt.deltaY){
+                this.removeButton.css({top: this.mouseDownAt.deltaY-parseInt(this.removeButton.css("margin-top"))});
             }else{
-                this.mouseDownAt.dragStarted=true;
-                this.$el.css("left", (e.pageX - this.mouseDownAt.deltaX - this.parent.left));
-                this.$el.css("top", (e.pageY - this.mouseDownAt.deltaY - this.parent.top));
+                this.removeButton.css({top: this.mouseDownAt.deltaY-parseInt(this.removeButton.css("height"))-parseInt(this.removeButton.css("margin-top"))});
             }
-            e.stopPropagation();
+            if (parseInt(this.removeButton.css("width"))<this.parent.width-this.self.left-this.mouseDownAt.deltaX){
+                this.removeButton.css({left: this.mouseDownAt.deltaX-parseInt(this.removeButton.css("margin-left"))});
+            }else{
+                this.removeButton.css({left: this.mouseDownAt.deltaX-parseInt(this.removeButton.css("width"))-parseInt(this.removeButton.css("margin-left"))});
+            }
+            this.removeButton.css({display: "block"});
+            return false;
         },
         upHandler: function(e){
-            document.ondragstart = null;
-            document.body.onselectstart = null;
-            $(document).off("mouseup", this.upHandler);
-            $(document).off("mousemove", this.dragging);
-            e.stopPropagation();
-            if (this.mouseDownAt.dragStarted === true &&
-                (e.button==0 || e.button==1) &&
-                (parseInt(this.$el.css("left")) > 0) &&
-                (parseInt(this.$el.css("top")) > 0) &&
-                (parseInt(this.$el.css("left")) < this.parent.width - parseInt(this.$el.css("width"))) &&
-                (parseInt(this.$el.css("top")) < this.parent.height - parseInt(this.$el.css("height")))){
-                this.model.set({
-                    left: "" + (e.pageX - this.mouseDownAt.deltaX - this.parent.left),
-                    top: "" + (e.pageY - this.mouseDownAt.deltaY - this.parent.top)
-                });
-            } else {
-                this.$el.css("left", this.self.left);
-                this.$el.css("top", this.self.top);
-                if (this.mouseDownAt.dragStarted === false &&
-                    (e.button==0 || e.button==1)){
-                    if (this.model.get("resizable") === false){
-                        this.trigger('resetResizable', this.model, this);
-                        this.model.set("resizable", true);
-                    }else {
-                        this.model.set("resizable", false);
-                    }
+            if (e.button==0 || e.button==1){
+                if (this.model.get("resizable") === false){
+                    this.trigger('resetResizable', this.model, this);
+                    this.model.set("resizable", true);
+                }else {
+                    this.model.set("resizable", false);
                 }
             }
+            $(document).off("mouseup", this.upHandler);
         },
         getParentPosition: function(){
             this.parent = {
@@ -198,6 +173,40 @@ define(["jquery","backbone", "underscore", "tpl!../templates/imageView"], functi
                 width : parseInt(this.$el.css("width")),
                 height : parseInt(this.$el.css("height"))
             };
+        },
+        itemDragStart: function(e){
+            var evt = e.originalEvent;
+            evt.effectAllowed = "move";
+            evt.dataTransfer.setData("text", this.model.get("_id"));
+            window._backboneDragDropObject={
+                model: this.model,
+                x: evt.offsetX,
+                y: evt.offsetY
+            };
+        },
+        dragOver: function(e){
+            var evt = e.originalEvent;
+            evt.preventDefault();
+            evt.stopPropagation();
+            //need to check id
+            if (!window._backboneDragDropObject || _.contains(this.model.collection.models,window._backboneDragDropObject.model)){
+                evt.dataTransfer.dropEffect = "none";
+            }
+        },
+        dragEnd: function(e){
+            if(e.originalEvent.dataTransfer.dropEffect !== 'none'){
+                this.remove(e);
+                this.model.collection.remove(this.model);
+            }
+        },
+        dropItem: function(e){
+            var evt = e.originalEvent;
+            evt.preventDefault();
+            evt.stopPropagation();
+            if (window._backboneDragDropObject && (evt.dataTransfer.getData("text")==window._backboneDragDropObject.model.get("_id"))) {
+                this.model.set(_.pick(window._backboneDragDropObject.model.attributes, "src", "description", "width", "height", "resizable"));
+            }
+            window._backboneDragDropObject=null;
         }
     });
     return ImageView;

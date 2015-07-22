@@ -79,6 +79,7 @@ define(["jquery", "backbone", "underscore", "../models/imageModel", "../collecti
                 evt.dataTransfer.dropEffect = "move";
             }
             evt.preventDefault();
+            evt.stopPropagation();
             this.$el.addClass("active");
         },
         dragLeave: function(){
@@ -90,9 +91,9 @@ define(["jquery", "backbone", "underscore", "../models/imageModel", "../collecti
             evt.preventDefault();
             evt.stopPropagation();
             this.$el.removeClass("active");
-            if (window._backboneDragDropObject && (evt.dataTransfer.getData("text")==window._backboneDragDropObject.model.get("_id"))) {
+            if (window._backboneDragDropObject && (evt.dataTransfer.getData("text/plain")==window._backboneDragDropObject.model.get("_id"))) {
                 var image = new ImageModel();
-                image.set(_.pick(window._backboneDragDropObject.model.attributes, "src", "description", "width", "height", "resizable"));
+                image.set(_.pick(window._backboneDragDropObject.model.toJSON(), "src", "description", "width", "height", "resizable"));
                 var x = window._backboneDragDropObject.x;
                 var y = window._backboneDragDropObject.y;
                 y = evt.offsetY-y>=0 ? evt.offsetY-y : 0;
@@ -101,7 +102,6 @@ define(["jquery", "backbone", "underscore", "../models/imageModel", "../collecti
                 y = this.height-parseInt(image.get('height')) > y ? y : this.height-parseInt(image.get('height'));
                 image.set({top:y, left:x, _id:++this.counter});
                 this.collection.add(image);
-                console.log(this.collection,image);
             }
             window._backboneDragDropObject=null;
         }

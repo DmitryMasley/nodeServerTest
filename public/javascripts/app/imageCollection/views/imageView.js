@@ -110,10 +110,10 @@ define(["jquery","backbone", "underscore", "tpl!../templates/imageView"], functi
         },
         endResize: function(e){
             this.model.set({
-                left: this.$el.css("left"),
-                top: this.$el.css("top"),
-                height: this.$el.css("height"),
-                width: this.$el.css("width")
+                left: parseInt(this.$el.css("left")),
+                top: parseInt(this.$el.css("top")),
+                height: parseInt(this.$el.css("height")),
+                width: parseInt(this.$el.css("width"))
             });
             e.preventDefault();
             $(document).off('mousemove', this.resizing);
@@ -177,12 +177,13 @@ define(["jquery","backbone", "underscore", "tpl!../templates/imageView"], functi
         itemDragStart: function(e){
             var evt = e.originalEvent;
             evt.effectAllowed = "move";
-            evt.dataTransfer.setData("text", this.model.get("_id"));
+            evt.dataTransfer.setData("text/plain", this.model.get("_id"));
             window._backboneDragDropObject={
                 model: this.model,
                 x: evt.offsetX,
                 y: evt.offsetY
             };
+            evt.dataTransfer.setDragImage(this.el,evt.offsetX,evt.offsetY);
         },
         dragOver: function(e){
             var evt = e.originalEvent;
@@ -203,8 +204,12 @@ define(["jquery","backbone", "underscore", "tpl!../templates/imageView"], functi
             var evt = e.originalEvent;
             evt.preventDefault();
             evt.stopPropagation();
-            if (window._backboneDragDropObject && (evt.dataTransfer.getData("text")==window._backboneDragDropObject.model.get("_id"))) {
-                this.model.set(_.pick(window._backboneDragDropObject.model.attributes, "src", "description", "width", "height", "resizable"));
+            if (window._backboneDragDropObject && (evt.dataTransfer.getData("text/plain")==window._backboneDragDropObject.model.get("_id"))) {
+                this.model.set(_.pick(window._backboneDragDropObject.model.toJSON(), "src", "description", "width", "height", "resizable"));
+                this.getParentPosition();
+                var x = this.parent.width - this.model.get('width') - this.model.get('left') >=0 ? this.model.get('left') : this.parent.width - this.model.get('width');
+                var y = this.parent.height - this.model.get('height') - this.model.get('top') >=0 ? this.model.get('top') : this.parent.height - this.model.get('height');
+                this.model.set({top:y, left:x});
             }
             window._backboneDragDropObject=null;
         }

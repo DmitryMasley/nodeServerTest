@@ -2,16 +2,41 @@
 <html>
 <head>
     <title><%= title %></title>
-    <link rel='stylesheet' href='/stylesheets/main.css' />
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,600,400" rel="stylesheet" type="text/css">
+    <link rel='stylesheet' href='/javascripts/vendor/bootstrap/css/bootstrap.css' />
+    <link rel='stylesheet' href='/javascripts/vendor/bootstrap/css/bootstrap.css' />
+    <link rel='stylesheet' href='/stylesheets/mvc.css' />
     <script type="application/javascript" src="/javascripts/vendor/requirejs/require.js"></script>
     <script type="application/javascript" src="/javascripts/require-config.js"></script>
 </head>
 <body>
-<h1><%= title %></h1>
-<script type="application/javascript">
-    require(["domReady", "app"], function(DomReady, App){
+<div class="container-fluid">
+    <div class="panel panel-default main-view">
+        <div class="panel-heading">
+            <div class="row">
+                <div class="col-md-6">
+                </div>
+                <div class="col-md-6">
+                    <ul class="nav nav-pills pull-right">
+                        <li role="presentation" class="active"><a href="#"><%= __("Home")%></a></li>
+                        <li role="presentation"><a href="#"><%= __("Classes")%></a></li>
+                        <li role="presentation"><a href="#"><%= __("Contacts")%></a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="main-content">
+           <div class="text-center mask">
 
-    });
-</script>
+           </div>
+            <div class="text-center main-content-body">
+                <div class="text-center">
+                    <a class="logo" href="http://localhost:3000/"><img src="/images/continent.png"></a>
+                </div>
+                <img src="/images/words.jpg">
+            </div>
+        </div>
+    </div>
+</div>
 </body>
 </html>

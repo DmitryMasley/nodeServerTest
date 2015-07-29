@@ -15,6 +15,7 @@ var submit = require('./routes/submit');
 var mvc = require('./routes/mvc');
 var images = require('./routes/images');
 var dragtest = require('./routes/dragtest');
+var shopping_cart = require('./routes/shopping_cart');
 var html5 = require('./routes/html5');
 
 var app = express();
@@ -73,6 +74,7 @@ app.use('/submit', submit);
 app.use('/mvc', mvc);
 app.use('/images.ajax', images);
 app.use('/dragtest', dragtest);
+app.use('/shopping_cart', shopping_cart);
 app.use('/html5', html5);
 
 // catch 404 and forward to error handler

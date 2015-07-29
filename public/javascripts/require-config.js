@@ -6,6 +6,10 @@ require.config({
             location: "app/users"
         },
         {
+            name: "shoppingCart",
+            location: "app/shoppingCart"
+        },
+        {
             name: "dragdrop",
             location:"app/dragdrop"
         },

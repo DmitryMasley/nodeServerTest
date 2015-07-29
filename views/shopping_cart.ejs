@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />  <meta name="description" content="<%= __("invite") %>" />
+    <title>shopping cart test task</title>
+    <link rel='stylesheet' href='/stylesheets/shopping_cart.css' />
+    <script type="text/javascript" src="/javascripts/vendor/requirejs/require.js"></script>
+    <script type="text/javascript" src="/javascripts/require-config.js"></script>
+    <script type="text/javascript">
+        require(["domReady", "shoppingCart"], function(domReady, ShoppingCart){
+            var shoppingCart = new ShoppingCart();
+        });
+    </script>
+</head>
+<body>
+</body>
+</html>

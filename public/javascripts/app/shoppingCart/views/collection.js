@@ -5,6 +5,7 @@ define(["jquery", "underscore", "marionette", "./item"], function($, _, Marionet
             this.collection=config.collection;
         },
         tagName: "div",
+        className:"row",
         childView: itemView
     });
     return CollectionView;

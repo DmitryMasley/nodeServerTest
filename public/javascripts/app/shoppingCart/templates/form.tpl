@@ -1,4 +1,4 @@
-<form class="form" id="commentForm" method="get" action="" novalidate="novalidate">
+<form class="form" method="get" action="">
 <div>
     <input id="name" name="name" minlength="2" type="text" required="" aria-required="true" placeholder="Имя"/>
 </div>
@@ -11,7 +11,5 @@
 <div>
     <input id="comment" type="text" name="comment" placeholder="Комментарий"></textarea>
 </div>
-
-<button class="btn btn-success" type="submit">ОТПРАВИТЬ</button>
-
+    <button class="btn btn-success" type="submit">ОТПРАВИТЬ</button>
 </form>

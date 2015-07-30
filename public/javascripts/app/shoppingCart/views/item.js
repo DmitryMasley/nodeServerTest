@@ -4,12 +4,12 @@ define(["jquery", "underscore", "marionette", "tpl!../templates/item"], function
         template: template,
         className: "col-lg-3 col-md-4 col-sm-4 col-xs-6",
         ui: {
-            destroyBtn: "span.btn.sharp"
+            removeBtn: "span.btn.sharp"
         },
         events:{
-            'click @ui.destroyBtn': 'clickedButton'
+            'click @ui.removeBtn': 'clickedRemove'
         },
-        clickedButton: function() {
+        clickedRemove: function() {
             this.model.collection.remove(this.model);
         }
     });

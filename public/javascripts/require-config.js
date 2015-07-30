@@ -31,6 +31,7 @@ require.config({
         "marionette": "vendor/backbone.marionette/backbone.marionette",
         "backbone": "vendor/backbone.marionette/backbone",
         "underscore": "vendor/backbone.marionette/underscore",
+        "bootstrap": "vendor/bootstrap/js/bootstrap",
         "json2": "vendor/backbone.marionette/json2",
         "tpl": "vendor/requirejs/tpl",
         "text": "vendor/requirejs/text",

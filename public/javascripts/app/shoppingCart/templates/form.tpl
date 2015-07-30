@@ -9,7 +9,7 @@
     <input id="email" type="email" name="email" required="" aria-required="true" placeholder="E-mail"/>
 </div>
 <div>
-    <input id="comment" type="text" name="comment" placeholder="Комментарий"></textarea>
+    <input id="comment" type="text" name="comment" placeholder="Комментарий"></input>
 </div>
     <button class="btn btn-success" type="submit">ОТПРАВИТЬ</button>
 </form>

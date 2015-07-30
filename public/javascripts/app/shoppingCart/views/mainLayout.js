@@ -15,7 +15,7 @@ define(["jquery", "underscore", "marionette", "tpl!../templates/mainLayout", "./
         onRender: function(){
                 this.items.show(new CollectionView({collection:this.collection}));
                 this.totalPrice.show(new TotalPriceView({collection:this.collection}));
-                this.form.show(new FormView());
+                this.form.show(new FormView({collection:this.collection}));
                 this.modalView.show(new ModalView({collection:this.collection}));
                }
         });

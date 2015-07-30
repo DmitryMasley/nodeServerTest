@@ -14,20 +14,20 @@
             <div class="modal-body">
             <form class="form" method="get" action="">
             <div>
-                <input id="id" name="id" minlength="1" type="text" required="" aria-required="true" placeholder="id:1234"/>
+                <input id="id" name="id" minlength="1" type="text" required="" aria-required="true" placeholder="id:  1234"/>
             </div>
             <div>
-                <input id="title" type="text" minlength="3" name="title" required="" aria-required="true" placeholder="title:Crocs Classic 1234"/>
+                <input id="title" type="text" minlength="3" name="title" required="" aria-required="true" placeholder="title:  Crocs Classic 1234"/>
             </div>
             <div>
-                <input id="price" type="text" name="price" minlength="2" required="" aria-required="true" placeholder="price:25.5"/>
+                <input id="price" type="text" name="price" minlength="2" required="" aria-required="true" placeholder="price:  25.5"/>
             </div>
             <div>
-                <input id="img" type="text" name="img" required="" aria-required="true" placeholder="img:'/images/crocs.jpg'"></input>
+                <input id="img" type="text" name="img" required="" aria-required="true" placeholder="img url:  'http://www.w3schools.com/images/colorpicker.gif'"></input>
             </div>
             <div class="modal-footer">
                 <button class="btn btn-success" type="submit">ДОБАВИТЬ</button>
-                <button type="button" class="btn btn-default" data-dismiss="modal">ЗАКРЫТЬ</button>
+                <button type="button" class="btn btn-default pull-left" data-dismiss="modal">ЗАКРЫТЬ</button>
             </div>
             </form>
             </div>

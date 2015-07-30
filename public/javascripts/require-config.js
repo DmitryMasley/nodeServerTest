@@ -32,6 +32,7 @@ require.config({
         "backbone": "vendor/backbone.marionette/backbone",
         "underscore": "vendor/backbone.marionette/underscore",
         "bootstrap": "vendor/bootstrap/js/bootstrap",
+        "validate": "vendor/validate/jquery.validate",
         "json2": "vendor/backbone.marionette/json2",
         "tpl": "vendor/requirejs/tpl",
         "text": "vendor/requirejs/text",
@@ -44,6 +45,12 @@ require.config({
         "backbone": {
             deps:["underscore", "jquery", "json2"],
             exports:"Backbone"
+        },
+        "bootstrap": {
+            deps:["jquery"]
+        },
+        "validate": {
+            deps:["jquery"]
         },
         'underscore': {
             exports: '_'

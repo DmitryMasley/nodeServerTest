@@ -9,12 +9,10 @@
     <script type="text/javascript" src="/javascripts/require-config.js"></script>
     <script type="text/javascript">
         require(["domReady","imageCollection","jquery"], function(domReady, ImageCollection, $){
-            var imageCollection = new ImageCollection();
-            imageCollection.view.collection.fetch();
-            $(".dd-main").append(imageCollection.view.render().$el);
-            var imageCollection = new ImageCollection();
-            imageCollection.view.collection.fetch();
-            $(".dd-main").append(imageCollection.view.render().$el);
+            var imageCollection1 = new ImageCollection();
+            $(".dd-main").append(imageCollection1.view.render().$el);
+            var imageCollection2 = new ImageCollection();
+            $(".dd-main").append(imageCollection2.view.render().$el);
         });
     </script>
 </head>

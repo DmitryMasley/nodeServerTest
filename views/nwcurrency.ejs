@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />  <meta name="description" content="Neverwinter base currency calculations" />
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+    <link rel='stylesheet' href='/stylesheets/main.css' />
+    <title>Neverwinter base currency calculations</title>
+    <script type="text/javascript" src="/javascripts/vendor/requirejs/require.js"></script>
+    <script type="text/javascript" src="/javascripts/require-config.js"></script>
+    <script type="text/javascript">
+        require(["domReady","jquery"], function(domReady, $){
+            var direction="up";
+            var getRowPrice = function(row){
+                var inputs = $(row).find("input");
+                return (parseInt(inputs[0].value) * (parseInt(inputs[1].value)*100*100+parseInt(inputs[2].value)*100+parseInt(inputs[3].value)));
+            };
+            var showRowPrice = function(row, price){
+                var spans = $(row).find("span");
+                spans[0].innerHTML = Math.floor(price/10000);
+                spans[1].innerHTML = Math.floor((price%10000)/100);
+                spans[2].innerHTML = price%100;
+            };
+            var recalculateThis = function(){
+                var row = $(this).parents("tr");
+                showRowPrice(row, getRowPrice(row));
+                recalculateTotal(this);
+            };
+            var recalculateTotal = function(el){
+                var rowArray = $(el).parents("tbody").find("tr");
+                var sum=0;
+                for (var i=0; i<rowArray.length; i++){
+                    sum+=getRowPrice(rowArray[i]);
+                }
+                showRowPrice($("#total"),sum);
+            };
+            var sort = function(){
+                var compare = function(rowA, rowB) {
+                        return getRowPrice(rowA) - getRowPrice(rowB);
+                };
+                var rowArray = $(this).parents("table").find("tbody tr");
+                rowArray.sort(compare);
+                var imgSort = $(this).find("img");
+                if (direction=="up"){
+                    for (var i = 0; i < rowArray.length; i++) {
+                        $("tbody").append(rowArray[i]);
+                        direction="down";
+                        $(imgSort[1]).show();
+                        $(imgSort[0]).hide();
+                    }
+                }else{
+                    for (var i = 0, len = rowArray.length; i < len; i++) {
+                        $("tbody").append(rowArray[len-1-i]);
+                        direction="up";
+                        $(imgSort[0]).show();
+                        $(imgSort[1]).hide();
+                    }
+                }
+            };
+            $("table input").on("input", recalculateThis);
+            $("#sort").on("click", sort);
+        });
+    </script>
+</head>
+<body style="width:100%; height: 100%; overflow: auto;">
+<table style="text-align: center">
+    <thead>
+        <tr>
+            <th style="width: 300px">Наименование ингридиента</th>
+            <th style="width: 100px">Кол-во</th>
+            <th style="width: 300px">Стоимость 1 ед.</th>
+            <th style="width: 50px"></th>
+            <th style="width: 150px"><span id="sort"><a href="#sort">Стоимость</a><img src="\images\nwcurrency\down_arrow.png" style="display: none"><img src="\images\nwcurrency\up_arrow.png" style="display: none"></span></th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td style="width: 300px; text-align: left">Сертификат качества необычных товаров</td>
+            <td style="width: 100px"><input type="number" name="number" value="1" min="0" max="99"></td>
+            <td style="width: 300px">
+                <input type="number" name="gprice" value="2" min="0" max="99">
+                <img src="\images\nwcurrency\gold.png">
+                <input type="number" name="sprice" value="1" min="0" max="99">
+                <img src="\images\nwcurrency\silver.png">
+                <input type="number" name="cprice" value="1" min="0" max="99">
+                <img src="\images\nwcurrency\copper.png">
+            </td>
+            <td style="width: 50px"></td>
+            <td style="width: 150px">
+                <span>2</span>
+                <img src="\images\nwcurrency\gold.png">
+                <span>1</span>
+                <img src="\images\nwcurrency\silver.png">
+                <span>1</span>
+                <img src="\images\nwcurrency\copper.png">
+            </td>
+        </tr>
+        <tr>
+            <td style="width: 300px; text-align: left">Лакированная древесина</td>
+            <td style="width: 100px"><input type="number" name="number" value="1" min="0" max="99"></td>
+            <td style="width: 300px">
+                <input type="number" name="gprice" value="0" min="0" max="99">
+                <img src="\images\nwcurrency\gold.png">
+                <input type="number" name="sprice" value="0" min="0" max="99">
+                <img src="\images\nwcurrency\silver.png">
+                <input type="number" name="cprice" value="0" min="0" max="99">
+                <img src="\images\nwcurrency\copper.png">
+            </td>
+            <td style="width: 50px"></td>
+            <td style="width: 150px">
+                <span>0</span>
+                <img src="\images\nwcurrency\gold.png">
+                <span>0</span>
+                <img src="\images\nwcurrency\silver.png">
+                <span>0</span>
+                <img src="\images\nwcurrency\copper.png">
+            </td>
+        </tr>
+        <tr>
+            <td style="width: 300px; text-align: left">Чертеж: полки алхимика</td>
+            <td style="width: 100px"><input type="number" name="number" value="1" min="0" max="99"></td>
+            <td style="width: 300px">
+                <input type="number" name="gprice" value="0" min="0" max="99">
+                <img src="\images\nwcurrency\gold.png">
+                <input type="number" name="sprice" value="0" min="0" max="99">
+                <img src="\images\nwcurrency\silver.png">
+                <input type="number" name="cprice" value="0" min="0" max="99">
+                <img src="\images\nwcurrency\copper.png">
+            </td>
+            <td style="width: 50px"></td>
+            <td style="width: 150px">
+                <span>0</span>
+                <img src="\images\nwcurrency\gold.png">
+                <span>0</span>
+                <img src="\images\nwcurrency\silver.png">
+                <span>0</span>
+                <img src="\images\nwcurrency\copper.png">
+            </td>
+        </tr>
+        <tr>
+            <td style="width: 300px; text-align: left">Абракадабра</td>
+            <td style="width: 100px"><input type="number" name="number" value="1" min="0" max="99"></td>
+            <td style="width: 300px">
+                <input type="number" name="gprice" value="0" min="0" max="99">
+                <img src="\images\nwcurrency\gold.png">
+                <input type="number" name="sprice" value="1" min="0" max="99">
+                <img src="\images\nwcurrency\silver.png">
+                <input type="number" name="cprice" value="0" min="0" max="99">
+                <img src="\images\nwcurrency\copper.png">
+            </td>
+            <td style="width: 50px"></td>
+            <td style="width: 150px">
+                <span>0</span>
+                <img src="\images\nwcurrency\gold.png">
+                <span>1</span>
+                <img src="\images\nwcurrency\silver.png">
+                <span>0</span>
+                <img src="\images\nwcurrency\copper.png">
+            </td>
+        </tr>
+    </tbody>
+    <thead>
+    <tr>
+        <th></th>
+        <th style="width: 100px"></th>
+        <th style="width: 300px"></th>
+        <th style="width: 50px; text-align: right">Итого</th>
+        <th style="width: 150px" id="total">
+            <span>0</span>
+            <img src="\images\nwcurrency\gold.png">
+            <span>0</span>
+            <img src="\images\nwcurrency\silver.png">
+            <span>0</span>
+            <img src="\images\nwcurrency\copper.png">
+        </th>
+    </tr>
+    </thead>
+</table>
+</body>
+</html>

@@ -17,6 +17,7 @@ var images = require('./routes/images');
 var dragtest = require('./routes/dragtest');
 var shopping_cart = require('./routes/shopping_cart');
 var html5 = require('./routes/html5');
+var nwcurrency = require('./routes/nwcurrency');
 
 var app = express();
 var collection = db.get("usercollection");
@@ -76,6 +77,7 @@ app.use('/images.ajax', images);
 app.use('/dragtest', dragtest);
 app.use('/shopping_cart', shopping_cart);
 app.use('/html5', html5);
+app.use('/nwcurrency', nwcurrency);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

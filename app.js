@@ -69,12 +69,12 @@ app.use(validator({customValidators:
 {
     isOn:function(value){return value==="on"}
 }}));
-//app.use('/', routes);
+app.use('/', routes);
 app.use('/submit', submit);
 app.use('/mvc', mvc);
 app.use('/images.ajax', images);
 app.use('/dragtest', dragtest);
-app.use('/', shopping_cart);
+app.use('/shopping_cart', shopping_cart);
 app.use('/html5', html5);
 
 // catch 404 and forward to error handler

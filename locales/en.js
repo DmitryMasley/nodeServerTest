@@ -20,5 +20,7 @@
 	"Home": "Home",
 	"Contacts": "Contacts",
 	"Classes": "Classes",
-	"English school": "English school"
+	"English school": "English school",
+	"Shopping Cart": "Shopping Cart",
+	"Drag & Drop": "Drag & Drop"
 }

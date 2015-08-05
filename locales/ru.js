@@ -41,5 +41,7 @@
 	"Rules": "Правила",
 	"Blog": "Блог",
 	"Contact": "Контакты",
-	"Registration": "Регистрация"
+	"Registration": "Регистрация",
+	"Shopping Cart": "Корзина",
+	"Drag & Drop": "Drag & Drop"
 }

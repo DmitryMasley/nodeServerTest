@@ -42,5 +42,7 @@
 	"Rules": "Rules",
 	"Blog": "Blog",
 	"Contact": "Contact",
-	"Registration": "Registration"
+	"Registration": "Registration",
+	"Shopping Cart": "Shopping Cart",
+	"Drag & Drop": "Drag & Drop"
 }

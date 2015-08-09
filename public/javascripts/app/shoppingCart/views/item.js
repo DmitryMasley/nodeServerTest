@@ -6,11 +6,17 @@ define(["jquery", "underscore", "marionette", "tpl!../templates/item"], function
         ui: {
             removeBtn: "span.btn.sharp"
         },
-        events:{
+        events: {
             'click @ui.removeBtn': 'clickedRemove'
         },
-        clickedRemove: function() {
+        clickedRemove: function () {
             this.model.collection.remove(this.model);
+        },
+        remove: function () {
+            var self = this;
+            this.$el.fadeOut(function(){
+                Marionette.ItemView.prototype.remove.call(self);
+            });
         }
     });
     return ItemView;

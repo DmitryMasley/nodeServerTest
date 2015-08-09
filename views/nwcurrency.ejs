@@ -3,6 +3,7 @@
 <head>
     <meta charset="utf-8" />  <meta name="description" content="Neverwinter base currency calculations" />
     <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+    <link href="/javascripts/vendor/bootstrap/less/bootstrap.css" rel="stylesheet">
     <link rel='stylesheet' href='/stylesheets/main.css' />
     <title>Neverwinter base currency calculations</title>
     <script type="text/javascript" src="/javascripts/vendor/requirejs/require.js"></script>
@@ -10,36 +11,37 @@
     <script type="text/javascript">
         require(["domReady","jquery"], function(domReady, $){
             var direction="up";
-            var getRowPrice = function(row){
+            function getRowPrice(row){
                 var inputs = $(row).find("input");
                 return (parseInt(inputs[0].value) * (parseInt(inputs[1].value)*100*100+parseInt(inputs[2].value)*100+parseInt(inputs[3].value)));
-            };
-            var showRowPrice = function(row, price){
+            }
+            function showRowPrice(row, price){
                 var spans = $(row).find("span");
                 spans[0].innerHTML = Math.floor(price/10000);
                 spans[1].innerHTML = Math.floor((price%10000)/100);
                 spans[2].innerHTML = price%100;
-            };
-            var recalculateThis = function(){
+            }
+            function recalculateThis(){
                 var row = $(this).parents("tr");
                 showRowPrice(row, getRowPrice(row));
                 recalculateTotal(this);
-            };
-            var recalculateTotal = function(el){
+            }
+            function recalculateTotal(el){
                 var rowArray = $(el).parents("tbody").find("tr");
                 var sum=0;
                 for (var i=0; i<rowArray.length; i++){
                     sum+=getRowPrice(rowArray[i]);
                 }
                 showRowPrice($("#total"),sum);
-            };
-            var sort = function(){
+            }
+            function sort(e){
+                e.preventDefault();
                 var compare = function(rowA, rowB) {
                         return getRowPrice(rowA) - getRowPrice(rowB);
                 };
                 var rowArray = $(this).parents("table").find("tbody tr");
                 rowArray.sort(compare);
-                var imgSort = $(this).find("img");
+                var imgSort = $(this).find("i");
                 if (direction=="up"){
                     for (var i = 0; i < rowArray.length; i++) {
                         $("tbody").append(rowArray[i]);
@@ -55,28 +57,28 @@
                         $(imgSort[1]).hide();
                     }
                 }
-            };
+            }
             $("table input").on("input", recalculateThis);
             $("#sort").on("click", sort);
         });
     </script>
 </head>
 <body style="width:100%; height: 100%; overflow: auto;">
-<table style="text-align: center">
+<table class="table table-hover" style="text-align: center">
     <thead>
         <tr>
-            <th style="width: 300px">Наименование ингридиента</th>
-            <th style="width: 100px">Кол-во</th>
-            <th style="width: 300px">Стоимость 1 ед.</th>
-            <th style="width: 50px"></th>
-            <th style="width: 150px"><span id="sort"><a href="#sort">Стоимость</a><img src="\images\nwcurrency\down_arrow.png" style="display: none"><img src="\images\nwcurrency\up_arrow.png" style="display: none"></span></th>
+            <th style="min-width: 200px; text-align: center">Наименование ингридиента</th>
+            <th style="text-align: center">Кол-во</th>
+            <th style="text-align: center">Стоимость 1 ед.</th>
+            <th></th>
+            <th style="min-width: 150px; text-align: center"><span id="sort"><a href="#sort">Стоимость</a><i class="glyphicon glyphicon-triangle-bottom" aria-hidden="true" style="display: none"></i><i class="glyphicon glyphicon-triangle-top" aria-hidden="true" style="display: none"></i></span></th>
         </tr>
     </thead>
     <tbody>
         <tr>
-            <td style="width: 300px; text-align: left">Сертификат качества необычных товаров</td>
-            <td style="width: 100px"><input type="number" name="number" value="1" min="0" max="99"></td>
-            <td style="width: 300px">
+            <td style="text-align: left">Сертификат качества необычных товаров</td>
+            <td><input type="number" name="number" value="1" min="0" max="99"></td>
+            <td>
                 <input type="number" name="gprice" value="2" min="0" max="99">
                 <img src="\images\nwcurrency\gold.png">
                 <input type="number" name="sprice" value="1" min="0" max="99">
@@ -84,8 +86,8 @@
                 <input type="number" name="cprice" value="1" min="0" max="99">
                 <img src="\images\nwcurrency\copper.png">
             </td>
-            <td style="width: 50px"></td>
-            <td style="width: 150px">
+            <td></td>
+            <td>
                 <span>2</span>
                 <img src="\images\nwcurrency\gold.png">
                 <span>1</span>
@@ -95,9 +97,9 @@
             </td>
         </tr>
         <tr>
-            <td style="width: 300px; text-align: left">Лакированная древесина</td>
-            <td style="width: 100px"><input type="number" name="number" value="1" min="0" max="99"></td>
-            <td style="width: 300px">
+            <td style="text-align: left">Лакированная древесина</td>
+            <td><input type="number" name="number" value="1" min="0" max="99"></td>
+            <td>
                 <input type="number" name="gprice" value="0" min="0" max="99">
                 <img src="\images\nwcurrency\gold.png">
                 <input type="number" name="sprice" value="0" min="0" max="99">
@@ -105,8 +107,8 @@
                 <input type="number" name="cprice" value="0" min="0" max="99">
                 <img src="\images\nwcurrency\copper.png">
             </td>
-            <td style="width: 50px"></td>
-            <td style="width: 150px">
+            <td></td>
+            <td>
                 <span>0</span>
                 <img src="\images\nwcurrency\gold.png">
                 <span>0</span>
@@ -116,9 +118,9 @@
             </td>
         </tr>
         <tr>
-            <td style="width: 300px; text-align: left">Чертеж: полки алхимика</td>
-            <td style="width: 100px"><input type="number" name="number" value="1" min="0" max="99"></td>
-            <td style="width: 300px">
+            <td style="text-align: left">Чертеж: полки алхимика</td>
+            <td><input type="number" name="number" value="1" min="0" max="99"></td>
+            <td>
                 <input type="number" name="gprice" value="0" min="0" max="99">
                 <img src="\images\nwcurrency\gold.png">
                 <input type="number" name="sprice" value="0" min="0" max="99">
@@ -126,8 +128,8 @@
                 <input type="number" name="cprice" value="0" min="0" max="99">
                 <img src="\images\nwcurrency\copper.png">
             </td>
-            <td style="width: 50px"></td>
-            <td style="width: 150px">
+            <td></td>
+            <td>
                 <span>0</span>
                 <img src="\images\nwcurrency\gold.png">
                 <span>0</span>
@@ -137,9 +139,9 @@
             </td>
         </tr>
         <tr>
-            <td style="width: 300px; text-align: left">Абракадабра</td>
-            <td style="width: 100px"><input type="number" name="number" value="1" min="0" max="99"></td>
-            <td style="width: 300px">
+            <td style="text-align: left">Абракадабра</td>
+            <td><input type="number" name="number" value="1" min="0" max="99"></td>
+            <td>
                 <input type="number" name="gprice" value="0" min="0" max="99">
                 <img src="\images\nwcurrency\gold.png">
                 <input type="number" name="sprice" value="1" min="0" max="99">
@@ -147,8 +149,8 @@
                 <input type="number" name="cprice" value="0" min="0" max="99">
                 <img src="\images\nwcurrency\copper.png">
             </td>
-            <td style="width: 50px"></td>
-            <td style="width: 150px">
+            <td></td>
+            <td>
                 <span>0</span>
                 <img src="\images\nwcurrency\gold.png">
                 <span>1</span>
@@ -161,10 +163,10 @@
     <thead>
     <tr>
         <th></th>
-        <th style="width: 100px"></th>
-        <th style="width: 300px"></th>
-        <th style="width: 50px; text-align: right">Итого</th>
-        <th style="width: 150px" id="total">
+        <th></th>
+        <th></th>
+        <th style="text-align: right">Итого</th>
+        <th style="text-align: center" id="total">
             <span>0</span>
             <img src="\images\nwcurrency\gold.png">
             <span>0</span>

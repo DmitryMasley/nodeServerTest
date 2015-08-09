@@ -1,6 +1,6 @@
 <img src="<%= src %>" description="<%= description %>">
 <span class="button" style="display: none; position: absolute; z-index: 202;">delete from collection</span>
-<span class="remove-handle fa fa-times"></span>
+<span class="remove-handle glyphicon glyphicon-remove"></span>
 <span class="resize-handle north west" style="cursor: nw-resize;"></span>
 <span class="resize-handle north east" style="cursor: ne-resize;"></span>
 <span class="resize-handle south east" style="cursor: se-resize;"></span>

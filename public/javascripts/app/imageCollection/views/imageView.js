@@ -28,6 +28,7 @@ define(["jquery","backbone", "underscore", "tpl!../templates/imageView"], functi
             this.listenTo(this.model, 'destroy', this.remove, this);
         },
         render: function(){
+            this.$el.fadeIn();
             this.$el.html(this.template(this.model.toJSON()));
             this.removeButton = this.$el.find('span.button');
             this.$el.attr({id:this.model.get("_id")});
@@ -52,11 +53,13 @@ define(["jquery","backbone", "underscore", "tpl!../templates/imageView"], functi
             $(e.srcElement).on('mouseup', this.remove);
         },
         remove: function(e){
+            this.$el.fadeOut(400,function(e){
             if (e.originalEvent) e = e.originalEvent;
             this.trigger("close");
             Backbone.View.prototype.remove.call(this);
             e.preventDefault();
             e.stopPropagation();
+            }.bind(this,e))
         },
         startResize: function(e){
             this.removeButton.css("display","none");

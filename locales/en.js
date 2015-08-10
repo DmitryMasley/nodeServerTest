@@ -22,5 +22,8 @@
 	"Classes": "Classes",
 	"English school": "English school",
 	"Shopping Cart": "Shopping Cart",
-	"Drag & Drop": "Drag & Drop"
+	"Drag & Drop": "Drag & Drop",
+	"Game Currency": "Game Currency",
+	"Router": "Router",
+	"Marionette Router": "Marionette Router"
 }

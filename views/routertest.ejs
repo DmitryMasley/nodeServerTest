@@ -14,7 +14,7 @@
                 appRoutes: {
                     "": "goDefault",
                     "home": "goHome",
-                    "profile": "goProfile",
+                    "profile(/:id)": "goProfile",
                     "messages": "goMessages",
                     "settings": "goSettings",
                     '*notFound': 'goDefault'
@@ -27,22 +27,25 @@
                 },
                 goHome: function(){
                     $('a[data-toggle="tab"][aria-controls="home"]').tab('show');
+                    Backbone.history.navigate('home');
                 },
-                goProfile: function(){
+                goProfile: function(id){
                     $('a[data-toggle="tab"][aria-controls="profile"]').tab('show');
+                    Backbone.history.navigate('profile');
+                    var photoGallery = new PhotoGallery({el:"#profile", item:id});
                 },
                 goMessages: function(){
                     $('a[data-toggle="tab"][aria-controls="messages"]').tab('show');
+                    Backbone.history.navigate('messages');
                 },
                 goSettings: function(){
                     $('a[data-toggle="tab"][aria-controls="settings"]').tab('show');
+                    Backbone.history.navigate('settings');
                 }
             };
             $("ul.nav a").click(function (e) {
                 e.preventDefault();
                 $(this).tab('show');
-            });
-            $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
                 Backbone.history.navigate($(e.target).attr("aria-controls"));
             });
             var router = new Router({
@@ -53,12 +56,11 @@
             }
             $("div.show").addClass("hidden");
             $("ul.nav-tabs.hidden, div.tab-content.hidden").removeClass("hidden").addClass("show");
-            var photoGallery = new PhotoGallery({el:"#profile"});
         });
     </script>
 </head>
 <body>
-<div class="container">
+<div class="container panel panel-default">
     <!-- Nav tabs -->
 
     <ul class="nav nav-tabs hidden" role="tablist">

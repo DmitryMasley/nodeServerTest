@@ -7,10 +7,7 @@ define(["jquery", "underscore", "marionette", "./item", "tpl!../templates/compos
         },
         template: template,
         childView: itemView,
-        childViewContainer: "ul",
-        onRender: function(){
-
-        }
+        childViewContainer: "ul"
     });
     return CompositeView;
 });

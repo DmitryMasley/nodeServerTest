@@ -8,7 +8,7 @@ define(["jquery", "underscore", "marionette", "tpl!../templates/item"], function
             'click img': 'show:me'
         },
         onBeforeRender: function(){
-            this.$el.css("margin-bottom", "25px");
+            this.$el.css({"margin-bottom": "30px"});
         }
     });
     return ItemView;

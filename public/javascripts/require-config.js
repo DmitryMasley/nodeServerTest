@@ -10,6 +10,10 @@ require.config({
             location: "app/shoppingCart"
         },
         {
+            name: "photoGallery",
+            location: "app/photoGallery"
+        },
+        {
             name: "dragdrop",
             location:"app/dragdrop"
         },

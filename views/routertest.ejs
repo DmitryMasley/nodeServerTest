@@ -3,23 +3,28 @@
 <head>
     <meta charset="utf-8" />  <meta name="description" />
     <title>Marionette.appRouter test</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
     <link href="/javascripts/vendor/bootstrap/less/bootstrap.css" rel="stylesheet">
     <link rel='stylesheet' href='/stylesheets/main.css' />
     <script type="text/javascript" src="/javascripts/vendor/requirejs/require.js"></script>
     <script type="text/javascript" src="/javascripts/require-config.js"></script>
     <script type="text/javascript">
-        require(["domReady", "jquery", "backbone", "marionette", "underscore", "bootstrap"], function(domReady, $, Backbone, Marionette, _){
+        require(["domReady", "jquery", "backbone", "marionette", "underscore", "photoGallery", "bootstrap"], function(domReady, $, Backbone, Marionette, _, PhotoGallery){
             var Router = Marionette.AppRouter.extend({
                 appRoutes: {
-                    "": "goHome",
+                    "": "goDefault",
                     "home": "goHome",
                     "profile": "goProfile",
                     "messages": "goMessages",
                     "settings": "goSettings",
-                    '*notFound': 'goHome'
+                    '*notFound': 'goDefault'
                 }
             });
             var API = {
+                goDefault:function(){
+                    Backbone.history.navigate("home", {trigger: false, replace: true});
+                    this.goHome();
+                },
                 goHome: function(){
                     $('a[data-toggle="tab"][aria-controls="home"]').tab('show');
                 },
@@ -46,29 +51,30 @@
             if(Backbone.history){
                 Backbone.history.start();
             }
+            $("div.show").addClass("hidden");
+            $("ul.nav-tabs.hidden, div.tab-content.hidden").removeClass("hidden").addClass("show");
+            var photoGallery = new PhotoGallery({el:"#profile"});
         });
     </script>
 </head>
 <body>
-
-<div>
-
+<div class="container">
     <!-- Nav tabs -->
-    <ul class="nav nav-tabs" role="tablist">
+
+    <ul class="nav nav-tabs hidden" role="tablist">
         <li role="presentation" class="active"><a href="#home" aria-controls="home" role="tab" data-toggle="tab">Home</a></li>
         <li role="presentation"><a href="#profile" aria-controls="profile" role="tab" data-toggle="tab">Profile</a></li>
         <li role="presentation"><a href="#messages" aria-controls="messages" role="tab" data-toggle="tab">Messages</a></li>
         <li role="presentation"><a href="#settings" aria-controls="settings" role="tab" data-toggle="tab">Settings</a></li>
     </ul>
-
+    <div class="show" style="width: 100%; font-size:100px; text-align: center"><i class="fa fa-spin glyphicon glyphicon-cog"></i></div>
     <!-- Tab panes -->
-    <div class="tab-content">
+    <div class="tab-content hidden">
         <div role="tabpanel" class="tab-pane fade in active" id="home">---home---</div>
         <div role="tabpanel" class="tab-pane fade" id="profile">---profile---</div>
         <div role="tabpanel" class="tab-pane fade" id="messages">---messages---</div>
         <div role="tabpanel" class="tab-pane fade" id="settings">---settings---</div>
     </div>
-
 </div>
 </body>
 </html>

@@ -15,13 +15,13 @@
             qwe.start();
             var qdwe=new SlideShow({img:[{src:"http://7themes.su/_ph/40/806761392.jpg", description:"The Hobbit"},{src:"http://7themes.su/_ph/40/109111701.jpg", description:"Мстители: Эра Альтрона"}],delay:3000, order:"rtl", type:"slide", el:document.querySelector('.first')});
             qdwe.start();
-            var qswe=new SlideShow({size:{height: "50", width: "800"}, delay:5000, order:"rdm", type:"crossfade", el:document.querySelector('.second')});
+            var qswe=new SlideShow({delay:5000, order:"rdm", type:"crossfade", el:document.querySelector('.second')});
             qswe.start();
             qswe.start();
-            var qfwe=new SlideShow({type:"crossfade", el:document.querySelector('.third'), delay:2000, size:{height: "150", width: "250"}});
+            var qfwe=new SlideShow({type:"crossfade", el:document.querySelector('.third'), delay:2000});
             qfwe.start();
 
-            var obj = new stuff(document.querySelector('[class="sidebar"]'));
+//            var obj = new stuff(document.querySelector('[class="sidebar"]'));
         })
     </script>
 </head>
@@ -34,6 +34,7 @@
             <a type="button" href="/nwcurrency" class="btn btn-default btn-lg"><%= __("Game Currency") %></a>
             <a type="button" href="/routertest" class="btn btn-default btn-lg"><%= __("Marionette Router") %></a>
         </div>
+        <p></p>
         <div class="container">
             <div class="first" style="width:300px; height: 200px; margin: 0 auto;"></div>
             <div class="second" style="width:300px; height: 200px; margin: 0 auto;"></div>

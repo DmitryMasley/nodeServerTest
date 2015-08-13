@@ -4,7 +4,6 @@ define(["jquery", "underscore", "marionette", "tpl!../templates/mainLayout", "./
         initialize: function(config){
             this.collection=config.collection;
             this.el=config.el;
-            this.model=config.model;
         },
         template: template,
         regions: {
@@ -12,16 +11,18 @@ define(["jquery", "underscore", "marionette", "tpl!../templates/mainLayout", "./
             modalRegion: "#modal"
         },
         onRender: function(){
-            this.showCollection();
-            this.showModal();
-        },
-        showCollection: function(){
             this.collectionView = new CollectionView({collection:this.collection});
             this.mainRegion.show(this.collectionView);
         },
-        showModal: function(config){
-            this.modalView = new ModalView({model: (config)?config.model:this.model});
-            this.modalRegion.show(this.modalView);
+        showModal: function(model){
+            console.log(!this.modalView);
+            if(!this.modalView || this.modalView.isDestroyed){
+                this.modalView = new ModalView({collection:this.collection, model:model.clone()});
+                this.modalRegion.show(this.modalView);
+                this.modalView.ui.myModal.modal("show");
+            } else {
+                this.modalView.model.set(model.toJSON());
+            }
         }
     });
     return LayoutView;

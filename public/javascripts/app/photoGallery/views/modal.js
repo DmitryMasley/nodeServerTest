@@ -2,8 +2,10 @@ define(["jquery", "underscore", "marionette", "tpl!../templates/modal", "bootstr
     "use strict";
     var ModalView = Marionette.ItemView.extend({
         initialize: function(config){
+            this.collection=config.collection;
             this.model=config.model;
-            _.bindAll(this, 'onNext', 'onPrev');
+            this.listenTo(this.model,'change', this.refr);
+            _.bindAll(this, 'onNext', 'onPrev', 'refr');
         },
         tagName: "div",
         template: template,
@@ -16,19 +18,20 @@ define(["jquery", "underscore", "marionette", "tpl!../templates/modal", "bootstr
         },
         events:{
             'click @ui.next': 'onNext',
-            'click @ui.prev': 'onPrev'
+            'click @ui.prev': 'onPrev',
+            "hidden.bs.modal" : "destroy"
         },
         onNext: function(e) {
             e.preventDefault();
             e.stopPropagation();
-            this.trigger("next", this.model);
+            this.trigger("show:next", this.model);
         },
         onPrev: function(e) {
             e.preventDefault();
             e.stopPropagation();
-            this.trigger("prev", this.model);
+            this.trigger("show:prev", this.model);
         },
-        onRender: function() {
+        refr: function() {
             //var total=this.collection.models.length;
             //var index = childView._index;
             //if(total === (parseInt(index) + 1)){
@@ -41,13 +44,11 @@ define(["jquery", "underscore", "marionette", "tpl!../templates/modal", "bootstr
             //}else{
             //    $(this.ui.prev).show().attr('href', parseInt(index) - 1);
             //}
-            if(this.model){
-                $(this.ui.image).attr("src", this.model.escape("src"));
-                $(this.ui.description).text(this.model.escape("description"));
-                $(this.ui.myModal).modal("show");
-            }else{
-                $(this.ui.myModal).modal("hide");
-            }
+            $(this.ui.image).attr("src", this.model.escape("src"));
+            $(this.ui.description).text(this.model.escape("description"));
+        },
+        onRender: function() {
+            this.refr();
         }
     });
     return ModalView;

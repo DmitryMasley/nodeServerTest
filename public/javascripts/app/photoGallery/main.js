@@ -6,23 +6,19 @@ define(["marionette", "underscore", "./views/mainLayout", "./entities/imageColle
             this.collection.fetch({url: '/images.ajax'});
             this.view = new LayoutView({el: config.el ? config.el : "body" , collection:this.collection});
             this.view.render();
-            this.view.collectionView.on("childview:model:show",
+            this.listenTo(this.view.collectionView, "childview:model:show",
                 function(childView, model){
-                    console.log("Received itemview:contact:show event on model ", model);
-                    this.view.showModal({model:model});
-                }.bind(this)
-            );
-            console.log(this.view.modalView);
-            this.view.modalView.on("show",
-                function(childView, model){
-                    console.log("Received show:next event on modal ", model);
-                    this.view.showModal({model:model});
-                }.bind(this)
-            );
-            this.view.modalView.on("prev",
-                function(childView, model){
-                    console.log("Received show:prev event on modal ", model);
-                    this.view.showModal({model:model});
+                    this.view.showModal(model);
+                    this.listenTo(this.view.modalView, "show:next",
+                        function(model){
+                            this.view.showModal(this.collection.at(this.collection.indexOf(this.collection.get(model.id))+1));
+                        }.bind(this)
+                    );
+                    this.listenTo(this.view.modalView, "show:prev",
+                        function(model){
+                            this.view.showModal(this.collection.at(this.collection.indexOf(this.collection.get(model.id))-1));
+                        }.bind(this)
+                    );
                 }.bind(this)
             );
         }

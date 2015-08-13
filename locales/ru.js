@@ -43,5 +43,7 @@
 	"Contact": "Контакты",
 	"Registration": "Регистрация",
 	"Shopping Cart": "Корзина",
-	"Drag & Drop": "Drag & Drop"
+	"Drag & Drop": "Drag & Drop",
+	"Game Currency": "Game Currency",
+	"Marionette Router": "Marionette Router"
 }

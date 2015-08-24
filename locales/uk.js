@@ -44,5 +44,6 @@
 	"Contact": "Contact",
 	"Registration": "Registration",
 	"Shopping Cart": "Кошик",
-	"Drag & Drop": "Drag & Drop"
+	"Drag & Drop": "Drag & Drop",
+	"Slideshow": "Slideshow"
 }

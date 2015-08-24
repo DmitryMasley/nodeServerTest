@@ -14,9 +14,11 @@ var routes = require('./routes/index');
 var submit = require('./routes/submit');
 var mvc = require('./routes/mvc');
 var images = require('./routes/images');
+var slideshow = require('./routes/slideshow');
 var dragtest = require('./routes/dragtest');
 var routertest = require('./routes/routertest');
 var shopping_cart = require('./routes/shopping_cart');
+var continent = require('./routes/continent');
 var html5 = require('./routes/html5');
 var nwcurrency = require('./routes/nwcurrency');
 
@@ -75,9 +77,11 @@ app.use('/', routes);
 app.use('/submit', submit);
 app.use('/mvc', mvc);
 app.use('/images.ajax', images);
+app.use('/slideshow', slideshow);
 app.use('/dragtest', dragtest);
 app.use('/routertest', routertest);
 app.use('/shopping_cart', shopping_cart);
+app.use('/continent', continent);
 app.use('/html5', html5);
 app.use('/nwcurrency', nwcurrency);
 

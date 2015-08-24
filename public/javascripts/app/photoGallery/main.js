@@ -2,34 +2,69 @@ define(["marionette", "underscore", "./views/mainLayout", "./entities/imageColle
     "use strict";
     var PhotoGalleryMain = Marionette.Controller.extend({
         initialize: function(config){
-            this.collection=new ImageCollection();
-            this.collection.fetch({url: '/images.ajax'});
-            this.view = new LayoutView({el: config.el ? config.el : "body" , collection:this.collection});
-            this.view.render();
-            this.listenTo(this.view.collectionView, "childview:model:show",
-                function(childView, model){
-                    this.view.showModal(model);
-                    this.listenTo(this.view.modalView, "show:next",
-                        function(model){
-                            this.view.showModal(this.collection.at(this.collection.indexOf(this.collection.get(model.id))+1));
-                        }.bind(this)
-                    );
-                    this.listenTo(this.view.modalView, "show:prev",
-                        function(model){
-                            this.view.showModal(this.collection.at(this.collection.indexOf(this.collection.get(model.id))-1));
-                        }.bind(this)
-                    );
-                }.bind(this)
-            );
+            if (!config.collection) {
+                this.collection = new ImageCollection();
+                this.collection.fetch({url: '/images.ajax'});
+            }else{
+                this.collection = new ImageCollection(config.collection);
+            }
+            this.layout = new LayoutView({el: config.el ? config.el : "body" , collection:this.collection});
+            this.layout.render();
+            this.listenTo(this.layout.collectionView, "childview:model:show", this.showModalForImage);
+            this.listenTo(this.collection, "sync", function(){
+                if (this.collection.get(this.item)){
+                    this.showModalForImage(null,this.collection.get(this.item));
+                }
+            });
+        },
+        showModalForImage: function(childView, model){
+            this.layout.showModal(model);
+            var modal = this.layout.modalView;
+            if (modal) {
+                this.listenToModalEvents(modal);
+            }
+        },
+        listenToModalEvents: function(view){
+            this.modal = view;
+            this.listenTo(view, "next", this.nextImage);
+            this.listenTo(view, "prev", this.prevImage);
+            this.listenTo(view, "destroy", this.stopListeningModal);
+        },
+        stopListeningModal: function(){
+            this.stopListening(this.modal);
+        },
+        getNextModel: function(model){
+            var index = this.collection.indexOf(this.collection.get(model.id));
+            if(index!==-1 && this.collection.at(index+1)){
+                return this.collection.at(index+1);
+            } else {
+                return null;
+            }
+        },
+        getPrevModel: function(model){
+            var index = this.collection.indexOf(this.collection.get(model.id));
+            if(index!==-1 && this.collection.at(index-1)){
+                return this.collection.at(index-1);
+            } else {
+                return null;
+            }
+        },
+        nextImage: function(model){
+            if(this.modal){
+                var model = this.getNextModel(model);
+                if (model) {
+                    this.layout.showModal(model);
+                }
+            }
+        },
+        prevImage: function(model){
+            if(this.modal){
+                var model = this.getPrevModel(model);
+                if(model) {
+                    this.layout.showModal(model);
+                }
+            }
         }
     });
     return PhotoGalleryMain;
 });
-
-//var model = this.collection.get(id);
-//if(model){this.showModal(model)}
-//modal.on("hide.bs.modal", function(){
-//    Backbone.history.navigate(fragm);
-//});
-//Backbone.history.navigate(""+fragm+"/"+index);
-//fragm=Backbone.history.getFragment();

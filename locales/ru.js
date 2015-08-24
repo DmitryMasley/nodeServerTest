@@ -45,5 +45,6 @@
 	"Shopping Cart": "Корзина",
 	"Drag & Drop": "Drag & Drop",
 	"Game Currency": "Game Currency",
-	"Marionette Router": "Marionette Router"
+	"Marionette Router": "Marionette Router",
+	"Slideshow": "Slideshow"
 }

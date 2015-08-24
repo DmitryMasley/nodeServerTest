@@ -25,5 +25,6 @@
 	"Drag & Drop": "Drag & Drop",
 	"Game Currency": "Game Currency",
 	"Router": "Router",
-	"Marionette Router": "Marionette Router"
+	"Marionette Router": "Marionette Router",
+	"Slideshow": "Slideshow"
 }

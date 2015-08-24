@@ -32,7 +32,7 @@
                 goProfile: function(id){
                     $('a[data-toggle="tab"][aria-controls="profile"]').tab('show');
                     Backbone.history.navigate('profile');
-                    var photoGallery = new PhotoGallery({el:"#profile", item:id});
+                    var photoGallery = new PhotoGallery({el:"#profile"});
                 },
                 goMessages: function(){
                     $('a[data-toggle="tab"][aria-controls="messages"]').tab('show');

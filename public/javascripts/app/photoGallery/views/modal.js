@@ -5,7 +5,7 @@ define(["jquery", "underscore", "marionette", "tpl!../templates/modal", "bootstr
             this.collection=config.collection;
             this.model=config.model;
             this.listenTo(this.model,'change', this.refr);
-            _.bindAll(this, 'onNext', 'onPrev', 'refr');
+            _.bindAll(this, 'onNext', 'onPrev', 'refr', "removeStyle");
         },
         tagName: "div",
         template: template,
@@ -19,36 +19,41 @@ define(["jquery", "underscore", "marionette", "tpl!../templates/modal", "bootstr
         events:{
             'click @ui.next': 'onNext',
             'click @ui.prev': 'onPrev',
+            'shown.bs.modal': "removeStyle",
             "hidden.bs.modal" : "destroy"
         },
         onNext: function(e) {
             e.preventDefault();
             e.stopPropagation();
-            this.trigger("show:next", this.model);
+            this.trigger("next", this.model);
         },
         onPrev: function(e) {
             e.preventDefault();
             e.stopPropagation();
-            this.trigger("show:prev", this.model);
+            this.trigger("prev", this.model);
+        },
+        removeStyle: function(){
+            $(this.ui.myModal).removeAttr("style");
         },
         refr: function() {
-            //var total=this.collection.models.length;
-            //var index = childView._index;
-            //if(total === (parseInt(index) + 1)){
-            //    $(this.ui.next).hide();
-            //}else{
-            //    $(this.ui.next).show().attr('href', parseInt(index) + 1);
-            //}
-            //if(parseInt(index) === 0){
-            //    $(this.ui.prev).hide();
-            //}else{
-            //    $(this.ui.prev).show().attr('href', parseInt(index) - 1);
-            //}
+            if (this.collection.indexOf(this.collection.get(this.model.id))===0){
+                $(this.ui.prev).css("visibility","hidden");
+            }else{
+                $(this.ui.prev).css("visibility","visible");
+            }
+            if (this.collection.indexOf(this.collection.get(this.model.id))===this.collection.length-1){
+                $(this.ui.next).css("visibility","hidden");
+            }else{
+                $(this.ui.next).css("visibility","visible");
+            }
             $(this.ui.image).attr("src", this.model.escape("src"));
+            $(this.ui.myModal).removeClass("portrait").removeClass("landscape");
+            $(this.ui.myModal).addClass(this.model.get("title"));
             $(this.ui.description).text(this.model.escape("description"));
         },
         onRender: function() {
             this.refr();
+            this.removeStyle();
         }
     });
     return ModalView;

@@ -15,7 +15,6 @@ define(["jquery", "underscore", "marionette", "tpl!../templates/mainLayout", "./
             this.mainRegion.show(this.collectionView);
         },
         showModal: function(model){
-            console.log(!this.modalView);
             if(!this.modalView || this.modalView.isDestroyed){
                 this.modalView = new ModalView({collection:this.collection, model:model.clone()});
                 this.modalRegion.show(this.modalView);

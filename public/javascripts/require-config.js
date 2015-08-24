@@ -10,6 +10,10 @@ require.config({
             location: "app/shoppingCart"
         },
         {
+            name: "continent",
+            location: "app/continent"
+        },
+        {
             name: "photoGallery",
             location: "app/photoGallery"
         },

@@ -12,5 +12,5 @@ define(["marionette", "underscore", "./views/mainLayout"], function(Marionette, 
             this.view.render();
         }
     });
-return ShoppingCartMain;
+    return ShoppingCartMain;
 });

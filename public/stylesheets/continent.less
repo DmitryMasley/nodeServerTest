@@ -1,0 +1,335 @@
+@import "../javascripts/vendor/bootstrap/less/variables.less";
+@cyan: #98cbd9;
+@pink: #c00e82;
+@yellow: #efc825;
+@green: #c3d738;
+.static_button(@Color){
+  color:#fff;
+  font-size: 16px;
+  width: 150px;
+  height: 36px;
+  margin: 15px auto;
+  border-radius: 2px;
+  background-color: @Color;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+  -moz-box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+  -webkit-box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+};
+.active_button(@Color){
+  outline: none;
+  &:hover {color:#fff;background-color:@Color;border-color:darken(@Color, 20%);}
+  &:active {
+    color:#fff;
+    -webkit-transition-duration: 0.1s;
+    -moz-transition-duration: 0.1s;
+    transition-duration: 0.1s;
+    background-color:darken(@Color, 10%);
+    border-color:darken(@Color, 30%);
+    -webkit-box-shadow: inset 0 2px 7px 1px darken(@Color, 30%);
+    -moz-box-shadow: inset 0 2px 7px 1px darken(@Color, 30%);
+    box-shadow: inset 0 2px 7px 1px darken(@Color, 30%);
+  }
+};
+html,body {
+  color: darken(@pink,20%);
+  font-size: 14px;
+  font-family: Arial, Helvetica, sans-serif;
+  font-weight: 500;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  margin: 0;
+  padding: 40px 0 0 0;
+  height: 100%;
+}
+body{
+  background: url("/images/continent/rainbow-glitter.jpg") repeat-y center scroll;
+}
+#header {
+    &:hover{
+    background-color: lighten(@pink,20%);
+  }
+  margin: 0;
+  padding: 10px auto 10px auto;
+  font-size: 18px;
+  #navbar ul li a:hover, #navbar ul li.active a{
+    background-color: @green;
+    color:@pink;
+  }
+  .navbar-default{
+    background-color: lighten(@cyan, 10%);
+    border-color: @cyan;
+    .navbar-brand {
+      padding: 0;
+    }
+  button{
+    background-color: @yellow;
+    &:hover{
+      background-color: @green;
+    }
+  }
+  }
+
+  li {
+    a{color: darken(@pink,20%);}
+    margin: 15px 0 15px 0;
+  }
+
+}
+#main li{
+  position: relative;
+  height: 170px;
+  overflow: hidden;
+  img{
+    position: absolute;
+    min-height: 100%;
+    left: 50%;
+    top: 50%;
+    height: 100%;
+    width: auto;
+    -webkit-transform: translate(-50%,-50%);
+    -ms-transform: translate(-50%,-50%);
+    transform: translate(-50%,-50%);
+  }
+}
+#mainRegion{
+  height: auto;
+  min-height: 100%;
+  background-color:rgba(255,255,255,0.8);
+  padding-bottom: 50px;
+  .panel-heading{
+    text-align: center;
+    background-color: @cyan;
+    color:#000000;
+    &:hover{
+      background-color: @yellow;
+      color:@pink;
+    }
+  }
+  .panel-default{
+    background-color:rgba(255,255,255,0.3);
+  }
+  .content{
+    font-weight: 400;
+    text-align: justify;
+    p {
+      text-indent: 50px;
+    }
+  }
+  .title{
+    padding: 20px 0 20px 0;
+    font-size: 24px;
+    font-weight: 700;
+    text-align: center;
+  }
+  .news{
+    border-top: 1px solid @pink;
+  }
+  table{
+    td{
+      white-space: pre-wrap;
+    }
+    th{
+      word-break: break-all;
+    }
+  }
+  .col-lg-3.col-md-4.col-sm-4.col-xs-6{
+    padding: 11px;
+  }
+
+    .item {
+      background-color: lighten(@cyan,20%);
+      cursor: pointer;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+    -moz-box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+    -webkit-box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+    border-radius: 3px;
+
+      .active_button(@green);
+    img {
+      width: 100%;
+    }
+    .itemTitle{
+
+      color: @pink;
+      .active_button(@green);
+      overflow: hidden;
+      word-wrap: break-word;
+      text-align: center;
+      font-weight: 600;
+      h3{
+        font-size: 14px;
+        font-weight: 600;
+      }
+    }
+  }
+}
+#footer {
+  position: relative;
+  margin-top: -50px; /* отрицательное значение высоты футера */
+  height: 50px;
+  clear:both;
+  background-color: lighten(@cyan, 10%);
+  border-color: @cyan;
+}
+#myModal{
+  display: block;
+  .modal-dialog {
+    margin: auto;
+    img{
+      position: relative;
+      width: 100%;
+    }
+  }
+}
+@media (max-width: @screen-xs-min) {
+  div.item {height: 120+70px;
+    img {
+      height: 120px;
+    }
+  }
+  #myModal {
+    &.landscape {
+      .modal-dialog {
+        width: 90%;
+      }
+    }
+    &.portrait {
+      .modal-dialog {
+        width: 90%;
+      }
+    }
+  }
+  #mainRegion .item .itemTitle{
+    height: 70px;
+    h3{
+      font-size: 14px;
+    }
+  }
+  #mainRegion .content{
+      font-size: 14px;
+  }
+  #main li{
+    height: 80px;
+  }
+}
+@media (min-width: @screen-xs-min) and (max-width: @screen-xs-max) {
+  div.item {
+    height: 170+70px;
+    img {
+      height: 170px;
+    }
+  }
+  #myModal {
+    &.landscape {
+      .modal-dialog {
+        width: 95%;
+      }
+    }
+    &.portrait {
+      .modal-dialog {
+        width: 70%;
+      }
+    }
+  }
+  #mainRegion .item .itemTitle{
+    height: 70px;
+    h3{
+      font-size: 18px;
+    }
+  }
+  #mainRegion .content{
+    font-size: 18px;
+  }
+  #main li{
+    height: 130px;
+  }
+}
+@media (min-width: @screen-sm-min) and (max-width: @screen-sm-max) {
+  div.item {
+    height: 170+70px;
+    img {
+      height: 170px;
+    }
+  }
+  #myModal {
+    &.landscape {
+      .modal-dialog {
+        width: 95%;
+      }
+    }
+    &.portrait {
+      .modal-dialog {
+        width: 60%;
+      }
+    }
+  }
+  #mainRegion .item .itemTitle{
+    height: 70px;
+    h3{
+      font-size: 18px;
+    }
+  }
+  #mainRegion .content{
+    font-size: 20px;
+  }
+}
+@media (min-width: @screen-md-min) and (max-width: @screen-md-max) {
+  div.item {
+    height: 200+90px;
+    img {
+      height: 200px;
+    }
+  }
+  #myModal {
+    &.landscape {
+      .modal-dialog {
+        width: 90%;
+      }
+    }
+    &.portrait {
+      .modal-dialog {
+        width: 45%;
+      }
+    }
+  }
+  #mainRegion .item .itemTitle{
+    height: 90px;
+    h3{
+      font-size: 24px;
+    }
+  }
+  #mainRegion .content{
+    font-size: 22px;
+  }
+}
+@media (min-width: @screen-lg-min) {
+  div.item {
+    height: 200+90px;
+    img {
+      height: 200px;
+    }
+  }
+  #myModal {
+    &.landscape {
+      .modal-dialog {
+        width: 60%;
+      }
+    }
+    &.portrait {
+      .modal-dialog {
+        width: 28%;
+      }
+    }
+  }
+  #mainRegion .item .itemTitle{
+    height: 90px;
+    h3{
+      font-size: 24px;
+    }
+  }
+  #mainRegion .content{
+    font-size: 24px;
+  }
+}

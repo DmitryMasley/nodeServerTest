@@ -2,10 +2,10 @@
 О клубе
 </div>
 <div class="content">
-<img style="float: right; clear: right; margin: 7px 0 7px 7px; width: 250px;" src="/images/continent/exercises/about/1.jpg"/>
-<img style="float: right; clear: right; margin: 7px 0 7px 7px; width: 250px;" src="/images/continent/exercises/about/2.jpg"/>
-<img style="float: right; clear: right; margin: 7px 0 7px 7px; width: 250px;" src="/images/continent/exercises/about/3.png"/>
-<img style="float: right; clear: right; margin: 7px 0 7px 7px; width: 250px;" src="/images/continent/exercises/about/4.jpg"/>
+<img style="float: right; clear: right; margin: 7px 0 7px 7px;" src="/images/continent/exercises/about/1.jpg"/>
+<img style="float: right; clear: right; margin: 7px 0 7px 7px;" src="/images/continent/exercises/about/2.jpg"/>
+<img style="float: right; clear: right; margin: 7px 0 7px 7px;" src="/images/continent/exercises/about/3.png"/>
+<img style="float: right; clear: right; margin: 7px 0 7px 7px;" src="/images/continent/exercises/about/4.jpg"/>
 <p>
 Клуб английского языка Континент создавался с любовью и большим желанием научить детей и взрослых свободно говорить на английском языке с помощью веселых игр и без особых усилий.
 </p>

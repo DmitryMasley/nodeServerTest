@@ -2,9 +2,9 @@
 Психолог
 </div>
 <div class="content">
-<img style="float: right; clear: right; margin: 7px 0 7px 7px; width: 250px;" src="/images/continent/exercises/psychologist/1.jpg"/>
-<img style="float: right; clear: right; margin: 7px 0 7px 7px; width: 250px;" src="/images/continent/exercises/psychologist/2.jpg"/>
-<img style="float: right; clear: right; margin: 7px 0 7px 7px; width: 250px;" src="/images/continent/exercises/psychologist/3.jpg"/>
+<img style="float: right; clear: right; margin: 7px 0 7px 7px;" src="/images/continent/exercises/psychologist/1.jpg"/>
+<img style="float: right; clear: right; margin: 7px 0 7px 7px;" src="/images/continent/exercises/psychologist/2.jpg"/>
+<img style="float: right; clear: right; margin: 7px 0 7px 7px;" src="/images/continent/exercises/psychologist/3.jpg"/>
 <p>
 Психологическая консультация для детей.
 </p>
@@ -38,6 +38,17 @@
 <br/>
 <p>
 А также проводятся психологические консультации для взрослых.
+</p>
+<br/>
+<br/>
+<p>
+Дети (до 11 лет) - 120 грн.,
+</p>
+<p>
+Подростки (с 12 лет) - 150 грн.,
+</p>
+<p>
+Взрослые - 200 грн.
 </p>
 <br/>
 <p>

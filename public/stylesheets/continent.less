@@ -40,7 +40,7 @@ html,body {
   -ms-user-select: none;
   user-select: none;
   margin: 0;
-  padding: 40px 0 0 0;
+  padding: 20px 0 0 0;
   height: 100%;
 }
 body{
@@ -61,6 +61,9 @@ body{
     background-color: lighten(@cyan, 10%);
     border-color: @cyan;
     .navbar-brand {
+      img {
+        height: 100%;
+      }
       padding: 0;
     }
   button{
@@ -70,10 +73,8 @@ body{
     }
   }
   }
-
   li {
     a{color: darken(@pink,20%);}
-    margin: 15px 0 15px 0;
   }
 
 }
@@ -116,6 +117,9 @@ body{
     p {
       text-indent: 50px;
     }
+    img {
+      width: 250px;
+    }
   }
   .title{
     padding: 20px 0 20px 0;
@@ -127,11 +131,12 @@ body{
     border-top: 1px solid @pink;
   }
   table{
-    td{
       white-space: pre-wrap;
-    }
     th{
-      word-break: break-all;
+      padding: 2px
+    }
+    td{
+      padding: 2px
     }
   }
   .col-lg-3.col-md-4.col-sm-4.col-xs-6{
@@ -209,6 +214,12 @@ body{
   }
   #mainRegion .content{
       font-size: 14px;
+    img{
+      width: 100%;
+    }
+  }
+  #mainRegion table{
+    font-size: 8px;
   }
   #main li{
     height: 80px;
@@ -241,6 +252,9 @@ body{
   }
   #mainRegion .content{
     font-size: 18px;
+  }
+  #mainRegion table{
+    font-size: 12px;
   }
   #main li{
     height: 130px;

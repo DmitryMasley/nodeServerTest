@@ -4,7 +4,7 @@ define(["marionette"], function(Marionette){
             "about": "showAbout",
             "discount": "showDiscount",
             "gallery": "showGallery",
-            "jobs": "showJobs",
+            "work": "showWork",
             "contacts": "showContacts",
             "main": "showMain",
             "blahNativeSpeaker": "showBlahNativeSpeaker",

@@ -2,9 +2,9 @@
 BLAH-BLAH CLUB с носителем языка
 </div>
 <div class="content">
-<img style="float: right; clear: right; margin: 7px 0 7px 7px; width: 250px;" src="/images/continent/exercises/blahNativeSpeaker/2.jpg"/>
-<img style="float: right; clear: right; margin: 7px 0 7px 7px; width: 250px;" src="/images/continent/exercises/blahNativeSpeaker/3.jpg"/>
-<img style="float: right; clear: right; margin: 7px 0 7px 7px; width: 250px;" src="/images/continent/exercises/blahNativeSpeaker/4.jpg"/>
+<img style="float: right; clear: right; margin: 7px 0 7px 7px;" src="/images/continent/exercises/blahNativeSpeaker/2.jpg"/>
+<img style="float: right; clear: right; margin: 7px 0 7px 7px;" src="/images/continent/exercises/blahNativeSpeaker/3.jpg"/>
+<img style="float: right; clear: right; margin: 7px 0 7px 7px;" src="/images/continent/exercises/blahNativeSpeaker/4.jpg"/>
 <p>
 BLAH-BLAH CLUB дарит уникальную возможность детям и взрослым легко и свободно усовершенствовать уже имеющиеся знания, а также продолжить изучение с носителем английского языка.
 </p>

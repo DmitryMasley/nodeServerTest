@@ -2,9 +2,9 @@
 Творческое окошко
 </div>
 <div class="content">
-<img style="float: right; clear: right; margin: 7px 0 7px 7px; width: 250px;" src="/images/continent/exercises/creativeWindow/1.jpg"/>
-<img style="float: right; clear: right; margin: 7px 0 7px 7px; width: 250px;" src="/images/continent/exercises/creativeWindow/2.jpg"/>
-<img style="float: right; clear: right; margin: 7px 0 7px 7px; width: 250px;" src="/images/continent/exercises/creativeWindow/3.jpg"/>
+<img style="float: right; clear: right; margin: 7px 0 7px 7px;" src="/images/continent/exercises/creativeWindow/1.jpg"/>
+<img style="float: right; clear: right; margin: 7px 0 7px 7px;" src="/images/continent/exercises/creativeWindow/2.jpg"/>
+<img style="float: right; clear: right; margin: 7px 0 7px 7px;" src="/images/continent/exercises/creativeWindow/3.jpg"/>
 <p>
 Творческое окошко – это разностороннее развитие способностей и талантов детей.
 </p>

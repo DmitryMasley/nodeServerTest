@@ -2,9 +2,9 @@
 Система скидок
 </div>
 <div class="content">
-<img style="float: right; clear: right; margin: 7px 0 7px 7px; width: 250px;" src="/images/continent/exercises/discount/1.jpg"/>
-<img style="float: right; clear: right; margin: 7px 0 7px 7px; width: 250px;" src="/images/continent/exercises/discount/2.png"/>
-<img style="float: right; clear: right; margin: 7px 0 7px 7px; width: 250px;" src="/images/continent/exercises/discount/3.jpg"/>
+<img style="float: right; clear: right; margin: 7px 0 7px 7px;" src="/images/continent/exercises/discount/1.jpg"/>
+<img style="float: right; clear: right; margin: 7px 0 7px 7px;" src="/images/continent/exercises/discount/2.png"/>
+<img style="float: right; clear: right; margin: 7px 0 7px 7px;" src="/images/continent/exercises/discount/3.jpg"/>
 <p>
 Мы ценим наших клиентов и поэтому предоставляем скидки:
 </p>

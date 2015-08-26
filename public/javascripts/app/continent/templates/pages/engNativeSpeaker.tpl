@@ -2,9 +2,9 @@
 Английский с носителем языка
 </div>
 <div class="content">
-<img style="float: right; clear: right; margin: 7px 0 7px 7px; width: 250px;" src="/images/continent/exercises/engNativeSpeaker/2.jpg"/>
-<img style="float: right; clear: right; margin: 7px 0 7px 7px; width: 250px;" src="/images/continent/exercises/engNativeSpeaker/3.jpg"/>
-<img style="float: right; clear: right; margin: 7px 0 7px 7px; width: 250px;" src="/images/continent/exercises/engNativeSpeaker/4.jpg"/>
+<img style="float: right; clear: right; margin: 7px 0 7px 7px;" src="/images/continent/exercises/engNativeSpeaker/2.jpg"/>
+<img style="float: right; clear: right; margin: 7px 0 7px 7px;" src="/images/continent/exercises/engNativeSpeaker/3.jpg"/>
+<img style="float: right; clear: right; margin: 7px 0 7px 7px;" src="/images/continent/exercises/engNativeSpeaker/4.jpg"/>
 <p>
 Английский с носителем языка – это увлекательный путь к безупречным знаниям.
 </p>

@@ -1,22 +1,22 @@
 define(["marionette", "underscore", "./views/mainLayout", "./views/main", "./views/pages/about", "./views/pages/discount",
-        "./views/pages/gallery", "./views/pages/jobs", "./views/pages/contacts", "./views/pages/blahNativeSpeaker",
+        "./views/pages/gallery", "./views/pages/work", "./views/pages/contacts", "./views/pages/blahNativeSpeaker",
         "./views/pages/creativeWindow", "./views/pages/development", "./views/pages/engAdult", "./views/pages/engChild",
         "./views/pages/engCorp", "./views/pages/engNativeSpeaker", "./views/pages/engSchool", "./views/pages/fastReading",
         "./views/pages/miniSad", "./views/pages/prepSchool", "./views/pages/psychologist","./router", "bootstrap"],
-    function(Marionette, _, LayoutView, MainView, About, Discount, Gallery, Jobs, Contacts, BlahNativeSpeaker, CreativeWindow,
+    function(Marionette, _, LayoutView, MainView, About, Discount, Gallery, Work, Contacts, BlahNativeSpeaker, CreativeWindow,
              Development, EngAdult, EngChild, EngCorp, EngNativeSpeaker, EngSchool, FastReading, MiniSad, PrepSchool, Psychologist, Router){
     "use strict";
     var ContinentMain = Marionette.Controller.extend({
         initialize: function(){
             this.layout = new LayoutView({el: "body"});
             this.layout.render();
-            _.bindAll(this,"showMain", "showAbout", "showDiscount", "showGallery", "showJobs", "showContacts", "showBlahNativeSpeaker",
+            _.bindAll(this,"showMain", "showAbout", "showDiscount", "showGallery", "showWork", "showContacts", "showBlahNativeSpeaker",
             "showCreativeWindow", "showDevelopment", "showEngAdult", "showEngChild", "showEngCorp", "showEngNativeSpeaker",
             "showEngSchool", "showFastReading", "showMiniSad", "showPrepSchool", "showPsychologist", "resetActive");
             this.listenTo(this.layout, 'showAbout', this.showAbout);
             this.listenTo(this.layout, 'showDiscount', this.showDiscount);
             this.listenTo(this.layout, 'showGallery', this.showGallery);
-            this.listenTo(this.layout, 'showJobs', this.showJobs);
+            this.listenTo(this.layout, 'showWork', this.showWork);
             this.listenTo(this.layout, 'showContacts', this.showContacts);
             this.listenTo(this.layout, 'showMain', this.showMain);
 
@@ -67,11 +67,11 @@ define(["marionette", "underscore", "./views/mainLayout", "./views/main", "./vie
             this.layout.ui.lnkGallery.parent().addClass("active");
             Backbone.history.navigate('gallery');
         },
-        showJobs: function(){
+        showWork: function(){
             this.resetActive();
-            this.layout.main.show(new Jobs());
-            this.layout.ui.lnkJobs.parent().addClass("active");
-            Backbone.history.navigate('jobs');
+            this.layout.main.show(new Work());
+            this.layout.ui.lnkWork.parent().addClass("active");
+            Backbone.history.navigate('work');
         },
         showContacts: function(){
             this.resetActive();

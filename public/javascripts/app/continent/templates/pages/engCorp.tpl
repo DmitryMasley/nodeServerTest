@@ -2,8 +2,8 @@
 Корпоративный английский
 </div>
 <div class="content">
-<img style="float: right; clear: right; margin: 7px 0 7px 7px; width: 250px;" src="/images/continent/exercises/engCorp/1.jpg"/>
-<img style="float: right; clear: right; margin: 7px 0 7px 7px; width: 250px;" src="/images/continent/exercises/engCorp/2.jpg"/>
+<img style="float: right; clear: right; margin: 7px 0 7px 7px;" src="/images/continent/exercises/engCorp/1.jpg"/>
+<img style="float: right; clear: right; margin: 7px 0 7px 7px;" src="/images/continent/exercises/engCorp/2.jpg"/>
 <p>
 Наш клуб предлагает корпоративное обучение английскому языку в офисе Вашей компании в удобное время в группах или индивидуально.
 </p>

@@ -12,7 +12,7 @@ define(["jquery", "underscore", "marionette", "tpl!../templates/mainLayout", "bo
             lnkAbout: "a.about",
             lnkDiscount: "a.discount",
             lnkGallery: "a.gallery",
-            lnkJobs: "a.jobs",
+            lnkWork: "a.work",
             lnkContacts: "a.contacts",
             lnkMain: "a.navbar-brand"
         },
@@ -32,8 +32,8 @@ define(["jquery", "underscore", "marionette", "tpl!../templates/mainLayout", "bo
                 preventDefault: true, // this param is optional and will default to true
                 stopPropagation: false
             },
-            'click @ui.lnkJobs': {
-                event: 'showJobs',
+            'click @ui.lnkWork': {
+                event: 'showWork',
                 preventDefault: true, // this param is optional and will default to true
                 stopPropagation: false
             },

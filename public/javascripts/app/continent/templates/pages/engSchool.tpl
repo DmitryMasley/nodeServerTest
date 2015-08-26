@@ -2,9 +2,9 @@
 Английский для школьников
 </div>
 <div class="content">
-<img style="float: right; clear: right; margin: 7px 0 7px 7px; width: 250px;" src="/images/continent/exercises/engSchool/2.jpg"/>
-<img style="float: right; clear: right; margin: 7px 0 7px 7px; width: 250px;" src="/images/continent/exercises/engSchool/3.jpg"/>
-<img style="float: right; clear: right; margin: 7px 0 7px 7px; width: 250px;" src="/images/continent/exercises/engSchool/4.jpg"/>
+<img style="float: right; clear: right; margin: 7px 0 7px 7px;" src="/images/continent/exercises/engSchool/2.jpg"/>
+<img style="float: right; clear: right; margin: 7px 0 7px 7px;" src="/images/continent/exercises/engSchool/3.jpg"/>
+<img style="float: right; clear: right; margin: 7px 0 7px 7px;" src="/images/continent/exercises/engSchool/4.jpg"/>
 <p>
 Английский язык – это ключ к успешному будущему Вашего ребенка!
 </p>
@@ -24,69 +24,99 @@
 	<br/>
 	<p>
 		<table class="table table-bordered">
-		  <tr>
-			<th></th>
-			<th>Группа</th>
-			<th>Закрытая группа</th>
-			<th>Индивидуально</th>
-		  </tr>
-		  <tr>
-			<th>Кол-во детей</th>
-			<td>2-5</td>
-			<td>2</td>
-			<td>1</td>
-		  </tr>
-		  <tr>
-			<th>Периодичность</th>
-			<td>2 р в нед</td>
-			<td>по желанию</td>
-			<td>по желанию</td>
-		  </tr>
-		  <tr>
-			<th>Длительность, мин</th>
-			<td>45</td>
-			<td>45 / 60</td>
-			<td>45 / 60</td>
-		  </tr>
-		  <tr>
-			<th>Стоимость, грн</th>
-			<td>42</td>
-			<td>52</td>
-			<td>75 / 80</td>
-		  </tr>
+			<tr>
+				<th>Форма обучения</th>
+				<th>Количество человек</th>
+				<th>Интенсивность занятий</th>
+				<th>Длительность занятий</th>
+				<th>Стоимость</th>
+			</tr>
+			<tr>
+				<th>Групповая</th>
+				<td>2-5</td>
+				<td>2р в нед</td>
+				<td>60 мин</td>
+				<td>50 грн</td>
+			</tr>
+			<tr>
+				<th>Индивидуальная</th>
+				<td>1</td>
+				<td>По желанию</td>
+				<td>60 мин<br />45 мин</td>
+				<td>100 грн<br />90 грн</td>
+			</tr>
+			<tr>
+				<th>Закрытая группа</th>
+				<td>2</td>
+				<td>По желанию</td>
+				<td>60 мин</td>
+				<td>65 грн</td>
+			</tr>
 		</table>
 	</p>
 	<br/>
 	<p>
-Подготовка к «ЗНО»
+Подготовка к «ЗНО» и другим экзаменам
 </p>
 	<p>
 		<table class="table table-bordered">
-		  <tr>
-			<th></th>
-			<th>Закрытая группа</th>
-			<th>Индивидуально</th>
-		  </tr>
-		  <tr>
-			<th>Кол-во детей</th>
-			<td>2</td>
-			<td>1</td>
-		  </tr>
-		  <tr>
-			<th>Периодичность</th>
-			<td>по желанию</td>
-			<td>по желанию</td>
-		  </tr>
-		  <tr>
-			<th>Длительность, мин</th>
-			<td>45 / 60</td>
-			<td>45 / 60</td>
-		  </tr>
-		  <tr>
-			<th>Стоимость, грн</th>
-			<td>*</td>
-			<td>*</td>
-		  </tr>
+			<tr>
+				<th>Форма обучения</th>
+				<th>Количество человек</th>
+				<th>Интенсивность занятий</th>
+				<th>Длительность занятий</th>
+				<th>Стоимость</th>
+			</tr>
+			<tr>
+				<th>Индивидуальная</th>
+				<td>1</td>
+				<td>По желанию</td>
+				<td>60 мин<br />45 мин</td>
+				<td>115 грн<br />105 грн</td>
+			</tr>
+			<tr>
+				<th>Закрытая группа</th>
+				<td>2</td>
+				<td>По желанию</td>
+				<td>60 мин</td>
+				<td>80 грн</td>
+			</tr>
+		</table>
+	</p>
+<br/>
+<p>
+Стоимость обучения для школьников с иностранцем
+</p>
+	<p>
+		<table class="table table-bordered">
+			<tr>
+				<th>Форма обучения</th>
+				<th>Количество человек</th>
+				<th>Интенсивность занятий</th>
+				<th>Длительность занятий</th>
+				<th>Стоимость</th>
+			</tr>
+			<tr>
+				<th>Групповая</th>
+				<td>2-7</td>
+				<td>2р в нед</td>
+				<td>60 мин</td>
+				<td>65 грн</td>
+			</tr>
+			<tr>
+				<th>Индивидуальная</th>
+				<td>1</td>
+				<td>По желанию</td>
+				<td>60 мин</td>
+				<td>115 грн</td>
+			</tr>
+			<tr>
+				<th>Закрытая группа</th>
+				<td>2</td>
+				<td>По желанию</td>
+				<td>60 мин</td>
+				<td>75 грн</td>
+			</tr>
 		</table>
 	</p>
 <br/>

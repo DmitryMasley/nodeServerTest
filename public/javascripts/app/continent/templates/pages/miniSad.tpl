@@ -2,9 +2,8 @@
 Мини-сад
 </div>
 <div class="content">
-<img style="float: right; clear: right; margin: 7px 0 7px 7px; width: 250px;" src="/images/continent/exercises/miniSad/1.jpg"/>
-<img style="float: right; clear: right; margin: 7px 0 7px 7px; width: 250px;" src="/images/continent/exercises/miniSad/2.jpg"/>
-<img style="float: right; clear: right; margin: 7px 0 7px 7px; width: 250px;" src="/images/continent/exercises/miniSad/3.jpg"/>
+<img style="float: right; clear: right; margin: 7px 0 7px 7px;" src="/images/continent/exercises/miniSad/1.jpg"/>
+<img style="float: right; clear: right; margin: 7px 0 7px 7px;" src="/images/continent/exercises/miniSad/2.jpg"/>
 <p>
 Мини детский сад в клубе Континент – это прекрасная возможность для детей весело и с пользой провести время, когда их родители заняты или просто  отдыхают.
 </p>

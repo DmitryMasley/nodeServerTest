@@ -16,6 +16,7 @@ define(["marionette", "underscore", "./views/mainLayout", "./entities/imageColle
                     this.showModalForImage(null,this.collection.get(this.item));
                 }
             });
+            _.bindAll(this, 'showModalForImage', 'listenToModalEvents', 'stopListeningModal', "getNextModel", "getPrevModel", "nextImage", "prevImage");
         },
         showModalForImage: function(childView, model){
             this.layout.showModal(model);
@@ -28,7 +29,7 @@ define(["marionette", "underscore", "./views/mainLayout", "./entities/imageColle
             this.modal = view;
             this.listenTo(view, "next", this.nextImage);
             this.listenTo(view, "prev", this.prevImage);
-            this.listenTo(view, "destroy", this.stopListeningModal);
+            this.listenTo(view, "before:destroy", this.stopListeningModal);
         },
         stopListeningModal: function(){
             this.stopListening(this.modal);

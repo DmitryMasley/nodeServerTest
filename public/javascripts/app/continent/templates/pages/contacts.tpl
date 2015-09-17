@@ -7,10 +7,10 @@
 г. Днепропетровск, ул. Березинская, 38.
 </p>
 <p>
-<img src="/images/continent/icon-36x36-kyivstar.png"><a data-rel="external" href="tel:PhoneNumber" target ="_blank">(096)-320-48-96</a>
+<img style="width: 32px; height: 32px;" src="/images/continent/icon-36x36-kyivstar.png"><a data-rel="external" href="tel:PhoneNumber" target ="_blank">(096)-320-48-96</a>
 </p>
 <p>
-<img src="/images/continent/icon-36x36-mts.png"><a data-rel="external" href="tel:PhoneNumber" target ="_blank">(099)-640-33-96</a>
+<img style="width: 32px; height: 32px;" src="/images/continent/icon-36x36-mts.png"><a data-rel="external" href="tel:PhoneNumber" target ="_blank">(099)-640-33-96</a>
 </p>
 <p>
 e-mail:<a href="mailto:eng@continent.org.ua?subject=Письмо c continent.org.ua&Body=текст сообщения">eng@continent.org.ua</a>

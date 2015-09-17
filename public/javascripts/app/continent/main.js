@@ -29,6 +29,7 @@ define(["marionette", "underscore", "./views/mainLayout", "./views/main", "./vie
         },
         resetActive: function(){
             this.layout.$el.find(".active").removeClass("active");
+            $(document).find(".modal-backdrop.fade.in").hide();
         },
         showMain: function(){
             this.resetActive();
@@ -53,91 +54,91 @@ define(["marionette", "underscore", "./views/mainLayout", "./views/main", "./vie
             this.resetActive();
             this.layout.main.show(new About());
             this.layout.ui.lnkAbout.parent().addClass("active");
-            Backbone.history.navigate('about');
+            Backbone.history.navigate('!about');
         },
         showDiscount: function(){
             this.resetActive();
             this.layout.main.show(new Discount());
             this.layout.ui.lnkDiscount.parent().addClass("active");
-            Backbone.history.navigate('discount');
+            Backbone.history.navigate('!discount');
         },
         showGallery: function(){
             this.resetActive();
             this.layout.main.show(new Gallery());
             this.layout.ui.lnkGallery.parent().addClass("active");
-            Backbone.history.navigate('gallery');
+            Backbone.history.navigate('!gallery');
         },
         showWork: function(){
             this.resetActive();
             this.layout.main.show(new Work());
             this.layout.ui.lnkWork.parent().addClass("active");
-            Backbone.history.navigate('work');
+            Backbone.history.navigate('!work');
         },
         showContacts: function(){
             this.resetActive();
             this.layout.main.show(new Contacts());
             this.layout.ui.lnkContacts.parent().addClass("active");
-            Backbone.history.navigate('contacts');
+            Backbone.history.navigate('!contacts');
         },
         showBlahNativeSpeaker: function(){
             this.resetActive();
             this.layout.main.show(new BlahNativeSpeaker());
-            Backbone.history.navigate('blahNativeSpeaker');
+            Backbone.history.navigate('!blahNativeSpeaker');
         },
         showCreativeWindow: function(){
             this.resetActive();
             this.layout.main.show(new CreativeWindow());
-            Backbone.history.navigate('creativeWindow');
+            Backbone.history.navigate('!creativeWindow');
         },
         showDevelopment: function(){
             this.resetActive();
             this.layout.main.show(new Development());
-            Backbone.history.navigate('development');
+            Backbone.history.navigate('!development');
         },
         showEngAdult: function(){
             this.resetActive();
             this.layout.main.show(new EngAdult());
-            Backbone.history.navigate('engAdult');
+            Backbone.history.navigate('!engAdult');
         },
         showEngChild: function(){
             this.resetActive();
             this.layout.main.show(new EngChild());
-            Backbone.history.navigate('engChild');
+            Backbone.history.navigate('!engChild');
         },
         showEngCorp: function(){
             this.resetActive();
             this.layout.main.show(new EngCorp());
-            Backbone.history.navigate('engCorp');
+            Backbone.history.navigate('!engCorp');
         },
         showEngNativeSpeaker: function(){
             this.resetActive();
             this.layout.main.show(new EngNativeSpeaker());
-            Backbone.history.navigate('engNativeSpeaker');
+            Backbone.history.navigate('!engNativeSpeaker');
         },
         showEngSchool: function(){
             this.resetActive();
             this.layout.main.show(new EngSchool());
-            Backbone.history.navigate('engSchool');
+            Backbone.history.navigate('!engSchool');
         },
         showFastReading: function(){
             this.resetActive();
             this.layout.main.show(new FastReading());
-            Backbone.history.navigate('fastReading');
+            Backbone.history.navigate('!fastReading');
         },
         showMiniSad: function(){
             this.resetActive();
             this.layout.main.show(new MiniSad());
-            Backbone.history.navigate('miniSad');
+            Backbone.history.navigate('!miniSad');
         },
         showPrepSchool: function(){
             this.resetActive();
             this.layout.main.show(new PrepSchool());
-            Backbone.history.navigate('prepSchool');
+            Backbone.history.navigate('!prepSchool');
         },
         showPsychologist: function(){
             this.resetActive();
             this.layout.main.show(new Psychologist());
-            Backbone.history.navigate('psychologist');
+            Backbone.history.navigate('!psychologist');
         }
     });
     return ContinentMain;

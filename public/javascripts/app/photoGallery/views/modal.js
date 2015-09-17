@@ -17,17 +17,10 @@ define(["jquery", "underscore", "marionette", "tpl!../templates/modal", "bootstr
             prev: "#myModal a.controls.previous"
         },
         events:{
-            'keydown':'chkKey',
             'click @ui.next': 'onNext',
             'click @ui.prev': 'onPrev',
             'shown.bs.modal': "removeStyle",
-            "hidden.bs.modal" : "destroy"
-        },
-        chkKey: function(e){
-            if (e.keyCode == 8) { // 8 is backspace
-                e.preventDefault();
-                this.ui.myModal.modal("hide");
-            }
+            "hidden.bs.modal": function(){this.destroy()}
         },
         onNext: function(e) {
             e.preventDefault();

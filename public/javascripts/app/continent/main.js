@@ -2,9 +2,9 @@ define(["marionette", "underscore", "./views/mainLayout", "./views/main", "./vie
         "./views/pages/gallery", "./views/pages/work", "./views/pages/contacts", "./views/pages/blahNativeSpeaker",
         "./views/pages/creativeWindow", "./views/pages/development", "./views/pages/engAdult", "./views/pages/engChild",
         "./views/pages/engCorp", "./views/pages/engNativeSpeaker", "./views/pages/engSchool", "./views/pages/fastReading",
-        "./views/pages/miniSad", "./views/pages/prepSchool", "./views/pages/psychologist","./router", "bootstrap"],
+        "./views/pages/miniSad", "./views/pages/masterClass", "./views/pages/prepSchool", "./views/pages/psychologist","./router", "bootstrap"],
     function(Marionette, _, LayoutView, MainView, About, Discount, Gallery, Work, Contacts, BlahNativeSpeaker, CreativeWindow,
-             Development, EngAdult, EngChild, EngCorp, EngNativeSpeaker, EngSchool, FastReading, MiniSad, PrepSchool, Psychologist, Router){
+             Development, EngAdult, EngChild, EngCorp, EngNativeSpeaker, EngSchool, FastReading, MiniSad, MasterClass, PrepSchool, Psychologist, Router){
     "use strict";
     var ContinentMain = Marionette.Controller.extend({
         initialize: function(){
@@ -12,7 +12,7 @@ define(["marionette", "underscore", "./views/mainLayout", "./views/main", "./vie
             this.layout.render();
             _.bindAll(this,"showMain", "showAbout", "showDiscount", "showGallery", "showWork", "showContacts", "showBlahNativeSpeaker",
             "showCreativeWindow", "showDevelopment", "showEngAdult", "showEngChild", "showEngCorp", "showEngNativeSpeaker",
-            "showEngSchool", "showFastReading", "showMiniSad", "showPrepSchool", "showPsychologist", "resetActive");
+            "showEngSchool", "showFastReading", "showMiniSad", "showMasterClass", "showPrepSchool", "showPsychologist", "resetActive");
             this.listenTo(this.layout, 'showAbout', this.showAbout);
             this.listenTo(this.layout, 'showDiscount', this.showDiscount);
             this.listenTo(this.layout, 'showGallery', this.showGallery);
@@ -47,6 +47,7 @@ define(["marionette", "underscore", "./views/mainLayout", "./views/main", "./vie
             this.listenTo(this.layout.mainView.view, "childview:show:fastReading", this.showFastReading);
             this.listenTo(this.layout.mainView.view, "childview:show:miniSad", this.showMiniSad);
             this.listenTo(this.layout.mainView.newsView, "childview:show:miniSad", this.showMiniSad);
+            this.listenTo(this.layout.mainView.newsView, "childview:show:masterClass", this.showMasterClass);
             this.listenTo(this.layout.mainView.view, "childview:show:prepSchool", this.showPrepSchool);
             this.listenTo(this.layout.mainView.view, "childview:show:psychologist", this.showPsychologist);
         },
@@ -129,6 +130,11 @@ define(["marionette", "underscore", "./views/mainLayout", "./views/main", "./vie
             this.resetActive();
             this.layout.main.show(new MiniSad());
             Backbone.history.navigate('!miniSad');
+        },
+        showMasterClass: function(){
+            this.resetActive();
+            this.layout.main.show(new MasterClass());
+            Backbone.history.navigate('!masterClass');
         },
         showPrepSchool: function(){
             this.resetActive();

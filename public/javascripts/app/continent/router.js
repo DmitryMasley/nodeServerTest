@@ -17,6 +17,7 @@ define(["marionette"], function(Marionette){
             "!engSchool": "showEngSchool",
             "!fastReading": "showFastReading",
             "!miniSad": "showMiniSad",
+            "!masterClass": "showMasterClass",
             "!prepSchool": "showPrepSchool",
             "!psychologist": "showPsychologist",
             "": "showMain",
